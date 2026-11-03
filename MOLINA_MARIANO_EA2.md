@@ -754,12 +754,12 @@ El presente Plan de Pruebas se estructuró conforme a los lineamientos del está
 Para evidenciar la trazabilidad, control de versiones y actualización efectiva del código fuente del proyecto, todos los desarrollos, modelos UML y artefactos documentales han sido versionados en el repositorio público oficial en GitHub.
 
 - **URL Oficial del Repositorio:**  
-  [https://github.com/marianomolina-cloud/Evidencia-de-Aprendizaje-1-ingenier-a-de-software](https://github.com/marianomolina-cloud/Evidencia-de-Aprendizaje-1-ingenier-a-de-software)
+  [https://github.com/marianomolina-cloud/IS-Evidencia-de-Aprendizaje-2.-Dise-o-Sistema-de-Informaci-n](https://github.com/marianomolina-cloud/IS-Evidencia-de-Aprendizaje-2.-Dise-o-Sistema-de-Informaci-n)
 
 - **Rama Principal:** `main`
 - **Comando de Clonación:**
   ```bash
-  git clone https://github.com/marianomolina-cloud/Evidencia-de-Aprendizaje-1-ingenier-a-de-software.git
+  git clone https://github.com/marianomolina-cloud/IS-Evidencia-de-Aprendizaje-2.-Dise-o-Sistema-de-Informaci-n.git
   ```
 
 ### 8.1 Registro de Modificaciones del Código Fuente en la Iteración 2

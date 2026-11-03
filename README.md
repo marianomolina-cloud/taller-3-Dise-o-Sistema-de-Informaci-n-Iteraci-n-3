@@ -24,7 +24,7 @@ Esta **Iteración 2 (EA2)** se enfoca específicamente en dos módulos estructur
 
 1. Clona el repositorio oficial:
    ```bash
-   git clone https://github.com/marianomolina-cloud/Evidencia-de-Aprendizaje-1-ingenier-a-de-software.git
+   git clone https://github.com/marianomolina-cloud/IS-Evidencia-de-Aprendizaje-2.-Dise-o-Sistema-de-Informaci-n.git
    ```
 2. Abre la carpeta `src/` en el explorador de archivos.
 3. Haz doble clic en `index.html` (compatible con cualquier navegador: Chrome, Edge, Firefox, Safari) o ejecuta el servidor local:
@@ -132,5 +132,5 @@ Todos los entregables solicitados en la guía y rúbrica de evaluación se encue
 
 ### 8. Enlace al Repositorio de GitHub y Código Actualizado (15 pts)
 - **URL Oficial del Repositorio:**  
-  [https://github.com/marianomolina-cloud/Evidencia-de-Aprendizaje-1-ingenier-a-de-software](https://github.com/marianomolina-cloud/Evidencia-de-Aprendizaje-1-ingenier-a-de-software)
+  [https://github.com/marianomolina-cloud/IS-Evidencia-de-Aprendizaje-2.-Dise-o-Sistema-de-Informaci-n](https://github.com/marianomolina-cloud/IS-Evidencia-de-Aprendizaje-2.-Dise-o-Sistema-de-Informaci-n)
 - Código fuente funcional actualizado con trazabilidad directa a los requerimientos de la Iteración 2.
