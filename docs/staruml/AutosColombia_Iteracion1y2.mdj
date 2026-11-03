@@ -1,0 +1,2602 @@
+{
+  "_type": "Project",
+  "_id": "PROJ_00000001_up4lx",
+  "name": "Parqueadero Autos Colombia - Sistema de Información",
+  "ownedElements": [
+    {
+      "_type": "UMLModel",
+      "_id": "MODL_00000002_ioes8",
+      "_parent": {
+        "$ref": "PROJ_00000001_up4lx"
+      },
+      "name": "Modelo de Software - Autos Colombia",
+      "ownedElements": [
+        {
+          "_type": "UMLActor",
+          "_id": "ACT_ADMIN_00000004_z3luw",
+          "_parent": {
+            "$ref": "MODL_00000002_ioes8"
+          },
+          "name": "Administrador"
+        },
+        {
+          "_type": "UMLActor",
+          "_id": "ACT_OPER_00000005_v9644",
+          "_parent": {
+            "$ref": "MODL_00000002_ioes8"
+          },
+          "name": "Operador"
+        },
+        {
+          "_type": "UMLUseCase",
+          "_id": "UC_00000006_1makn",
+          "_parent": {
+            "$ref": "MODL_00000002_ioes8"
+          },
+          "name": "CU-01: Registrar Nuevo Usuario Propietario"
+        },
+        {
+          "_type": "UMLUseCase",
+          "_id": "UC_00000007_hlluw",
+          "_parent": {
+            "$ref": "MODL_00000002_ioes8"
+          },
+          "name": "CU-02: Consultar y Filtrar Usuarios"
+        },
+        {
+          "_type": "UMLUseCase",
+          "_id": "UC_00000008_o98n7",
+          "_parent": {
+            "$ref": "MODL_00000002_ioes8"
+          },
+          "name": "CU-03: Actualizar Datos de Usuario"
+        },
+        {
+          "_type": "UMLUseCase",
+          "_id": "UC_00000009_ywmyh",
+          "_parent": {
+            "$ref": "MODL_00000002_ioes8"
+          },
+          "name": "CU-04: Suspender o Reactivar Usuario"
+        },
+        {
+          "_type": "UMLUseCase",
+          "_id": "UC_0000000a_nkaid",
+          "_parent": {
+            "$ref": "MODL_00000002_ioes8"
+          },
+          "name": "CU-05: Asociar y Gestionar Vehículos del Usuario"
+        },
+        {
+          "_type": "UMLUseCase",
+          "_id": "UC_0000000b_4615y",
+          "_parent": {
+            "$ref": "MODL_00000002_ioes8"
+          },
+          "name": "CU-06: Validar Cédula y Placa Única"
+        },
+        {
+          "_type": "UMLUseCase",
+          "_id": "UC_0000000c_g9sy1",
+          "_parent": {
+            "$ref": "MODL_00000002_ioes8"
+          },
+          "name": "CU-07: Eliminar Registro de Usuario"
+        },
+        {
+          "_type": "UMLUseCase",
+          "_id": "UC_0000000d_ug82q",
+          "_parent": {
+            "$ref": "MODL_00000002_ioes8"
+          },
+          "name": "CU-08: Registrar Nueva Celda de Parqueo"
+        },
+        {
+          "_type": "UMLUseCase",
+          "_id": "UC_0000000e_ibf1x",
+          "_parent": {
+            "$ref": "MODL_00000002_ioes8"
+          },
+          "name": "CU-09: Configurar Tipo y Sector de Celda"
+        },
+        {
+          "_type": "UMLUseCase",
+          "_id": "UC_0000000f_gg6qu",
+          "_parent": {
+            "$ref": "MODL_00000002_ioes8"
+          },
+          "name": "CU-10: Inhabilitar Celda por Mantenimiento"
+        },
+        {
+          "_type": "UMLUseCase",
+          "_id": "UC_0000000g_z8wl7",
+          "_parent": {
+            "$ref": "MODL_00000002_ioes8"
+          },
+          "name": "CU-11: Visualizar Mapa de Celdas y Ocupación"
+        },
+        {
+          "_type": "UMLUseCase",
+          "_id": "UC_0000000h_0hmk2",
+          "_parent": {
+            "$ref": "MODL_00000002_ioes8"
+          },
+          "name": "CU-12: Asignar Celda Automática por Tipo"
+        },
+        {
+          "_type": "UMLUseCase",
+          "_id": "UC_0000000i_anmav",
+          "_parent": {
+            "$ref": "MODL_00000002_ioes8"
+          },
+          "name": "CU-13: Liberar Celda al Registrar Salida"
+        },
+        {
+          "_type": "UMLUseCaseDiagram",
+          "_id": "D_UC_00000003_8x3em",
+          "_parent": {
+            "$ref": "MODL_00000002_ioes8"
+          },
+          "name": "Diagrama de Casos de Uso - Gestión de Usuarios y Celdas",
+          "ownedViews": [
+            {
+              "_type": "UMLActorView",
+              "_id": "VW_ACT_0000000j_6qtwu",
+              "model": {
+                "$ref": "ACT_ADMIN_00000004_z3luw"
+              },
+              "left": 60,
+              "top": 220,
+              "width": 60,
+              "height": 80,
+              "nameLabel": {
+                "_type": "UMLNameLabelView",
+                "text": "Administrador"
+              }
+            },
+            {
+              "_type": "UMLActorView",
+              "_id": "VW_ACT_0000000k_m211g",
+              "model": {
+                "$ref": "ACT_OPER_00000005_v9644"
+              },
+              "left": 60,
+              "top": 560,
+              "width": 60,
+              "height": 80,
+              "nameLabel": {
+                "_type": "UMLNameLabelView",
+                "text": "Operador"
+              }
+            },
+            {
+              "_type": "UMLUseCaseView",
+              "_id": "VW_UC_0000000l_nqwen",
+              "model": {
+                "$ref": "UC_00000006_1makn"
+              },
+              "left": 260,
+              "top": 40,
+              "width": 250,
+              "height": 65,
+              "nameLabel": {
+                "_type": "UMLNameLabelView",
+                "text": "CU-01: Registrar Nuevo Usuario Propietario"
+              }
+            },
+            {
+              "_type": "UMLUseCaseView",
+              "_id": "VW_UC_0000000m_gdose",
+              "model": {
+                "$ref": "UC_00000007_hlluw"
+              },
+              "left": 260,
+              "top": 135,
+              "width": 250,
+              "height": 65,
+              "nameLabel": {
+                "_type": "UMLNameLabelView",
+                "text": "CU-02: Consultar y Filtrar Usuarios"
+              }
+            },
+            {
+              "_type": "UMLUseCaseView",
+              "_id": "VW_UC_0000000n_cdtey",
+              "model": {
+                "$ref": "UC_00000008_o98n7"
+              },
+              "left": 260,
+              "top": 230,
+              "width": 250,
+              "height": 65,
+              "nameLabel": {
+                "_type": "UMLNameLabelView",
+                "text": "CU-03: Actualizar Datos de Usuario"
+              }
+            },
+            {
+              "_type": "UMLUseCaseView",
+              "_id": "VW_UC_0000000o_dkjbk",
+              "model": {
+                "$ref": "UC_00000009_ywmyh"
+              },
+              "left": 260,
+              "top": 325,
+              "width": 250,
+              "height": 65,
+              "nameLabel": {
+                "_type": "UMLNameLabelView",
+                "text": "CU-04: Suspender o Reactivar Usuario"
+              }
+            },
+            {
+              "_type": "UMLUseCaseView",
+              "_id": "VW_UC_0000000p_rz2ag",
+              "model": {
+                "$ref": "UC_0000000a_nkaid"
+              },
+              "left": 260,
+              "top": 420,
+              "width": 250,
+              "height": 65,
+              "nameLabel": {
+                "_type": "UMLNameLabelView",
+                "text": "CU-05: Asociar y Gestionar Vehículos del Usuario"
+              }
+            },
+            {
+              "_type": "UMLUseCaseView",
+              "_id": "VW_UC_0000000q_6f0js",
+              "model": {
+                "$ref": "UC_0000000b_4615y"
+              },
+              "left": 260,
+              "top": 515,
+              "width": 250,
+              "height": 65,
+              "nameLabel": {
+                "_type": "UMLNameLabelView",
+                "text": "CU-06: Validar Cédula y Placa Única"
+              }
+            },
+            {
+              "_type": "UMLUseCaseView",
+              "_id": "VW_UC_0000000r_gksph",
+              "model": {
+                "$ref": "UC_0000000c_g9sy1"
+              },
+              "left": 260,
+              "top": 610,
+              "width": 250,
+              "height": 65,
+              "nameLabel": {
+                "_type": "UMLNameLabelView",
+                "text": "CU-07: Eliminar Registro de Usuario"
+              }
+            },
+            {
+              "_type": "UMLUseCaseView",
+              "_id": "VW_UC_0000000s_motjd",
+              "model": {
+                "$ref": "UC_0000000d_ug82q"
+              },
+              "left": 620,
+              "top": 40,
+              "width": 250,
+              "height": 65,
+              "nameLabel": {
+                "_type": "UMLNameLabelView",
+                "text": "CU-08: Registrar Nueva Celda de Parqueo"
+              }
+            },
+            {
+              "_type": "UMLUseCaseView",
+              "_id": "VW_UC_0000000t_csoao",
+              "model": {
+                "$ref": "UC_0000000e_ibf1x"
+              },
+              "left": 620,
+              "top": 135,
+              "width": 250,
+              "height": 65,
+              "nameLabel": {
+                "_type": "UMLNameLabelView",
+                "text": "CU-09: Configurar Tipo y Sector de Celda"
+              }
+            },
+            {
+              "_type": "UMLUseCaseView",
+              "_id": "VW_UC_0000000u_vw2qe",
+              "model": {
+                "$ref": "UC_0000000f_gg6qu"
+              },
+              "left": 620,
+              "top": 230,
+              "width": 250,
+              "height": 65,
+              "nameLabel": {
+                "_type": "UMLNameLabelView",
+                "text": "CU-10: Inhabilitar Celda por Mantenimiento"
+              }
+            },
+            {
+              "_type": "UMLUseCaseView",
+              "_id": "VW_UC_0000000v_kklgs",
+              "model": {
+                "$ref": "UC_0000000g_z8wl7"
+              },
+              "left": 620,
+              "top": 325,
+              "width": 250,
+              "height": 65,
+              "nameLabel": {
+                "_type": "UMLNameLabelView",
+                "text": "CU-11: Visualizar Mapa de Celdas y Ocupación"
+              }
+            },
+            {
+              "_type": "UMLUseCaseView",
+              "_id": "VW_UC_0000000w_qfc7r",
+              "model": {
+                "$ref": "UC_0000000h_0hmk2"
+              },
+              "left": 620,
+              "top": 420,
+              "width": 250,
+              "height": 65,
+              "nameLabel": {
+                "_type": "UMLNameLabelView",
+                "text": "CU-12: Asignar Celda Automática por Tipo"
+              }
+            },
+            {
+              "_type": "UMLUseCaseView",
+              "_id": "VW_UC_0000000x_we5hr",
+              "model": {
+                "$ref": "UC_0000000i_anmav"
+              },
+              "left": 620,
+              "top": 515,
+              "width": 250,
+              "height": 65,
+              "nameLabel": {
+                "_type": "UMLNameLabelView",
+                "text": "CU-13: Liberar Celda al Registrar Salida"
+              }
+            }
+          ]
+        },
+        {
+          "_type": "UMLInteraction",
+          "_id": "INTER_0000000z_3sdk7",
+          "_parent": {
+            "$ref": "MODL_00000002_ioes8"
+          },
+          "name": "DS-01: Registrar Entrada de Vehículo (Iteración 1) Interaction",
+          "participants": [
+            {
+              "_type": "UMLLifeline",
+              "_id": "LL_00000010_8lg3u",
+              "_parent": {
+                "$ref": "INTER_0000000z_3sdk7"
+              },
+              "name": "Operador",
+              "isActor": true
+            },
+            {
+              "_type": "UMLLifeline",
+              "_id": "LL_00000012_348m7",
+              "_parent": {
+                "$ref": "INTER_0000000z_3sdk7"
+              },
+              "name": "VistaEntradas",
+              "isActor": false
+            },
+            {
+              "_type": "UMLLifeline",
+              "_id": "LL_00000014_2evb5",
+              "_parent": {
+                "$ref": "INTER_0000000z_3sdk7"
+              },
+              "name": "GestorEntradas",
+              "isActor": false
+            },
+            {
+              "_type": "UMLLifeline",
+              "_id": "LL_00000016_uvu2y",
+              "_parent": {
+                "$ref": "INTER_0000000z_3sdk7"
+              },
+              "name": "ValidadorSuscripcion",
+              "isActor": false
+            },
+            {
+              "_type": "UMLLifeline",
+              "_id": "LL_00000018_pfx8g",
+              "_parent": {
+                "$ref": "INTER_0000000z_3sdk7"
+              },
+              "name": "CeldaRepository",
+              "isActor": false
+            },
+            {
+              "_type": "UMLLifeline",
+              "_id": "LL_0000001a_kcrnm",
+              "_parent": {
+                "$ref": "INTER_0000000z_3sdk7"
+              },
+              "name": "MovimientoRepository",
+              "isActor": false
+            }
+          ],
+          "messages": [
+            {
+              "_type": "UMLMessage",
+              "_id": "MSG_0000001c_muuj9",
+              "_parent": {
+                "$ref": "INTER_0000000z_3sdk7"
+              },
+              "name": "1: ingresarPlaca(placa)",
+              "source": {
+                "$ref": "LL_00000010_8lg3u"
+              },
+              "target": {
+                "$ref": "LL_00000012_348m7"
+              },
+              "messageSort": "synchCall"
+            },
+            {
+              "_type": "UMLMessage",
+              "_id": "MSG_0000001e_4fl9c",
+              "_parent": {
+                "$ref": "INTER_0000000z_3sdk7"
+              },
+              "name": "2: procesarIngreso(placa)",
+              "source": {
+                "$ref": "LL_00000012_348m7"
+              },
+              "target": {
+                "$ref": "LL_00000014_2evb5"
+              },
+              "messageSort": "synchCall"
+            },
+            {
+              "_type": "UMLMessage",
+              "_id": "MSG_0000001g_huevr",
+              "_parent": {
+                "$ref": "INTER_0000000z_3sdk7"
+              },
+              "name": "3: verificarMensualidad(propietarioId)",
+              "source": {
+                "$ref": "LL_00000014_2evb5"
+              },
+              "target": {
+                "$ref": "LL_00000016_uvu2y"
+              },
+              "messageSort": "synchCall"
+            },
+            {
+              "_type": "UMLMessage",
+              "_id": "MSG_0000001i_iud8y",
+              "_parent": {
+                "$ref": "INTER_0000000z_3sdk7"
+              },
+              "name": "4: [Pago Vigente / Al Día]",
+              "source": {
+                "$ref": "LL_00000016_uvu2y"
+              },
+              "target": {
+                "$ref": "LL_00000014_2evb5"
+              },
+              "messageSort": "reply"
+            },
+            {
+              "_type": "UMLMessage",
+              "_id": "MSG_0000001k_91o7z",
+              "_parent": {
+                "$ref": "INTER_0000000z_3sdk7"
+              },
+              "name": "5: getCeldaLibre(tipoVehiculo)",
+              "source": {
+                "$ref": "LL_00000014_2evb5"
+              },
+              "target": {
+                "$ref": "LL_00000018_pfx8g"
+              },
+              "messageSort": "synchCall"
+            },
+            {
+              "_type": "UMLMessage",
+              "_id": "MSG_0000001m_p0qwc",
+              "_parent": {
+                "$ref": "INTER_0000000z_3sdk7"
+              },
+              "name": "6: celdaDisponible (e.g. A03)",
+              "source": {
+                "$ref": "LL_00000018_pfx8g"
+              },
+              "target": {
+                "$ref": "LL_00000014_2evb5"
+              },
+              "messageSort": "reply"
+            },
+            {
+              "_type": "UMLMessage",
+              "_id": "MSG_0000001o_w3pve",
+              "_parent": {
+                "$ref": "INTER_0000000z_3sdk7"
+              },
+              "name": "7: actualizarEstado(celdaId, \"OCUPADA\")",
+              "source": {
+                "$ref": "LL_00000014_2evb5"
+              },
+              "target": {
+                "$ref": "LL_00000018_pfx8g"
+              },
+              "messageSort": "synchCall"
+            },
+            {
+              "_type": "UMLMessage",
+              "_id": "MSG_0000001q_uzbos",
+              "_parent": {
+                "$ref": "INTER_0000000z_3sdk7"
+              },
+              "name": "8: crearMovimiento(placa, celdaId, fechaEntrada)",
+              "source": {
+                "$ref": "LL_00000014_2evb5"
+              },
+              "target": {
+                "$ref": "LL_0000001a_kcrnm"
+              },
+              "messageSort": "synchCall"
+            },
+            {
+              "_type": "UMLMessage",
+              "_id": "MSG_0000001s_153ur",
+              "_parent": {
+                "$ref": "INTER_0000000z_3sdk7"
+              },
+              "name": "9: movimientoRegistrado",
+              "source": {
+                "$ref": "LL_0000001a_kcrnm"
+              },
+              "target": {
+                "$ref": "LL_00000014_2evb5"
+              },
+              "messageSort": "reply"
+            },
+            {
+              "_type": "UMLMessage",
+              "_id": "MSG_0000001u_69wy2",
+              "_parent": {
+                "$ref": "INTER_0000000z_3sdk7"
+              },
+              "name": "10: confirmarIngresoExitoso(tiquete)",
+              "source": {
+                "$ref": "LL_00000014_2evb5"
+              },
+              "target": {
+                "$ref": "LL_00000012_348m7"
+              },
+              "messageSort": "reply"
+            },
+            {
+              "_type": "UMLMessage",
+              "_id": "MSG_0000001w_e1t6q",
+              "_parent": {
+                "$ref": "INTER_0000000z_3sdk7"
+              },
+              "name": "11: mostrarConfirmacionYCelda()",
+              "source": {
+                "$ref": "LL_00000012_348m7"
+              },
+              "target": {
+                "$ref": "LL_00000010_8lg3u"
+              },
+              "messageSort": "reply"
+            }
+          ],
+          "ownedElements": [
+            {
+              "_type": "UMLSequenceDiagram",
+              "_id": "D_SEQ_0000000y_p1q6o",
+              "_parent": {
+                "$ref": "INTER_0000000z_3sdk7"
+              },
+              "name": "DS-01: Registrar Entrada de Vehículo (Iteración 1)",
+              "ownedViews": [
+                {
+                  "_type": "UMLLifelineView",
+                  "_id": "VW_LL_00000011_x4ta4",
+                  "model": {
+                    "$ref": "LL_00000010_8lg3u"
+                  },
+                  "left": 50,
+                  "top": 50,
+                  "width": 130,
+                  "height": 480,
+                  "nameLabel": {
+                    "_type": "UMLNameLabelView",
+                    "text": "Operador"
+                  }
+                },
+                {
+                  "_type": "UMLLifelineView",
+                  "_id": "VW_LL_00000013_tre5b",
+                  "model": {
+                    "$ref": "LL_00000012_348m7"
+                  },
+                  "left": 230,
+                  "top": 50,
+                  "width": 130,
+                  "height": 480,
+                  "nameLabel": {
+                    "_type": "UMLNameLabelView",
+                    "text": "VistaEntradas"
+                  }
+                },
+                {
+                  "_type": "UMLLifelineView",
+                  "_id": "VW_LL_00000015_0fbdx",
+                  "model": {
+                    "$ref": "LL_00000014_2evb5"
+                  },
+                  "left": 410,
+                  "top": 50,
+                  "width": 130,
+                  "height": 480,
+                  "nameLabel": {
+                    "_type": "UMLNameLabelView",
+                    "text": "GestorEntradas"
+                  }
+                },
+                {
+                  "_type": "UMLLifelineView",
+                  "_id": "VW_LL_00000017_glhvb",
+                  "model": {
+                    "$ref": "LL_00000016_uvu2y"
+                  },
+                  "left": 590,
+                  "top": 50,
+                  "width": 130,
+                  "height": 480,
+                  "nameLabel": {
+                    "_type": "UMLNameLabelView",
+                    "text": "ValidadorSuscripcion"
+                  }
+                },
+                {
+                  "_type": "UMLLifelineView",
+                  "_id": "VW_LL_00000019_o4v04",
+                  "model": {
+                    "$ref": "LL_00000018_pfx8g"
+                  },
+                  "left": 770,
+                  "top": 50,
+                  "width": 130,
+                  "height": 480,
+                  "nameLabel": {
+                    "_type": "UMLNameLabelView",
+                    "text": "CeldaRepository"
+                  }
+                },
+                {
+                  "_type": "UMLLifelineView",
+                  "_id": "VW_LL_0000001b_cdgof",
+                  "model": {
+                    "$ref": "LL_0000001a_kcrnm"
+                  },
+                  "left": 950,
+                  "top": 50,
+                  "width": 130,
+                  "height": 480,
+                  "nameLabel": {
+                    "_type": "UMLNameLabelView",
+                    "text": "MovimientoRepository"
+                  }
+                },
+                {
+                  "_type": "UMLSeqMessageView",
+                  "_id": "VW_MSG_0000001d_uodrc",
+                  "model": {
+                    "$ref": "MSG_0000001c_muuj9"
+                  },
+                  "lineStyle": 1,
+                  "points": "115,100;295,100",
+                  "nameLabel": {
+                    "_type": "EdgeLabelView",
+                    "text": "1: ingresarPlaca(placa)"
+                  }
+                },
+                {
+                  "_type": "UMLSeqMessageView",
+                  "_id": "VW_MSG_0000001f_z6tu0",
+                  "model": {
+                    "$ref": "MSG_0000001e_4fl9c"
+                  },
+                  "lineStyle": 1,
+                  "points": "295,145;475,145",
+                  "nameLabel": {
+                    "_type": "EdgeLabelView",
+                    "text": "2: procesarIngreso(placa)"
+                  }
+                },
+                {
+                  "_type": "UMLSeqMessageView",
+                  "_id": "VW_MSG_0000001h_43dgx",
+                  "model": {
+                    "$ref": "MSG_0000001g_huevr"
+                  },
+                  "lineStyle": 1,
+                  "points": "475,190;655,190",
+                  "nameLabel": {
+                    "_type": "EdgeLabelView",
+                    "text": "3: verificarMensualidad(propietarioId)"
+                  }
+                },
+                {
+                  "_type": "UMLSeqMessageView",
+                  "_id": "VW_MSG_0000001j_evbl3",
+                  "model": {
+                    "$ref": "MSG_0000001i_iud8y"
+                  },
+                  "lineStyle": 1,
+                  "points": "655,235;475,235",
+                  "nameLabel": {
+                    "_type": "EdgeLabelView",
+                    "text": "4: [Pago Vigente / Al Día]"
+                  }
+                },
+                {
+                  "_type": "UMLSeqMessageView",
+                  "_id": "VW_MSG_0000001l_jgz3k",
+                  "model": {
+                    "$ref": "MSG_0000001k_91o7z"
+                  },
+                  "lineStyle": 1,
+                  "points": "475,280;835,280",
+                  "nameLabel": {
+                    "_type": "EdgeLabelView",
+                    "text": "5: getCeldaLibre(tipoVehiculo)"
+                  }
+                },
+                {
+                  "_type": "UMLSeqMessageView",
+                  "_id": "VW_MSG_0000001n_0paal",
+                  "model": {
+                    "$ref": "MSG_0000001m_p0qwc"
+                  },
+                  "lineStyle": 1,
+                  "points": "835,325;475,325",
+                  "nameLabel": {
+                    "_type": "EdgeLabelView",
+                    "text": "6: celdaDisponible (e.g. A03)"
+                  }
+                },
+                {
+                  "_type": "UMLSeqMessageView",
+                  "_id": "VW_MSG_0000001p_ccfbr",
+                  "model": {
+                    "$ref": "MSG_0000001o_w3pve"
+                  },
+                  "lineStyle": 1,
+                  "points": "475,370;835,370",
+                  "nameLabel": {
+                    "_type": "EdgeLabelView",
+                    "text": "7: actualizarEstado(celdaId, \"OCUPADA\")"
+                  }
+                },
+                {
+                  "_type": "UMLSeqMessageView",
+                  "_id": "VW_MSG_0000001r_iroj9",
+                  "model": {
+                    "$ref": "MSG_0000001q_uzbos"
+                  },
+                  "lineStyle": 1,
+                  "points": "475,415;1015,415",
+                  "nameLabel": {
+                    "_type": "EdgeLabelView",
+                    "text": "8: crearMovimiento(placa, celdaId, fechaEntrada)"
+                  }
+                },
+                {
+                  "_type": "UMLSeqMessageView",
+                  "_id": "VW_MSG_0000001t_05lpj",
+                  "model": {
+                    "$ref": "MSG_0000001s_153ur"
+                  },
+                  "lineStyle": 1,
+                  "points": "1015,460;475,460",
+                  "nameLabel": {
+                    "_type": "EdgeLabelView",
+                    "text": "9: movimientoRegistrado"
+                  }
+                },
+                {
+                  "_type": "UMLSeqMessageView",
+                  "_id": "VW_MSG_0000001v_l4f69",
+                  "model": {
+                    "$ref": "MSG_0000001u_69wy2"
+                  },
+                  "lineStyle": 1,
+                  "points": "475,505;295,505",
+                  "nameLabel": {
+                    "_type": "EdgeLabelView",
+                    "text": "10: confirmarIngresoExitoso(tiquete)"
+                  }
+                },
+                {
+                  "_type": "UMLSeqMessageView",
+                  "_id": "VW_MSG_0000001x_snod2",
+                  "model": {
+                    "$ref": "MSG_0000001w_e1t6q"
+                  },
+                  "lineStyle": 1,
+                  "points": "295,550;115,550",
+                  "nameLabel": {
+                    "_type": "EdgeLabelView",
+                    "text": "11: mostrarConfirmacionYCelda()"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "_type": "UMLInteraction",
+          "_id": "INTER_0000001z_fj63c",
+          "_parent": {
+            "$ref": "MODL_00000002_ioes8"
+          },
+          "name": "DS-02: Registrar Salida de Vehículo (Iteración 1) Interaction",
+          "participants": [
+            {
+              "_type": "UMLLifeline",
+              "_id": "LL_00000020_wsqhx",
+              "_parent": {
+                "$ref": "INTER_0000001z_fj63c"
+              },
+              "name": "Operador",
+              "isActor": true
+            },
+            {
+              "_type": "UMLLifeline",
+              "_id": "LL_00000022_goi6s",
+              "_parent": {
+                "$ref": "INTER_0000001z_fj63c"
+              },
+              "name": "VistaSalidas",
+              "isActor": false
+            },
+            {
+              "_type": "UMLLifeline",
+              "_id": "LL_00000024_so1j6",
+              "_parent": {
+                "$ref": "INTER_0000001z_fj63c"
+              },
+              "name": "GestorSalidas",
+              "isActor": false
+            },
+            {
+              "_type": "UMLLifeline",
+              "_id": "LL_00000026_typ6l",
+              "_parent": {
+                "$ref": "INTER_0000001z_fj63c"
+              },
+              "name": "MovimientoRepository",
+              "isActor": false
+            },
+            {
+              "_type": "UMLLifeline",
+              "_id": "LL_00000028_6iq25",
+              "_parent": {
+                "$ref": "INTER_0000001z_fj63c"
+              },
+              "name": "CeldaRepository",
+              "isActor": false
+            }
+          ],
+          "messages": [
+            {
+              "_type": "UMLMessage",
+              "_id": "MSG_0000002a_upby1",
+              "_parent": {
+                "$ref": "INTER_0000001z_fj63c"
+              },
+              "name": "1: buscarPlacaSalida(placa)",
+              "source": {
+                "$ref": "LL_00000020_wsqhx"
+              },
+              "target": {
+                "$ref": "LL_00000022_goi6s"
+              },
+              "messageSort": "synchCall"
+            },
+            {
+              "_type": "UMLMessage",
+              "_id": "MSG_0000002c_kmx3o",
+              "_parent": {
+                "$ref": "INTER_0000001z_fj63c"
+              },
+              "name": "2: consultarMovimientoActivo(placa)",
+              "source": {
+                "$ref": "LL_00000022_goi6s"
+              },
+              "target": {
+                "$ref": "LL_00000024_so1j6"
+              },
+              "messageSort": "synchCall"
+            },
+            {
+              "_type": "UMLMessage",
+              "_id": "MSG_0000002e_6zrln",
+              "_parent": {
+                "$ref": "INTER_0000001z_fj63c"
+              },
+              "name": "3: findActivoByPlaca(placa)",
+              "source": {
+                "$ref": "LL_00000024_so1j6"
+              },
+              "target": {
+                "$ref": "LL_00000026_typ6l"
+              },
+              "messageSort": "synchCall"
+            },
+            {
+              "_type": "UMLMessage",
+              "_id": "MSG_0000002g_cjp6s",
+              "_parent": {
+                "$ref": "INTER_0000001z_fj63c"
+              },
+              "name": "4: datosMovimiento(entrada, celdaId)",
+              "source": {
+                "$ref": "LL_00000026_typ6l"
+              },
+              "target": {
+                "$ref": "LL_00000024_so1j6"
+              },
+              "messageSort": "reply"
+            },
+            {
+              "_type": "UMLMessage",
+              "_id": "MSG_0000002i_9eiv6",
+              "_parent": {
+                "$ref": "INTER_0000001z_fj63c"
+              },
+              "name": "5: mostrarResumenSalida(tiempo, celda)",
+              "source": {
+                "$ref": "LL_00000024_so1j6"
+              },
+              "target": {
+                "$ref": "LL_00000022_goi6s"
+              },
+              "messageSort": "reply"
+            },
+            {
+              "_type": "UMLMessage",
+              "_id": "MSG_0000002k_yekas",
+              "_parent": {
+                "$ref": "INTER_0000001z_fj63c"
+              },
+              "name": "6: confirmarSalida()",
+              "source": {
+                "$ref": "LL_00000020_wsqhx"
+              },
+              "target": {
+                "$ref": "LL_00000022_goi6s"
+              },
+              "messageSort": "synchCall"
+            },
+            {
+              "_type": "UMLMessage",
+              "_id": "MSG_0000002m_2jmnw",
+              "_parent": {
+                "$ref": "INTER_0000001z_fj63c"
+              },
+              "name": "7: ejecutarSalida(movimientoId, celdaId)",
+              "source": {
+                "$ref": "LL_00000022_goi6s"
+              },
+              "target": {
+                "$ref": "LL_00000024_so1j6"
+              },
+              "messageSort": "synchCall"
+            },
+            {
+              "_type": "UMLMessage",
+              "_id": "MSG_0000002o_vkiqm",
+              "_parent": {
+                "$ref": "INTER_0000001z_fj63c"
+              },
+              "name": "8: registrarFechaSalida(movId, now)",
+              "source": {
+                "$ref": "LL_00000024_so1j6"
+              },
+              "target": {
+                "$ref": "LL_00000026_typ6l"
+              },
+              "messageSort": "synchCall"
+            },
+            {
+              "_type": "UMLMessage",
+              "_id": "MSG_0000002q_zukfo",
+              "_parent": {
+                "$ref": "INTER_0000001z_fj63c"
+              },
+              "name": "9: actualizarEstado(celdaId, \"LIBRE\")",
+              "source": {
+                "$ref": "LL_00000024_so1j6"
+              },
+              "target": {
+                "$ref": "LL_00000028_6iq25"
+              },
+              "messageSort": "synchCall"
+            },
+            {
+              "_type": "UMLMessage",
+              "_id": "MSG_0000002s_51kzm",
+              "_parent": {
+                "$ref": "INTER_0000001z_fj63c"
+              },
+              "name": "10: celdaLiberada",
+              "source": {
+                "$ref": "LL_00000028_6iq25"
+              },
+              "target": {
+                "$ref": "LL_00000024_so1j6"
+              },
+              "messageSort": "reply"
+            },
+            {
+              "_type": "UMLMessage",
+              "_id": "MSG_0000002u_u747y",
+              "_parent": {
+                "$ref": "INTER_0000001z_fj63c"
+              },
+              "name": "11: salidaConfirmada()",
+              "source": {
+                "$ref": "LL_00000024_so1j6"
+              },
+              "target": {
+                "$ref": "LL_00000022_goi6s"
+              },
+              "messageSort": "reply"
+            },
+            {
+              "_type": "UMLMessage",
+              "_id": "MSG_0000002w_a1gu6",
+              "_parent": {
+                "$ref": "INTER_0000001z_fj63c"
+              },
+              "name": "12: notificarSalidaExitosa()",
+              "source": {
+                "$ref": "LL_00000022_goi6s"
+              },
+              "target": {
+                "$ref": "LL_00000020_wsqhx"
+              },
+              "messageSort": "reply"
+            }
+          ],
+          "ownedElements": [
+            {
+              "_type": "UMLSequenceDiagram",
+              "_id": "D_SEQ_0000001y_mxcln",
+              "_parent": {
+                "$ref": "INTER_0000001z_fj63c"
+              },
+              "name": "DS-02: Registrar Salida de Vehículo (Iteración 1)",
+              "ownedViews": [
+                {
+                  "_type": "UMLLifelineView",
+                  "_id": "VW_LL_00000021_j3qwp",
+                  "model": {
+                    "$ref": "LL_00000020_wsqhx"
+                  },
+                  "left": 50,
+                  "top": 50,
+                  "width": 130,
+                  "height": 480,
+                  "nameLabel": {
+                    "_type": "UMLNameLabelView",
+                    "text": "Operador"
+                  }
+                },
+                {
+                  "_type": "UMLLifelineView",
+                  "_id": "VW_LL_00000023_mfgx6",
+                  "model": {
+                    "$ref": "LL_00000022_goi6s"
+                  },
+                  "left": 230,
+                  "top": 50,
+                  "width": 130,
+                  "height": 480,
+                  "nameLabel": {
+                    "_type": "UMLNameLabelView",
+                    "text": "VistaSalidas"
+                  }
+                },
+                {
+                  "_type": "UMLLifelineView",
+                  "_id": "VW_LL_00000025_0oyj5",
+                  "model": {
+                    "$ref": "LL_00000024_so1j6"
+                  },
+                  "left": 410,
+                  "top": 50,
+                  "width": 130,
+                  "height": 480,
+                  "nameLabel": {
+                    "_type": "UMLNameLabelView",
+                    "text": "GestorSalidas"
+                  }
+                },
+                {
+                  "_type": "UMLLifelineView",
+                  "_id": "VW_LL_00000027_q8drw",
+                  "model": {
+                    "$ref": "LL_00000026_typ6l"
+                  },
+                  "left": 590,
+                  "top": 50,
+                  "width": 130,
+                  "height": 480,
+                  "nameLabel": {
+                    "_type": "UMLNameLabelView",
+                    "text": "MovimientoRepository"
+                  }
+                },
+                {
+                  "_type": "UMLLifelineView",
+                  "_id": "VW_LL_00000029_cl9pp",
+                  "model": {
+                    "$ref": "LL_00000028_6iq25"
+                  },
+                  "left": 770,
+                  "top": 50,
+                  "width": 130,
+                  "height": 480,
+                  "nameLabel": {
+                    "_type": "UMLNameLabelView",
+                    "text": "CeldaRepository"
+                  }
+                },
+                {
+                  "_type": "UMLSeqMessageView",
+                  "_id": "VW_MSG_0000002b_z4gsl",
+                  "model": {
+                    "$ref": "MSG_0000002a_upby1"
+                  },
+                  "lineStyle": 1,
+                  "points": "115,100;295,100",
+                  "nameLabel": {
+                    "_type": "EdgeLabelView",
+                    "text": "1: buscarPlacaSalida(placa)"
+                  }
+                },
+                {
+                  "_type": "UMLSeqMessageView",
+                  "_id": "VW_MSG_0000002d_vt0ll",
+                  "model": {
+                    "$ref": "MSG_0000002c_kmx3o"
+                  },
+                  "lineStyle": 1,
+                  "points": "295,145;475,145",
+                  "nameLabel": {
+                    "_type": "EdgeLabelView",
+                    "text": "2: consultarMovimientoActivo(placa)"
+                  }
+                },
+                {
+                  "_type": "UMLSeqMessageView",
+                  "_id": "VW_MSG_0000002f_t8zr0",
+                  "model": {
+                    "$ref": "MSG_0000002e_6zrln"
+                  },
+                  "lineStyle": 1,
+                  "points": "475,190;655,190",
+                  "nameLabel": {
+                    "_type": "EdgeLabelView",
+                    "text": "3: findActivoByPlaca(placa)"
+                  }
+                },
+                {
+                  "_type": "UMLSeqMessageView",
+                  "_id": "VW_MSG_0000002h_obb6b",
+                  "model": {
+                    "$ref": "MSG_0000002g_cjp6s"
+                  },
+                  "lineStyle": 1,
+                  "points": "655,235;475,235",
+                  "nameLabel": {
+                    "_type": "EdgeLabelView",
+                    "text": "4: datosMovimiento(entrada, celdaId)"
+                  }
+                },
+                {
+                  "_type": "UMLSeqMessageView",
+                  "_id": "VW_MSG_0000002j_gr1sm",
+                  "model": {
+                    "$ref": "MSG_0000002i_9eiv6"
+                  },
+                  "lineStyle": 1,
+                  "points": "475,280;295,280",
+                  "nameLabel": {
+                    "_type": "EdgeLabelView",
+                    "text": "5: mostrarResumenSalida(tiempo, celda)"
+                  }
+                },
+                {
+                  "_type": "UMLSeqMessageView",
+                  "_id": "VW_MSG_0000002l_7ucz9",
+                  "model": {
+                    "$ref": "MSG_0000002k_yekas"
+                  },
+                  "lineStyle": 1,
+                  "points": "115,325;295,325",
+                  "nameLabel": {
+                    "_type": "EdgeLabelView",
+                    "text": "6: confirmarSalida()"
+                  }
+                },
+                {
+                  "_type": "UMLSeqMessageView",
+                  "_id": "VW_MSG_0000002n_a0y43",
+                  "model": {
+                    "$ref": "MSG_0000002m_2jmnw"
+                  },
+                  "lineStyle": 1,
+                  "points": "295,370;475,370",
+                  "nameLabel": {
+                    "_type": "EdgeLabelView",
+                    "text": "7: ejecutarSalida(movimientoId, celdaId)"
+                  }
+                },
+                {
+                  "_type": "UMLSeqMessageView",
+                  "_id": "VW_MSG_0000002p_0s5xh",
+                  "model": {
+                    "$ref": "MSG_0000002o_vkiqm"
+                  },
+                  "lineStyle": 1,
+                  "points": "475,415;655,415",
+                  "nameLabel": {
+                    "_type": "EdgeLabelView",
+                    "text": "8: registrarFechaSalida(movId, now)"
+                  }
+                },
+                {
+                  "_type": "UMLSeqMessageView",
+                  "_id": "VW_MSG_0000002r_v0r5t",
+                  "model": {
+                    "$ref": "MSG_0000002q_zukfo"
+                  },
+                  "lineStyle": 1,
+                  "points": "475,460;835,460",
+                  "nameLabel": {
+                    "_type": "EdgeLabelView",
+                    "text": "9: actualizarEstado(celdaId, \"LIBRE\")"
+                  }
+                },
+                {
+                  "_type": "UMLSeqMessageView",
+                  "_id": "VW_MSG_0000002t_llher",
+                  "model": {
+                    "$ref": "MSG_0000002s_51kzm"
+                  },
+                  "lineStyle": 1,
+                  "points": "835,505;475,505",
+                  "nameLabel": {
+                    "_type": "EdgeLabelView",
+                    "text": "10: celdaLiberada"
+                  }
+                },
+                {
+                  "_type": "UMLSeqMessageView",
+                  "_id": "VW_MSG_0000002v_kesu1",
+                  "model": {
+                    "$ref": "MSG_0000002u_u747y"
+                  },
+                  "lineStyle": 1,
+                  "points": "475,550;295,550",
+                  "nameLabel": {
+                    "_type": "EdgeLabelView",
+                    "text": "11: salidaConfirmada()"
+                  }
+                },
+                {
+                  "_type": "UMLSeqMessageView",
+                  "_id": "VW_MSG_0000002x_ssyyz",
+                  "model": {
+                    "$ref": "MSG_0000002w_a1gu6"
+                  },
+                  "lineStyle": 1,
+                  "points": "295,595;115,595",
+                  "nameLabel": {
+                    "_type": "EdgeLabelView",
+                    "text": "12: notificarSalidaExitosa()"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "_type": "UMLInteraction",
+          "_id": "INTER_0000002z_66adw",
+          "_parent": {
+            "$ref": "MODL_00000002_ioes8"
+          },
+          "name": "DS-03: Gestión y Vinculación de Usuarios con Vehículos (Iteración 2) Interaction",
+          "participants": [
+            {
+              "_type": "UMLLifeline",
+              "_id": "LL_00000030_d6zod",
+              "_parent": {
+                "$ref": "INTER_0000002z_66adw"
+              },
+              "name": "Administrador",
+              "isActor": true
+            },
+            {
+              "_type": "UMLLifeline",
+              "_id": "LL_00000032_tc6cz",
+              "_parent": {
+                "$ref": "INTER_0000002z_66adw"
+              },
+              "name": "VistaUsuarios",
+              "isActor": false
+            },
+            {
+              "_type": "UMLLifeline",
+              "_id": "LL_00000034_ucvwp",
+              "_parent": {
+                "$ref": "INTER_0000002z_66adw"
+              },
+              "name": "GestorUsuarios",
+              "isActor": false
+            },
+            {
+              "_type": "UMLLifeline",
+              "_id": "LL_00000036_z701y",
+              "_parent": {
+                "$ref": "INTER_0000002z_66adw"
+              },
+              "name": "ValidadorPersona",
+              "isActor": false
+            },
+            {
+              "_type": "UMLLifeline",
+              "_id": "LL_00000038_t3198",
+              "_parent": {
+                "$ref": "INTER_0000002z_66adw"
+              },
+              "name": "PersonaRepository",
+              "isActor": false
+            },
+            {
+              "_type": "UMLLifeline",
+              "_id": "LL_0000003a_lacjh",
+              "_parent": {
+                "$ref": "INTER_0000002z_66adw"
+              },
+              "name": "VehiculoRepository",
+              "isActor": false
+            }
+          ],
+          "messages": [
+            {
+              "_type": "UMLMessage",
+              "_id": "MSG_0000003c_pxgf2",
+              "_parent": {
+                "$ref": "INTER_0000002z_66adw"
+              },
+              "name": "1: solicitarRegistroUsuario(datosPersona)",
+              "source": {
+                "$ref": "LL_00000030_d6zod"
+              },
+              "target": {
+                "$ref": "LL_00000032_tc6cz"
+              },
+              "messageSort": "synchCall"
+            },
+            {
+              "_type": "UMLMessage",
+              "_id": "MSG_0000003e_92bij",
+              "_parent": {
+                "$ref": "INTER_0000002z_66adw"
+              },
+              "name": "2: crearUsuario(datos)",
+              "source": {
+                "$ref": "LL_00000032_tc6cz"
+              },
+              "target": {
+                "$ref": "LL_00000034_ucvwp"
+              },
+              "messageSort": "synchCall"
+            },
+            {
+              "_type": "UMLMessage",
+              "_id": "MSG_0000003g_f0bo9",
+              "_parent": {
+                "$ref": "INTER_0000002z_66adw"
+              },
+              "name": "3: validarUnicidadCedulaEmail(cedula, email)",
+              "source": {
+                "$ref": "LL_00000034_ucvwp"
+              },
+              "target": {
+                "$ref": "LL_00000036_z701y"
+              },
+              "messageSort": "synchCall"
+            },
+            {
+              "_type": "UMLMessage",
+              "_id": "MSG_0000003i_z4tby",
+              "_parent": {
+                "$ref": "INTER_0000002z_66adw"
+              },
+              "name": "4: validacionExitosa()",
+              "source": {
+                "$ref": "LL_00000036_z701y"
+              },
+              "target": {
+                "$ref": "LL_00000034_ucvwp"
+              },
+              "messageSort": "reply"
+            },
+            {
+              "_type": "UMLMessage",
+              "_id": "MSG_0000003k_x279w",
+              "_parent": {
+                "$ref": "INTER_0000002z_66adw"
+              },
+              "name": "5: insertPersona(datosPersona)",
+              "source": {
+                "$ref": "LL_00000034_ucvwp"
+              },
+              "target": {
+                "$ref": "LL_00000038_t3198"
+              },
+              "messageSort": "synchCall"
+            },
+            {
+              "_type": "UMLMessage",
+              "_id": "MSG_0000003m_bf6wj",
+              "_parent": {
+                "$ref": "INTER_0000002z_66adw"
+              },
+              "name": "6: personaIdGenerado",
+              "source": {
+                "$ref": "LL_00000038_t3198"
+              },
+              "target": {
+                "$ref": "LL_00000034_ucvwp"
+              },
+              "messageSort": "reply"
+            },
+            {
+              "_type": "UMLMessage",
+              "_id": "MSG_0000003o_abo8y",
+              "_parent": {
+                "$ref": "INTER_0000002z_66adw"
+              },
+              "name": "7: asociarVehiculo(personaId, datosVehiculo)",
+              "source": {
+                "$ref": "LL_00000030_d6zod"
+              },
+              "target": {
+                "$ref": "LL_00000032_tc6cz"
+              },
+              "messageSort": "synchCall"
+            },
+            {
+              "_type": "UMLMessage",
+              "_id": "MSG_0000003q_55it3",
+              "_parent": {
+                "$ref": "INTER_0000002z_66adw"
+              },
+              "name": "8: vincularVehiculo(personaId, placa, tipo, marca)",
+              "source": {
+                "$ref": "LL_00000032_tc6cz"
+              },
+              "target": {
+                "$ref": "LL_00000034_ucvwp"
+              },
+              "messageSort": "synchCall"
+            },
+            {
+              "_type": "UMLMessage",
+              "_id": "MSG_0000003s_9bq59",
+              "_parent": {
+                "$ref": "INTER_0000002z_66adw"
+              },
+              "name": "9: insertVehiculo(personaId, placa, tipo)",
+              "source": {
+                "$ref": "LL_00000034_ucvwp"
+              },
+              "target": {
+                "$ref": "LL_0000003a_lacjh"
+              },
+              "messageSort": "synchCall"
+            },
+            {
+              "_type": "UMLMessage",
+              "_id": "MSG_0000003u_japco",
+              "_parent": {
+                "$ref": "INTER_0000002z_66adw"
+              },
+              "name": "10: vehiculoVinculadoOk",
+              "source": {
+                "$ref": "LL_0000003a_lacjh"
+              },
+              "target": {
+                "$ref": "LL_00000034_ucvwp"
+              },
+              "messageSort": "reply"
+            },
+            {
+              "_type": "UMLMessage",
+              "_id": "MSG_0000003w_41xez",
+              "_parent": {
+                "$ref": "INTER_0000002z_66adw"
+              },
+              "name": "11: respuestaUsuarioCreadoConVehiculo()",
+              "source": {
+                "$ref": "LL_00000034_ucvwp"
+              },
+              "target": {
+                "$ref": "LL_00000032_tc6cz"
+              },
+              "messageSort": "reply"
+            },
+            {
+              "_type": "UMLMessage",
+              "_id": "MSG_0000003y_fsn2m",
+              "_parent": {
+                "$ref": "INTER_0000002z_66adw"
+              },
+              "name": "12: mostrarToastExitoYActualizarTabla()",
+              "source": {
+                "$ref": "LL_00000032_tc6cz"
+              },
+              "target": {
+                "$ref": "LL_00000030_d6zod"
+              },
+              "messageSort": "reply"
+            }
+          ],
+          "ownedElements": [
+            {
+              "_type": "UMLSequenceDiagram",
+              "_id": "D_SEQ_0000002y_7xx7v",
+              "_parent": {
+                "$ref": "INTER_0000002z_66adw"
+              },
+              "name": "DS-03: Gestión y Vinculación de Usuarios con Vehículos (Iteración 2)",
+              "ownedViews": [
+                {
+                  "_type": "UMLLifelineView",
+                  "_id": "VW_LL_00000031_4l37z",
+                  "model": {
+                    "$ref": "LL_00000030_d6zod"
+                  },
+                  "left": 50,
+                  "top": 50,
+                  "width": 130,
+                  "height": 480,
+                  "nameLabel": {
+                    "_type": "UMLNameLabelView",
+                    "text": "Administrador"
+                  }
+                },
+                {
+                  "_type": "UMLLifelineView",
+                  "_id": "VW_LL_00000033_2ng9p",
+                  "model": {
+                    "$ref": "LL_00000032_tc6cz"
+                  },
+                  "left": 230,
+                  "top": 50,
+                  "width": 130,
+                  "height": 480,
+                  "nameLabel": {
+                    "_type": "UMLNameLabelView",
+                    "text": "VistaUsuarios"
+                  }
+                },
+                {
+                  "_type": "UMLLifelineView",
+                  "_id": "VW_LL_00000035_x20i4",
+                  "model": {
+                    "$ref": "LL_00000034_ucvwp"
+                  },
+                  "left": 410,
+                  "top": 50,
+                  "width": 130,
+                  "height": 480,
+                  "nameLabel": {
+                    "_type": "UMLNameLabelView",
+                    "text": "GestorUsuarios"
+                  }
+                },
+                {
+                  "_type": "UMLLifelineView",
+                  "_id": "VW_LL_00000037_zt3si",
+                  "model": {
+                    "$ref": "LL_00000036_z701y"
+                  },
+                  "left": 590,
+                  "top": 50,
+                  "width": 130,
+                  "height": 480,
+                  "nameLabel": {
+                    "_type": "UMLNameLabelView",
+                    "text": "ValidadorPersona"
+                  }
+                },
+                {
+                  "_type": "UMLLifelineView",
+                  "_id": "VW_LL_00000039_7ohhy",
+                  "model": {
+                    "$ref": "LL_00000038_t3198"
+                  },
+                  "left": 770,
+                  "top": 50,
+                  "width": 130,
+                  "height": 480,
+                  "nameLabel": {
+                    "_type": "UMLNameLabelView",
+                    "text": "PersonaRepository"
+                  }
+                },
+                {
+                  "_type": "UMLLifelineView",
+                  "_id": "VW_LL_0000003b_5vspp",
+                  "model": {
+                    "$ref": "LL_0000003a_lacjh"
+                  },
+                  "left": 950,
+                  "top": 50,
+                  "width": 130,
+                  "height": 480,
+                  "nameLabel": {
+                    "_type": "UMLNameLabelView",
+                    "text": "VehiculoRepository"
+                  }
+                },
+                {
+                  "_type": "UMLSeqMessageView",
+                  "_id": "VW_MSG_0000003d_7f7tb",
+                  "model": {
+                    "$ref": "MSG_0000003c_pxgf2"
+                  },
+                  "lineStyle": 1,
+                  "points": "115,100;295,100",
+                  "nameLabel": {
+                    "_type": "EdgeLabelView",
+                    "text": "1: solicitarRegistroUsuario(datosPersona)"
+                  }
+                },
+                {
+                  "_type": "UMLSeqMessageView",
+                  "_id": "VW_MSG_0000003f_e5k38",
+                  "model": {
+                    "$ref": "MSG_0000003e_92bij"
+                  },
+                  "lineStyle": 1,
+                  "points": "295,145;475,145",
+                  "nameLabel": {
+                    "_type": "EdgeLabelView",
+                    "text": "2: crearUsuario(datos)"
+                  }
+                },
+                {
+                  "_type": "UMLSeqMessageView",
+                  "_id": "VW_MSG_0000003h_63g97",
+                  "model": {
+                    "$ref": "MSG_0000003g_f0bo9"
+                  },
+                  "lineStyle": 1,
+                  "points": "475,190;655,190",
+                  "nameLabel": {
+                    "_type": "EdgeLabelView",
+                    "text": "3: validarUnicidadCedulaEmail(cedula, email)"
+                  }
+                },
+                {
+                  "_type": "UMLSeqMessageView",
+                  "_id": "VW_MSG_0000003j_ob0lq",
+                  "model": {
+                    "$ref": "MSG_0000003i_z4tby"
+                  },
+                  "lineStyle": 1,
+                  "points": "655,235;475,235",
+                  "nameLabel": {
+                    "_type": "EdgeLabelView",
+                    "text": "4: validacionExitosa()"
+                  }
+                },
+                {
+                  "_type": "UMLSeqMessageView",
+                  "_id": "VW_MSG_0000003l_vz8wa",
+                  "model": {
+                    "$ref": "MSG_0000003k_x279w"
+                  },
+                  "lineStyle": 1,
+                  "points": "475,280;835,280",
+                  "nameLabel": {
+                    "_type": "EdgeLabelView",
+                    "text": "5: insertPersona(datosPersona)"
+                  }
+                },
+                {
+                  "_type": "UMLSeqMessageView",
+                  "_id": "VW_MSG_0000003n_al6jz",
+                  "model": {
+                    "$ref": "MSG_0000003m_bf6wj"
+                  },
+                  "lineStyle": 1,
+                  "points": "835,325;475,325",
+                  "nameLabel": {
+                    "_type": "EdgeLabelView",
+                    "text": "6: personaIdGenerado"
+                  }
+                },
+                {
+                  "_type": "UMLSeqMessageView",
+                  "_id": "VW_MSG_0000003p_zjhbn",
+                  "model": {
+                    "$ref": "MSG_0000003o_abo8y"
+                  },
+                  "lineStyle": 1,
+                  "points": "115,370;295,370",
+                  "nameLabel": {
+                    "_type": "EdgeLabelView",
+                    "text": "7: asociarVehiculo(personaId, datosVehiculo)"
+                  }
+                },
+                {
+                  "_type": "UMLSeqMessageView",
+                  "_id": "VW_MSG_0000003r_r54yq",
+                  "model": {
+                    "$ref": "MSG_0000003q_55it3"
+                  },
+                  "lineStyle": 1,
+                  "points": "295,415;475,415",
+                  "nameLabel": {
+                    "_type": "EdgeLabelView",
+                    "text": "8: vincularVehiculo(personaId, placa, tipo, marca)"
+                  }
+                },
+                {
+                  "_type": "UMLSeqMessageView",
+                  "_id": "VW_MSG_0000003t_r43ef",
+                  "model": {
+                    "$ref": "MSG_0000003s_9bq59"
+                  },
+                  "lineStyle": 1,
+                  "points": "475,460;1015,460",
+                  "nameLabel": {
+                    "_type": "EdgeLabelView",
+                    "text": "9: insertVehiculo(personaId, placa, tipo)"
+                  }
+                },
+                {
+                  "_type": "UMLSeqMessageView",
+                  "_id": "VW_MSG_0000003v_yay83",
+                  "model": {
+                    "$ref": "MSG_0000003u_japco"
+                  },
+                  "lineStyle": 1,
+                  "points": "1015,505;475,505",
+                  "nameLabel": {
+                    "_type": "EdgeLabelView",
+                    "text": "10: vehiculoVinculadoOk"
+                  }
+                },
+                {
+                  "_type": "UMLSeqMessageView",
+                  "_id": "VW_MSG_0000003x_azfvc",
+                  "model": {
+                    "$ref": "MSG_0000003w_41xez"
+                  },
+                  "lineStyle": 1,
+                  "points": "475,550;295,550",
+                  "nameLabel": {
+                    "_type": "EdgeLabelView",
+                    "text": "11: respuestaUsuarioCreadoConVehiculo()"
+                  }
+                },
+                {
+                  "_type": "UMLSeqMessageView",
+                  "_id": "VW_MSG_0000003z_vjzlh",
+                  "model": {
+                    "$ref": "MSG_0000003y_fsn2m"
+                  },
+                  "lineStyle": 1,
+                  "points": "295,595;115,595",
+                  "nameLabel": {
+                    "_type": "EdgeLabelView",
+                    "text": "12: mostrarToastExitoYActualizarTabla()"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "_type": "UMLInteraction",
+          "_id": "INTER_00000041_xhkxk",
+          "_parent": {
+            "$ref": "MODL_00000002_ioes8"
+          },
+          "name": "DS-04: Administración y Monitoreo de Celdas (Iteración 2) Interaction",
+          "participants": [
+            {
+              "_type": "UMLLifeline",
+              "_id": "LL_00000042_7n0av",
+              "_parent": {
+                "$ref": "INTER_00000041_xhkxk"
+              },
+              "name": "Administrador",
+              "isActor": true
+            },
+            {
+              "_type": "UMLLifeline",
+              "_id": "LL_00000044_h5krw",
+              "_parent": {
+                "$ref": "INTER_00000041_xhkxk"
+              },
+              "name": "VistaCeldas",
+              "isActor": false
+            },
+            {
+              "_type": "UMLLifeline",
+              "_id": "LL_00000046_lrxzo",
+              "_parent": {
+                "$ref": "INTER_00000041_xhkxk"
+              },
+              "name": "GestorCeldas",
+              "isActor": false
+            },
+            {
+              "_type": "UMLLifeline",
+              "_id": "LL_00000048_0ii8j",
+              "_parent": {
+                "$ref": "INTER_00000041_xhkxk"
+              },
+              "name": "CeldaRepository",
+              "isActor": false
+            }
+          ],
+          "messages": [
+            {
+              "_type": "UMLMessage",
+              "_id": "MSG_0000004a_hgudt",
+              "_parent": {
+                "$ref": "INTER_00000041_xhkxk"
+              },
+              "name": "1: abrirGestionCeldas()",
+              "source": {
+                "$ref": "LL_00000042_7n0av"
+              },
+              "target": {
+                "$ref": "LL_00000044_h5krw"
+              },
+              "messageSort": "synchCall"
+            },
+            {
+              "_type": "UMLMessage",
+              "_id": "MSG_0000004c_dqaaz",
+              "_parent": {
+                "$ref": "INTER_00000041_xhkxk"
+              },
+              "name": "2: obtenerMapaYEstatusCeldas()",
+              "source": {
+                "$ref": "LL_00000044_h5krw"
+              },
+              "target": {
+                "$ref": "LL_00000046_lrxzo"
+              },
+              "messageSort": "synchCall"
+            },
+            {
+              "_type": "UMLMessage",
+              "_id": "MSG_0000004e_gg8jv",
+              "_parent": {
+                "$ref": "INTER_00000041_xhkxk"
+              },
+              "name": "3: getAllCeldasConEstado()",
+              "source": {
+                "$ref": "LL_00000046_lrxzo"
+              },
+              "target": {
+                "$ref": "LL_00000048_0ii8j"
+              },
+              "messageSort": "synchCall"
+            },
+            {
+              "_type": "UMLMessage",
+              "_id": "MSG_0000004g_l54gw",
+              "_parent": {
+                "$ref": "INTER_00000041_xhkxk"
+              },
+              "name": "4: listaCeldas(total, libres, ocupadas)",
+              "source": {
+                "$ref": "LL_00000048_0ii8j"
+              },
+              "target": {
+                "$ref": "LL_00000046_lrxzo"
+              },
+              "messageSort": "reply"
+            },
+            {
+              "_type": "UMLMessage",
+              "_id": "MSG_0000004i_4a9on",
+              "_parent": {
+                "$ref": "INTER_00000041_xhkxk"
+              },
+              "name": "5: renderizarMapaYSectores()",
+              "source": {
+                "$ref": "LL_00000046_lrxzo"
+              },
+              "target": {
+                "$ref": "LL_00000044_h5krw"
+              },
+              "messageSort": "reply"
+            },
+            {
+              "_type": "UMLMessage",
+              "_id": "MSG_0000004k_5ltqa",
+              "_parent": {
+                "$ref": "INTER_00000041_xhkxk"
+              },
+              "name": "6: toggleInhabilitarCelda(celdaId)",
+              "source": {
+                "$ref": "LL_00000042_7n0av"
+              },
+              "target": {
+                "$ref": "LL_00000044_h5krw"
+              },
+              "messageSort": "synchCall"
+            },
+            {
+              "_type": "UMLMessage",
+              "_id": "MSG_0000004m_6laiu",
+              "_parent": {
+                "$ref": "INTER_00000041_xhkxk"
+              },
+              "name": "7: inhabilitarPorMantenimiento(celdaId)",
+              "source": {
+                "$ref": "LL_00000044_h5krw"
+              },
+              "target": {
+                "$ref": "LL_00000046_lrxzo"
+              },
+              "messageSort": "synchCall"
+            },
+            {
+              "_type": "UMLMessage",
+              "_id": "MSG_0000004o_d39w5",
+              "_parent": {
+                "$ref": "INTER_00000041_xhkxk"
+              },
+              "name": "8: findById(celdaId)",
+              "source": {
+                "$ref": "LL_00000046_lrxzo"
+              },
+              "target": {
+                "$ref": "LL_00000048_0ii8j"
+              },
+              "messageSort": "synchCall"
+            },
+            {
+              "_type": "UMLMessage",
+              "_id": "MSG_0000004q_07qqd",
+              "_parent": {
+                "$ref": "INTER_00000041_xhkxk"
+              },
+              "name": "9: [estado != \"OCUPADA\"]",
+              "source": {
+                "$ref": "LL_00000048_0ii8j"
+              },
+              "target": {
+                "$ref": "LL_00000046_lrxzo"
+              },
+              "messageSort": "reply"
+            },
+            {
+              "_type": "UMLMessage",
+              "_id": "MSG_0000004s_cipsr",
+              "_parent": {
+                "$ref": "INTER_00000041_xhkxk"
+              },
+              "name": "10: update(celdaId, {activa: false})",
+              "source": {
+                "$ref": "LL_00000046_lrxzo"
+              },
+              "target": {
+                "$ref": "LL_00000048_0ii8j"
+              },
+              "messageSort": "synchCall"
+            },
+            {
+              "_type": "UMLMessage",
+              "_id": "MSG_0000004u_nkdl7",
+              "_parent": {
+                "$ref": "INTER_00000041_xhkxk"
+              },
+              "name": "11: celdaInhabilitadaOk",
+              "source": {
+                "$ref": "LL_00000048_0ii8j"
+              },
+              "target": {
+                "$ref": "LL_00000046_lrxzo"
+              },
+              "messageSort": "reply"
+            },
+            {
+              "_type": "UMLMessage",
+              "_id": "MSG_0000004w_xill6",
+              "_parent": {
+                "$ref": "INTER_00000041_xhkxk"
+              },
+              "name": "12: actualizarMapaEnTiempoReal()",
+              "source": {
+                "$ref": "LL_00000046_lrxzo"
+              },
+              "target": {
+                "$ref": "LL_00000044_h5krw"
+              },
+              "messageSort": "reply"
+            },
+            {
+              "_type": "UMLMessage",
+              "_id": "MSG_0000004y_v8hne",
+              "_parent": {
+                "$ref": "INTER_00000041_xhkxk"
+              },
+              "name": "13: mostrarToastInhabilitada()",
+              "source": {
+                "$ref": "LL_00000044_h5krw"
+              },
+              "target": {
+                "$ref": "LL_00000042_7n0av"
+              },
+              "messageSort": "reply"
+            }
+          ],
+          "ownedElements": [
+            {
+              "_type": "UMLSequenceDiagram",
+              "_id": "D_SEQ_00000040_pjzs0",
+              "_parent": {
+                "$ref": "INTER_00000041_xhkxk"
+              },
+              "name": "DS-04: Administración y Monitoreo de Celdas (Iteración 2)",
+              "ownedViews": [
+                {
+                  "_type": "UMLLifelineView",
+                  "_id": "VW_LL_00000043_lxgam",
+                  "model": {
+                    "$ref": "LL_00000042_7n0av"
+                  },
+                  "left": 50,
+                  "top": 50,
+                  "width": 130,
+                  "height": 480,
+                  "nameLabel": {
+                    "_type": "UMLNameLabelView",
+                    "text": "Administrador"
+                  }
+                },
+                {
+                  "_type": "UMLLifelineView",
+                  "_id": "VW_LL_00000045_5639y",
+                  "model": {
+                    "$ref": "LL_00000044_h5krw"
+                  },
+                  "left": 230,
+                  "top": 50,
+                  "width": 130,
+                  "height": 480,
+                  "nameLabel": {
+                    "_type": "UMLNameLabelView",
+                    "text": "VistaCeldas"
+                  }
+                },
+                {
+                  "_type": "UMLLifelineView",
+                  "_id": "VW_LL_00000047_xd374",
+                  "model": {
+                    "$ref": "LL_00000046_lrxzo"
+                  },
+                  "left": 410,
+                  "top": 50,
+                  "width": 130,
+                  "height": 480,
+                  "nameLabel": {
+                    "_type": "UMLNameLabelView",
+                    "text": "GestorCeldas"
+                  }
+                },
+                {
+                  "_type": "UMLLifelineView",
+                  "_id": "VW_LL_00000049_gfoj7",
+                  "model": {
+                    "$ref": "LL_00000048_0ii8j"
+                  },
+                  "left": 590,
+                  "top": 50,
+                  "width": 130,
+                  "height": 480,
+                  "nameLabel": {
+                    "_type": "UMLNameLabelView",
+                    "text": "CeldaRepository"
+                  }
+                },
+                {
+                  "_type": "UMLSeqMessageView",
+                  "_id": "VW_MSG_0000004b_gc067",
+                  "model": {
+                    "$ref": "MSG_0000004a_hgudt"
+                  },
+                  "lineStyle": 1,
+                  "points": "115,100;295,100",
+                  "nameLabel": {
+                    "_type": "EdgeLabelView",
+                    "text": "1: abrirGestionCeldas()"
+                  }
+                },
+                {
+                  "_type": "UMLSeqMessageView",
+                  "_id": "VW_MSG_0000004d_x7ipi",
+                  "model": {
+                    "$ref": "MSG_0000004c_dqaaz"
+                  },
+                  "lineStyle": 1,
+                  "points": "295,145;475,145",
+                  "nameLabel": {
+                    "_type": "EdgeLabelView",
+                    "text": "2: obtenerMapaYEstatusCeldas()"
+                  }
+                },
+                {
+                  "_type": "UMLSeqMessageView",
+                  "_id": "VW_MSG_0000004f_bq1e2",
+                  "model": {
+                    "$ref": "MSG_0000004e_gg8jv"
+                  },
+                  "lineStyle": 1,
+                  "points": "475,190;655,190",
+                  "nameLabel": {
+                    "_type": "EdgeLabelView",
+                    "text": "3: getAllCeldasConEstado()"
+                  }
+                },
+                {
+                  "_type": "UMLSeqMessageView",
+                  "_id": "VW_MSG_0000004h_8mp4j",
+                  "model": {
+                    "$ref": "MSG_0000004g_l54gw"
+                  },
+                  "lineStyle": 1,
+                  "points": "655,235;475,235",
+                  "nameLabel": {
+                    "_type": "EdgeLabelView",
+                    "text": "4: listaCeldas(total, libres, ocupadas)"
+                  }
+                },
+                {
+                  "_type": "UMLSeqMessageView",
+                  "_id": "VW_MSG_0000004j_ekqua",
+                  "model": {
+                    "$ref": "MSG_0000004i_4a9on"
+                  },
+                  "lineStyle": 1,
+                  "points": "475,280;295,280",
+                  "nameLabel": {
+                    "_type": "EdgeLabelView",
+                    "text": "5: renderizarMapaYSectores()"
+                  }
+                },
+                {
+                  "_type": "UMLSeqMessageView",
+                  "_id": "VW_MSG_0000004l_wy0gr",
+                  "model": {
+                    "$ref": "MSG_0000004k_5ltqa"
+                  },
+                  "lineStyle": 1,
+                  "points": "115,325;295,325",
+                  "nameLabel": {
+                    "_type": "EdgeLabelView",
+                    "text": "6: toggleInhabilitarCelda(celdaId)"
+                  }
+                },
+                {
+                  "_type": "UMLSeqMessageView",
+                  "_id": "VW_MSG_0000004n_6ggzl",
+                  "model": {
+                    "$ref": "MSG_0000004m_6laiu"
+                  },
+                  "lineStyle": 1,
+                  "points": "295,370;475,370",
+                  "nameLabel": {
+                    "_type": "EdgeLabelView",
+                    "text": "7: inhabilitarPorMantenimiento(celdaId)"
+                  }
+                },
+                {
+                  "_type": "UMLSeqMessageView",
+                  "_id": "VW_MSG_0000004p_3a620",
+                  "model": {
+                    "$ref": "MSG_0000004o_d39w5"
+                  },
+                  "lineStyle": 1,
+                  "points": "475,415;655,415",
+                  "nameLabel": {
+                    "_type": "EdgeLabelView",
+                    "text": "8: findById(celdaId)"
+                  }
+                },
+                {
+                  "_type": "UMLSeqMessageView",
+                  "_id": "VW_MSG_0000004r_yehwb",
+                  "model": {
+                    "$ref": "MSG_0000004q_07qqd"
+                  },
+                  "lineStyle": 1,
+                  "points": "655,460;475,460",
+                  "nameLabel": {
+                    "_type": "EdgeLabelView",
+                    "text": "9: [estado != \"OCUPADA\"]"
+                  }
+                },
+                {
+                  "_type": "UMLSeqMessageView",
+                  "_id": "VW_MSG_0000004t_h95r4",
+                  "model": {
+                    "$ref": "MSG_0000004s_cipsr"
+                  },
+                  "lineStyle": 1,
+                  "points": "475,505;655,505",
+                  "nameLabel": {
+                    "_type": "EdgeLabelView",
+                    "text": "10: update(celdaId, {activa: false})"
+                  }
+                },
+                {
+                  "_type": "UMLSeqMessageView",
+                  "_id": "VW_MSG_0000004v_2q0ku",
+                  "model": {
+                    "$ref": "MSG_0000004u_nkdl7"
+                  },
+                  "lineStyle": 1,
+                  "points": "655,550;475,550",
+                  "nameLabel": {
+                    "_type": "EdgeLabelView",
+                    "text": "11: celdaInhabilitadaOk"
+                  }
+                },
+                {
+                  "_type": "UMLSeqMessageView",
+                  "_id": "VW_MSG_0000004x_9qka6",
+                  "model": {
+                    "$ref": "MSG_0000004w_xill6"
+                  },
+                  "lineStyle": 1,
+                  "points": "475,595;295,595",
+                  "nameLabel": {
+                    "_type": "EdgeLabelView",
+                    "text": "12: actualizarMapaEnTiempoReal()"
+                  }
+                },
+                {
+                  "_type": "UMLSeqMessageView",
+                  "_id": "VW_MSG_0000004z_v0ekc",
+                  "model": {
+                    "$ref": "MSG_0000004y_v8hne"
+                  },
+                  "lineStyle": 1,
+                  "points": "295,640;115,640",
+                  "nameLabel": {
+                    "_type": "EdgeLabelView",
+                    "text": "13: mostrarToastInhabilitada()"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "_type": "UMLComponent",
+          "_id": "CMP_00000051_8fv89",
+          "_parent": {
+            "$ref": "MODL_00000002_ioes8"
+          },
+          "name": "UI_EntradasSalidas_Component"
+        },
+        {
+          "_type": "UMLComponent",
+          "_id": "CMP_00000053_6hdoc",
+          "_parent": {
+            "$ref": "MODL_00000002_ioes8"
+          },
+          "name": "UI_GestionUsuarios_Component"
+        },
+        {
+          "_type": "UMLComponent",
+          "_id": "CMP_00000055_cjma1",
+          "_parent": {
+            "$ref": "MODL_00000002_ioes8"
+          },
+          "name": "UI_GestionCeldas_Component"
+        },
+        {
+          "_type": "UMLComponent",
+          "_id": "CMP_00000057_7slvo",
+          "_parent": {
+            "$ref": "MODL_00000002_ioes8"
+          },
+          "name": "UI_Dashboard_Component"
+        },
+        {
+          "_type": "UMLComponent",
+          "_id": "CMP_00000059_x65iv",
+          "_parent": {
+            "$ref": "MODL_00000002_ioes8"
+          },
+          "name": "Servicio_Movimientos_Component"
+        },
+        {
+          "_type": "UMLComponent",
+          "_id": "CMP_0000005b_swvzc",
+          "_parent": {
+            "$ref": "MODL_00000002_ioes8"
+          },
+          "name": "Servicio_Usuarios_Component"
+        },
+        {
+          "_type": "UMLComponent",
+          "_id": "CMP_0000005d_7vkes",
+          "_parent": {
+            "$ref": "MODL_00000002_ioes8"
+          },
+          "name": "Servicio_Celdas_Component"
+        },
+        {
+          "_type": "UMLComponent",
+          "_id": "CMP_0000005f_2ahro",
+          "_parent": {
+            "$ref": "MODL_00000002_ioes8"
+          },
+          "name": "Servicio_Autenticacion_Component"
+        },
+        {
+          "_type": "UMLComponent",
+          "_id": "CMP_0000005h_akzs2",
+          "_parent": {
+            "$ref": "MODL_00000002_ioes8"
+          },
+          "name": "Repositorio_Movimientos_Component"
+        },
+        {
+          "_type": "UMLComponent",
+          "_id": "CMP_0000005j_m2bzw",
+          "_parent": {
+            "$ref": "MODL_00000002_ioes8"
+          },
+          "name": "Repositorio_Usuarios_Component"
+        },
+        {
+          "_type": "UMLComponent",
+          "_id": "CMP_0000005l_8ngow",
+          "_parent": {
+            "$ref": "MODL_00000002_ioes8"
+          },
+          "name": "Repositorio_Celdas_Component"
+        },
+        {
+          "_type": "UMLComponent",
+          "_id": "CMP_0000005n_o3ei1",
+          "_parent": {
+            "$ref": "MODL_00000002_ioes8"
+          },
+          "name": "Persistencia_BaseDatos_Component"
+        },
+        {
+          "_type": "UMLComponentDiagram",
+          "_id": "D_COMP_00000050_lub3a",
+          "_parent": {
+            "$ref": "MODL_00000002_ioes8"
+          },
+          "name": "Diagrama de Componentes - Iteraciones 1 y 2",
+          "ownedViews": [
+            {
+              "_type": "UMLComponentView",
+              "_id": "VW_CMP_00000052_xl4jg",
+              "model": {
+                "$ref": "CMP_00000051_8fv89"
+              },
+              "left": 60,
+              "top": 80,
+              "width": 190,
+              "height": 80,
+              "nameLabel": {
+                "_type": "UMLNameLabelView",
+                "text": "UI_EntradasSalidas_Component"
+              }
+            },
+            {
+              "_type": "UMLComponentView",
+              "_id": "VW_CMP_00000054_xz8yh",
+              "model": {
+                "$ref": "CMP_00000053_6hdoc"
+              },
+              "left": 300,
+              "top": 80,
+              "width": 190,
+              "height": 80,
+              "nameLabel": {
+                "_type": "UMLNameLabelView",
+                "text": "UI_GestionUsuarios_Component"
+              }
+            },
+            {
+              "_type": "UMLComponentView",
+              "_id": "VW_CMP_00000056_ywkd0",
+              "model": {
+                "$ref": "CMP_00000055_cjma1"
+              },
+              "left": 540,
+              "top": 80,
+              "width": 190,
+              "height": 80,
+              "nameLabel": {
+                "_type": "UMLNameLabelView",
+                "text": "UI_GestionCeldas_Component"
+              }
+            },
+            {
+              "_type": "UMLComponentView",
+              "_id": "VW_CMP_00000058_gmnut",
+              "model": {
+                "$ref": "CMP_00000057_7slvo"
+              },
+              "left": 780,
+              "top": 80,
+              "width": 190,
+              "height": 80,
+              "nameLabel": {
+                "_type": "UMLNameLabelView",
+                "text": "UI_Dashboard_Component"
+              }
+            },
+            {
+              "_type": "UMLComponentView",
+              "_id": "VW_CMP_0000005a_dza19",
+              "model": {
+                "$ref": "CMP_00000059_x65iv"
+              },
+              "left": 60,
+              "top": 260,
+              "width": 190,
+              "height": 80,
+              "nameLabel": {
+                "_type": "UMLNameLabelView",
+                "text": "Servicio_Movimientos_Component"
+              }
+            },
+            {
+              "_type": "UMLComponentView",
+              "_id": "VW_CMP_0000005c_0j54x",
+              "model": {
+                "$ref": "CMP_0000005b_swvzc"
+              },
+              "left": 300,
+              "top": 260,
+              "width": 190,
+              "height": 80,
+              "nameLabel": {
+                "_type": "UMLNameLabelView",
+                "text": "Servicio_Usuarios_Component"
+              }
+            },
+            {
+              "_type": "UMLComponentView",
+              "_id": "VW_CMP_0000005e_cno7c",
+              "model": {
+                "$ref": "CMP_0000005d_7vkes"
+              },
+              "left": 540,
+              "top": 260,
+              "width": 190,
+              "height": 80,
+              "nameLabel": {
+                "_type": "UMLNameLabelView",
+                "text": "Servicio_Celdas_Component"
+              }
+            },
+            {
+              "_type": "UMLComponentView",
+              "_id": "VW_CMP_0000005g_m2j1j",
+              "model": {
+                "$ref": "CMP_0000005f_2ahro"
+              },
+              "left": 780,
+              "top": 260,
+              "width": 190,
+              "height": 80,
+              "nameLabel": {
+                "_type": "UMLNameLabelView",
+                "text": "Servicio_Autenticacion_Component"
+              }
+            },
+            {
+              "_type": "UMLComponentView",
+              "_id": "VW_CMP_0000005i_ta978",
+              "model": {
+                "$ref": "CMP_0000005h_akzs2"
+              },
+              "left": 60,
+              "top": 440,
+              "width": 190,
+              "height": 80,
+              "nameLabel": {
+                "_type": "UMLNameLabelView",
+                "text": "Repositorio_Movimientos_Component"
+              }
+            },
+            {
+              "_type": "UMLComponentView",
+              "_id": "VW_CMP_0000005k_p6t63",
+              "model": {
+                "$ref": "CMP_0000005j_m2bzw"
+              },
+              "left": 300,
+              "top": 440,
+              "width": 190,
+              "height": 80,
+              "nameLabel": {
+                "_type": "UMLNameLabelView",
+                "text": "Repositorio_Usuarios_Component"
+              }
+            },
+            {
+              "_type": "UMLComponentView",
+              "_id": "VW_CMP_0000005m_16ah4",
+              "model": {
+                "$ref": "CMP_0000005l_8ngow"
+              },
+              "left": 540,
+              "top": 440,
+              "width": 190,
+              "height": 80,
+              "nameLabel": {
+                "_type": "UMLNameLabelView",
+                "text": "Repositorio_Celdas_Component"
+              }
+            },
+            {
+              "_type": "UMLComponentView",
+              "_id": "VW_CMP_0000005o_j1nph",
+              "model": {
+                "$ref": "CMP_0000005n_o3ei1"
+              },
+              "left": 780,
+              "top": 440,
+              "width": 190,
+              "height": 80,
+              "nameLabel": {
+                "_type": "UMLNameLabelView",
+                "text": "Persistencia_BaseDatos_Component"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -7,18 +7,21 @@
 # PORTADA
 
 **Institución:** IU Digital de Antioquia  
-**Programa:** Tecnología en desarrollo de software 
+**Programa:** Tecnología en desarrollo de software
+
 **Asignatura:** Ingeniería de Software (Esteban Montoya) - PREICA2602B020081
+
 **Actividad:** Evidencia de Aprendizaje 1 (EA1)  
 **Título:** Sistema de Información Parqueadero "Autos Colombia" – Iteración 1  
 **Estudiante:** Mariano Molina Monsalve
+
 **Fecha:** Octubre 2026  
 
 ---
 
 # INTRODUCCIÓN
 
-El presente documento corresponde a la **Evidencia de Aprendizaje 1 (EA1)** de la asignatura Electiva I – Diseño Sistema de Información, en la cual se aplican los conceptos de **Ingeniería de Software** para el diseño y desarrollo del sistema de información del parqueadero **"Autos Colombia"**.
+El presente documento corresponde a la **Evidencia de Aprendizaje 1 (EA1)**, en la cual se aplican los conceptos de **Ingeniería de Software** para el diseño y desarrollo del sistema de información del parqueadero **"Autos Colombia"**.
 
 El parqueadero "Autos Colombia" es un negocio que presta el servicio de parqueadero por **mensualidad**, lo que implica que los clientes pagan una tarifa fija mensual que les otorga acceso ilimitado al parqueadero durante el período cubierto. El sistema a desarrollar debe gestionar eficientemente las operaciones diarias del negocio.
 
@@ -355,11 +358,8 @@ Ver diagrama completo en: `docs/diagramas_uml.md` – Sección 4
 - ✅ Diseño responsive (desktop y tablet)
 
 ### Repositorio GitHub
-- **URL del Repositorio:** [https://github.com/marianomolina-cloud/Evidencia-de-Aprendizaje-1-ingenier-a-de-software](https://github.com/marianomolina-cloud/Evidencia-de-Aprendizaje-1-ingenier-a-de-software)
-- **Clonar repositorio:**
-  ```bash
-  git clone https://github.com/marianomolina-cloud/Evidencia-de-Aprendizaje-1-ingenier-a-de-software.git
-  ```
+URL del Repositorio: https://github.com/marianomolina-cloud/Evidencia-de-Aprendizaje-1-ingenier-a-de-software
+
 
 ---
 

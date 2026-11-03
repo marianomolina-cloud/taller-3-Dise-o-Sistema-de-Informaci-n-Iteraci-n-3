@@ -170,6 +170,21 @@ const DB = (() => {
             ) || null;
         },
 
+        /* Obtener información detallada de una celda con su vehículo y propietario si está ocupada */
+        getCeldaDetalle(celdaId) {
+            const celda = getOne(KEYS.celdas, celdaId);
+            if (!celda) return null;
+            if (celda.estado !== 'OCUPADA') return { celda, vehiculo: null, persona: null, movimiento: null };
+
+            const movimiento = get(KEYS.movimientos).find(m => m.celdaId === celdaId && m.estado === 'DENTRO');
+            if (!movimiento) return { celda, vehiculo: null, persona: null, movimiento: null };
+
+            const vehiculo = getOne(KEYS.vehiculos, movimiento.vehiculoId);
+            const persona = vehiculo ? getOne(KEYS.personas, vehiculo.personaId) : null;
+
+            return { celda, vehiculo, persona, movimiento };
+        },
+
         /* Celda libre para tipo de vehículo */
         getCeldaLibre(tipoVehiculo) {
             const tipoCelda = tipoVehiculo === 'MOTO' ? 'MOTO' : 'CARRO';

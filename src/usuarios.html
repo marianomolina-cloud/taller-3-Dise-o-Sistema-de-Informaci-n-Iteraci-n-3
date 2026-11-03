@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Usuarios – Autos Colombia</title>
+    <title>Gestión de Usuarios – Autos Colombia</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/main.css">
 </head>
@@ -12,8 +12,8 @@
     <div class="main-content">
         <header class="topbar">
             <div class="topbar-title">
-                <h1>👥 Gestión de Usuarios</h1>
-                <p>Propietarios de vehículos registrados en el sistema</p>
+                <h1>👥 Gestión de Usuarios y Clientes</h1>
+                <p>Propietarios de vehículos, cuentas y suscripciones de mensualidad (Iteración 2)</p>
             </div>
             <div class="topbar-actions">
                 <span class="topbar-time" id="topbarTime"></span>
@@ -22,12 +22,66 @@
         </header>
 
         <main class="page-content">
-            <div class="card">
-                <div class="card-header">
-                    <div class="search-bar" style="flex:1;max-width:360px">
-                        <input type="text" id="searchInput" class="form-control" placeholder="Buscar por nombre, cédula o email..." oninput="renderTabla()">
+            <!-- Métricas de Usuarios -->
+            <div class="stats-grid" style="margin-bottom: 1.5rem;">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: rgba(59,130,246,0.15); color: #3B82F6;">👥</div>
+                    <div>
+                        <div class="stat-value" id="statTotalUsers">0</div>
+                        <div class="stat-label">Total Usuarios</div>
                     </div>
-                    <div class="text-muted text-sm" id="totalCount"></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: rgba(16,185,129,0.15); color: #10B981;">✅</div>
+                    <div>
+                        <div class="stat-value" id="statActivos">0</div>
+                        <div class="stat-label">Usuarios Activos</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: rgba(239,68,68,0.15); color: #EF4444;">⏸️</div>
+                    <div>
+                        <div class="stat-value" id="statSuspendidos">0</div>
+                        <div class="stat-label">Suspendidos / Inactivos</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: rgba(6,182,212,0.15); color: #06B6D4;">💳</div>
+                    <div>
+                        <div class="stat-value" id="statAlDia">0</div>
+                        <div class="stat-label">Pago al Día</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: rgba(245,158,11,0.15); color: #F59E0B;">⚠️</div>
+                    <div>
+                        <div class="stat-value" id="statEnMora">0</div>
+                        <div class="stat-label">Sin Pago / Mora</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabla de Usuarios con Filtros Avanzados -->
+            <div class="card">
+                <div class="card-header" style="flex-wrap:wrap; gap:1rem;">
+                    <div>
+                        <div class="card-title">Listado de Propietarios Registrados</div>
+                        <div class="text-muted text-sm" id="totalCount">0 registros</div>
+                    </div>
+                    <div style="display:flex; gap:0.6rem; flex-wrap:wrap;">
+                        <input type="text" id="searchInput" class="form-control" style="width:220px" placeholder="Buscar nombre, cédula o email..." oninput="renderTabla()">
+                        <select id="filtroEstadoUser" class="form-control" style="width:150px" onchange="renderTabla()">
+                            <option value="">Todos los estados</option>
+                            <option value="ACTIVO">Activos</option>
+                            <option value="SUSPENDIDO">Suspendidos</option>
+                            <option value="INACTIVO">Inactivos</option>
+                        </select>
+                        <select id="filtroPagoUser" class="form-control" style="width:150px" onchange="renderTabla()">
+                            <option value="">Todas las mensualidades</option>
+                            <option value="AL_DIA">Al Día</option>
+                            <option value="MORA">En Mora / Sin Pago</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="table-wrap">
                     <table>
@@ -37,9 +91,9 @@
                                 <th>Cédula</th>
                                 <th>Teléfono</th>
                                 <th>Email</th>
-                                <th>Vehículos</th>
+                                <th style="text-align:center;">Vehículos Asociados</th>
                                 <th>Estado</th>
-                                <th>Pago Vigente</th>
+                                <th>Mensualidad</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
@@ -74,7 +128,7 @@
                     <input type="text" id="fTelefono" class="form-control" placeholder="Ej: 3001234567">
                 </div>
                 <div class="form-group" style="grid-column:1/-1">
-                    <label>Email</label>
+                    <label>Email *</label>
                     <input type="email" id="fEmail" class="form-control" placeholder="usuario@email.com">
                 </div>
                 <div class="form-group" style="grid-column:1/-1">
@@ -82,10 +136,10 @@
                     <input type="text" id="fDireccion" class="form-control" placeholder="Calle 45 #12-34">
                 </div>
                 <div class="form-group" style="grid-column:1/-1">
-                    <label>Estado</label>
+                    <label>Estado del Usuario</label>
                     <select id="fEstado" class="form-control">
                         <option value="ACTIVO">Activo</option>
-                        <option value="SUSPENDIDO">Suspendido</option>
+                        <option value="SUSPENDIDO">Suspendido (Acceso Restringido)</option>
                         <option value="INACTIVO">Inactivo</option>
                     </select>
                 </div>
@@ -93,7 +147,53 @@
         </div>
         <div class="modal-footer">
             <button class="btn btn-outline" onclick="cerrarModal()">Cancelar</button>
-            <button class="btn btn-primary" onclick="guardarUsuario()" id="btnGuardar">Guardar</button>
+            <button class="btn btn-primary" onclick="guardarUsuario()" id="btnGuardar">Guardar Usuario</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Vehículos Asociados al Usuario -->
+<div class="modal-overlay" id="modalVehiculos" style="display:none" onclick="cerrarModalVehiculosOverlay(event)">
+    <div class="modal" style="max-width: 650px;">
+        <div class="modal-header">
+            <div class="modal-title" id="modalVehiculosTitulo">Vehículos Asociados</div>
+            <button class="modal-close" onclick="cerrarModalVehiculos()">✕</button>
+        </div>
+        <div class="modal-body">
+            <div id="modalVehiculosAlert"></div>
+            <div id="listaVehiculosUsuario" style="margin-bottom: 1.5rem;"></div>
+
+            <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1rem;">
+                <h4 style="margin-bottom: 0.8rem; color: var(--accent-cyan);">➕ Asociar Nuevo Vehículo</h4>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Placa *</label>
+                        <input type="text" id="vPlaca" class="form-control" placeholder="Ej: XYZ123" style="text-transform:uppercase;">
+                    </div>
+                    <div class="form-group">
+                        <label>Tipo *</label>
+                        <select id="vTipo" class="form-control">
+                            <option value="CARRO">Carro</option>
+                            <option value="MOTO">Moto</option>
+                            <option value="CAMIONETA">Camioneta</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Marca</label>
+                        <input type="text" id="vMarca" class="form-control" placeholder="Ej: Mazda">
+                    </div>
+                    <div class="form-group">
+                        <label>Modelo / Color</label>
+                        <input type="text" id="vModelo" class="form-control" placeholder="Ej: 3 Touring / Rojo">
+                    </div>
+                </div>
+                <div style="text-align: right; margin-top: 0.8rem;">
+                    <button class="btn btn-primary btn-sm" onclick="asociarVehiculo()">Asociar Vehículo</button>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-outline" onclick="cerrarModalVehiculos()">Cerrar</button>
         </div>
     </div>
 </div>
@@ -104,10 +204,34 @@
 Layout.init('usuarios.html');
 
 let editId = null;
+let currentPersonaId = null;
+
+function renderStats() {
+    const personas = DB.Personas.getAll();
+    const total = personas.length;
+    const activos = personas.filter(p => p.estado === 'ACTIVO').length;
+    const suspendidos = personas.filter(p => p.estado !== 'ACTIVO').length;
+    let alDia = 0;
+    personas.forEach(p => {
+        if (DB.tienePagoVigente(p.id)) alDia++;
+    });
+    const enMora = total - alDia;
+
+    document.getElementById('statTotalUsers').textContent = total;
+    document.getElementById('statActivos').textContent = activos;
+    document.getElementById('statSuspendidos').textContent = suspendidos;
+    document.getElementById('statAlDia').textContent = alDia;
+    document.getElementById('statEnMora').textContent = enMora;
+}
 
 function renderTabla() {
-    const q = document.getElementById('searchInput').value.toLowerCase();
+    renderStats();
+    const q = document.getElementById('searchInput').value.toLowerCase().trim();
+    const fEst = document.getElementById('filtroEstadoUser').value;
+    const fPago = document.getElementById('filtroPagoUser').value;
+
     let personas = DB.Personas.getAll();
+
     if (q) {
         personas = personas.filter(p =>
             p.nombreCompleto.toLowerCase().includes(q) ||
@@ -115,26 +239,45 @@ function renderTabla() {
             (p.email || '').toLowerCase().includes(q)
         );
     }
-    document.getElementById('totalCount').textContent = `${personas.length} registro(s)`;
+
+    if (fEst) {
+        personas = personas.filter(p => p.estado === fEst);
+    }
+
+    if (fPago) {
+        personas = personas.filter(p => {
+            const pagoVigente = DB.tienePagoVigente(p.id);
+            return fPago === 'AL_DIA' ? pagoVigente : !pagoVigente;
+        });
+    }
+
+    document.getElementById('totalCount').textContent = `${personas.length} registro(s) encontrado(s)`;
     const tbody = document.getElementById('tablaPersonas');
+
     if (!personas.length) {
-        tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;color:var(--text-muted);padding:2rem">Sin registros</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;color:var(--text-muted);padding:2rem">Sin registros encontrados.</td></tr>`;
         return;
     }
-    const hoy = new Date().toISOString().split('T')[0];
+
     tbody.innerHTML = personas.map(p => {
-        const vehiculos = DB.Vehiculos.find(v => v.personaId === p.id && v.activo).length;
+        const vehiculos = DB.Vehiculos.find(v => v.personaId === p.id && v.activo);
         const pago = DB.tienePagoVigente(p.id);
+        const badgeClass = p.estado === 'ACTIVO' ? 'badge-success' : (p.estado === 'SUSPENDIDO' ? 'badge-danger' : 'badge-neutral');
+
         return `<tr>
-            <td>${Utils.escapeHtml(p.nombreCompleto)}</td>
+            <td style="font-weight:600;">${Utils.escapeHtml(p.nombreCompleto)}</td>
             <td class="font-mono">${p.cedula}</td>
             <td>${p.telefono || '—'}</td>
             <td>${p.email || '—'}</td>
-            <td style="text-align:center">${vehiculos}</td>
-            <td><span class="badge ${p.estado === 'ACTIVO' ? 'badge-success' : 'badge-danger'}">${p.estado}</span></td>
-            <td>${pago ? '<span class="badge badge-success">Al Día</span>' : '<span class="badge badge-warning">Sin Pago</span>'}</td>
+            <td style="text-align:center">
+                <button class="btn btn-outline btn-sm" onclick="abrirModalVehiculos(${p.id})" style="font-size:0.8rem; padding:0.25rem 0.6rem;">
+                    🚗 ${vehiculos.length} vehículo(s)
+                </button>
+            </td>
+            <td><span class="badge ${badgeClass}">${p.estado}</span></td>
+            <td>${pago ? '<span class="badge badge-success">Al Día</span>' : '<span class="badge badge-warning">En Mora</span>'}</td>
             <td style="display:flex;gap:0.4rem">
-                <button class="btn btn-outline btn-sm btn-icon" onclick="editar(${p.id})" title="Editar">✏️</button>
+                <button class="btn btn-outline btn-sm btn-icon" onclick="editar(${p.id})" title="Editar datos">✏️</button>
                 <button class="btn btn-danger btn-sm btn-icon" onclick="eliminar(${p.id})" title="Eliminar">🗑️</button>
             </td>
         </tr>`;
@@ -183,11 +326,25 @@ function guardarUsuario() {
         return;
     }
 
-    // Validar unicidad
-    const duplicado = DB.Personas.findOne(p => p.cedula === cedula && p.id !== editId);
-    if (duplicado) {
-        alert.innerHTML = `<div class="alert alert-danger">❌ Ya existe un usuario con esa cédula.</div>`;
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        alert.innerHTML = `<div class="alert alert-danger">❌ El formato de correo electrónico es inválido.</div>`;
         return;
+    }
+
+    // Validar unicidad de cédula
+    const dupCedula = DB.Personas.findOne(p => p.cedula === cedula && p.id !== editId);
+    if (dupCedula) {
+        alert.innerHTML = `<div class="alert alert-danger">❌ Ya existe un usuario registrado con esa cédula.</div>`;
+        return;
+    }
+
+    // Validar unicidad de email si se ingresó
+    if (email) {
+        const dupEmail = DB.Personas.findOne(p => p.email && p.email.toLowerCase() === email.toLowerCase() && p.id !== editId);
+        if (dupEmail) {
+            alert.innerHTML = `<div class="alert alert-danger">❌ Ya existe un usuario registrado con ese email.</div>`;
+            return;
+        }
     }
 
     const data = { nombreCompleto: nombre, cedula, telefono, email, direccion, estado };
@@ -197,7 +354,7 @@ function guardarUsuario() {
         Toast.success('Usuario actualizado correctamente.');
     } else {
         DB.Personas.add(data);
-        Toast.success('Usuario registrado correctamente.');
+        Toast.success('Usuario registrado con éxito.');
     }
 
     cerrarModal();
@@ -208,14 +365,110 @@ function eliminar(id) {
     const p = DB.Personas.getById(id);
     const vehiculos = DB.Vehiculos.find(v => v.personaId === id);
     if (vehiculos.length) {
-        Toast.error(`No se puede eliminar: ${p.nombreCompleto} tiene ${vehiculos.length} vehículo(s) registrado(s).`);
+        Toast.error(`No se puede eliminar: ${p.nombreCompleto} tiene ${vehiculos.length} vehículo(s) registrado(s). Desvincule o elimine los vehículos primero.`);
         return;
     }
-    if (confirm(`¿Eliminar al usuario ${p.nombreCompleto}?`)) {
+    if (confirm(`¿Está seguro de eliminar definitivamente al usuario ${p.nombreCompleto}?`)) {
         DB.Personas.delete(id);
         Toast.success('Usuario eliminado.');
         renderTabla();
     }
+}
+
+/* Modal Vehículos */
+function abrirModalVehiculos(personaId) {
+    currentPersonaId = personaId;
+    const persona = DB.Personas.getById(personaId);
+    document.getElementById('modalVehiculosTitulo').textContent = `Vehículos de ${persona.nombreCompleto}`;
+    document.getElementById('modalVehiculosAlert').innerHTML = '';
+    renderListaVehiculos();
+    document.getElementById('modalVehiculos').style.display = 'flex';
+}
+
+function renderListaVehiculos() {
+    const vehiculos = DB.Vehiculos.find(v => v.personaId === currentPersonaId && v.activo);
+    const container = document.getElementById('listaVehiculosUsuario');
+
+    if (!vehiculos.length) {
+        container.innerHTML = `<p class="text-muted" style="text-align:center; padding:1rem;">Este usuario no tiene vehículos registrados actualmente.</p>`;
+        return;
+    }
+
+    container.innerHTML = `<table style="width:100%; font-size:0.85rem;">
+        <thead>
+            <tr><th>Placa</th><th>Tipo</th><th>Marca / Modelo</th><th>Color</th><th>Acción</th></tr>
+        </thead>
+        <tbody>` +
+        vehiculos.map(v => `<tr>
+            <td class="font-mono" style="font-weight:700; color:#fbbf24;">${v.placa}</td>
+            <td><span class="badge badge-neutral">${v.tipo}</span></td>
+            <td>${v.marca || '—'} ${v.modelo || ''}</td>
+            <td>${v.color || '—'}</td>
+            <td>
+                <button class="btn btn-danger btn-sm" onclick="desvincularVehiculo(${v.id})" style="padding:0.2rem 0.5rem; font-size:0.75rem;">Desvincular</button>
+            </td>
+        </tr>`).join('') +
+        `</tbody></table>`;
+}
+
+function asociarVehiculo() {
+    const placa = document.getElementById('vPlaca').value.trim().toUpperCase();
+    const tipo = document.getElementById('vTipo').value;
+    const marca = document.getElementById('vMarca').value.trim();
+    const modelo = document.getElementById('vModelo').value.trim();
+    const alert = document.getElementById('modalVehiculosAlert');
+
+    if (!placa) {
+        alert.innerHTML = `<div class="alert alert-danger">❌ La placa del vehículo es obligatoria.</div>`;
+        return;
+    }
+
+    const dup = DB.Vehiculos.findOne(v => v.placa === placa && v.activo);
+    if (dup) {
+        alert.innerHTML = `<div class="alert alert-danger">❌ Ya existe un vehículo activo registrado con la placa ${placa}.</div>`;
+        return;
+    }
+
+    DB.Vehiculos.add({
+        placa,
+        tipo,
+        marca,
+        modelo,
+        color: '',
+        activo: true,
+        personaId: currentPersonaId
+    });
+
+    Toast.success(`Vehículo ${placa} vinculado correctamente.`);
+    document.getElementById('vPlaca').value = '';
+    document.getElementById('vMarca').value = '';
+    document.getElementById('vModelo').value = '';
+    alert.innerHTML = '';
+    renderListaVehiculos();
+    renderTabla();
+}
+
+function desvincularVehiculo(vehiculoId) {
+    const activo = DB.getMovimientoActivo(vehiculoId);
+    if (activo) {
+        Toast.error('No se puede desvincular: el vehículo se encuentra actualmente DENTRO del parqueadero.');
+        return;
+    }
+    if (confirm('¿Confirma desvincular este vehículo del usuario?')) {
+        DB.Vehiculos.update(vehiculoId, { activo: false });
+        Toast.success('Vehículo desvinculado.');
+        renderListaVehiculos();
+        renderTabla();
+    }
+}
+
+function cerrarModalVehiculos() {
+    document.getElementById('modalVehiculos').style.display = 'none';
+    currentPersonaId = null;
+}
+
+function cerrarModalVehiculosOverlay(e) {
+    if (e.target.id === 'modalVehiculos') cerrarModalVehiculos();
 }
 
 renderTabla();

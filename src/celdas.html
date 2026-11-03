@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Celdas – Autos Colombia</title>
+    <title>Gestión de Celdas – Autos Colombia</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/main.css">
 </head>
@@ -13,31 +13,113 @@
         <header class="topbar">
             <div class="topbar-title">
                 <h1>🅿️ Gestión de Celdas</h1>
-                <p>Espacios físicos del parqueadero</p>
+                <p>Administración y monitoreo de espacios físicos del parqueadero (Iteración 2)</p>
             </div>
             <div class="topbar-actions">
                 <span class="topbar-time" id="topbarTime"></span>
+                <button class="btn btn-primary" onclick="abrirModalCelda()">➕ Nueva Celda</button>
             </div>
         </header>
+
         <main class="page-content">
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title">Estado de Celdas</div>
-                    <div style="display:flex;gap:1rem;font-size:0.8rem;color:var(--text-muted)">
-                        <span>🟢 Libre</span><span>🔴 Ocupada</span><span>⚫ Inactiva</span>
+            <!-- Métricas de Celdas -->
+            <div class="stats-grid" style="margin-bottom: 1.5rem;">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: rgba(59,130,246,0.15); color: #3B82F6;">🅿️</div>
+                    <div>
+                        <div class="stat-value" id="statTotal">0</div>
+                        <div class="stat-label">Total Celdas</div>
                     </div>
                 </div>
-                <div id="celdaContainer"></div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: rgba(16,185,129,0.15); color: #10B981;">🟢</div>
+                    <div>
+                        <div class="stat-value" id="statLibres">0</div>
+                        <div class="stat-label">Celdas Libres</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: rgba(239,68,68,0.15); color: #EF4444;">🔴</div>
+                    <div>
+                        <div class="stat-value" id="statOcupadas">0</div>
+                        <div class="stat-label">Celdas Ocupadas</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: rgba(100,116,139,0.15); color: #94A3B8;">⚫</div>
+                    <div>
+                        <div class="stat-value" id="statInactivas">0</div>
+                        <div class="stat-label">Inhabilitadas</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: rgba(6,182,212,0.15); color: #06B6D4;">📊</div>
+                    <div>
+                        <div class="stat-value" id="statOcupacion">0%</div>
+                        <div class="stat-label">% Ocupación</div>
+                    </div>
+                </div>
             </div>
 
-            <div class="card mt-2">
+            <!-- Mapa Visual de Celdas -->
+            <div class="card" style="margin-bottom: 1.5rem;">
                 <div class="card-header">
-                    <div class="card-title">Lista de Celdas</div>
+                    <div>
+                        <div class="card-title">Mapa Interactivo del Parqueadero</div>
+                        <div class="text-muted text-sm">Haz clic en una celda ocupada para ver detalles del vehículo o libre para administrarla</div>
+                    </div>
+                    <div style="display:flex;gap:1rem;font-size:0.85rem;align-items:center;">
+                        <span style="display:inline-flex;align-items:center;gap:0.3rem;"><span style="width:10px;height:10px;border-radius:50%;background:#10b981;display:inline-block"></span> Libre</span>
+                        <span style="display:inline-flex;align-items:center;gap:0.3rem;"><span style="width:10px;height:10px;border-radius:50%;background:#ef4444;display:inline-block"></span> Ocupada</span>
+                        <span style="display:inline-flex;align-items:center;gap:0.3rem;"><span style="width:10px;height:10px;border-radius:50%;background:#475569;display:inline-block"></span> Inactiva / Mantenimiento</span>
+                    </div>
+                </div>
+                <div id="celdaContainer" style="padding: 1rem 0;"></div>
+            </div>
+
+            <!-- Tabla de Administración de Celdas -->
+            <div class="card">
+                <div class="card-header" style="flex-wrap: wrap; gap: 1rem;">
+                    <div>
+                        <div class="card-title">Inventario y Control de Celdas</div>
+                        <div class="text-muted text-sm" id="tablaTotalCount">0 celdas listadas</div>
+                    </div>
+                    <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+                        <input type="text" id="filtroNumero" class="form-control" style="width:140px;" placeholder="Buscar celda..." oninput="renderVista()">
+                        <select id="filtroSector" class="form-control" style="width:140px;" onchange="renderVista()">
+                            <option value="">Todos los sectores</option>
+                            <option value="A">Sector A</option>
+                            <option value="B">Sector B</option>
+                            <option value="C">Sector C</option>
+                            <option value="D">Sector D</option>
+                            <option value="M">Sector M (Motos)</option>
+                        </select>
+                        <select id="filtroTipo" class="form-control" style="width:140px;" onchange="renderVista()">
+                            <option value="">Todos los tipos</option>
+                            <option value="CARRO">Carro</option>
+                            <option value="MOTO">Moto</option>
+                            <option value="CAMIONETA">Camioneta</option>
+                            <option value="DISCAPACITADOS">Discapacitados</option>
+                        </select>
+                        <select id="filtroEstado" class="form-control" style="width:140px;" onchange="renderVista()">
+                            <option value="">Todos los estados</option>
+                            <option value="LIBRE">Libre</option>
+                            <option value="OCUPADA">Ocupada</option>
+                            <option value="INACTIVA">Inhabilitada</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="table-wrap">
                     <table>
                         <thead>
-                            <tr><th>Número</th><th>Sector</th><th>Tipo</th><th>Estado</th><th>Activa</th><th>Acciones</th></tr>
+                            <tr>
+                                <th>Número</th>
+                                <th>Sector</th>
+                                <th>Tipo de Vehículo</th>
+                                <th>Estado Actual</th>
+                                <th>Operatividad</th>
+                                <th>Acciones</th>
+                            </tr>
                         </thead>
                         <tbody id="tablaCeldas"></tbody>
                     </table>
@@ -47,22 +129,123 @@
     </div>
 </div>
 
+<!-- Modal Crear / Editar Celda -->
+<div class="modal-overlay" id="modalCelda" style="display:none" onclick="cerrarModalCeldaOverlay(event)">
+    <div class="modal">
+        <div class="modal-header">
+            <div class="modal-title" id="modalCeldaTitle">Nueva Celda</div>
+            <button class="modal-close" onclick="cerrarModalCelda()">✕</button>
+        </div>
+        <div class="modal-body">
+            <div id="modalCeldaAlert"></div>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Número de Celda *</label>
+                    <input type="text" id="cNumero" class="form-control" placeholder="Ej: A11, M11">
+                    <small class="text-muted">Código identificador único</small>
+                </div>
+                <div class="form-group">
+                    <label>Sector *</label>
+                    <select id="cSector" class="form-control">
+                        <option value="A">Sector A</option>
+                        <option value="B">Sector B</option>
+                        <option value="C">Sector C</option>
+                        <option value="D">Sector D</option>
+                        <option value="M">Sector M (Motos)</option>
+                        <option value="E">Sector Especial</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Tipo Permitido *</label>
+                    <select id="cTipo" class="form-control">
+                        <option value="CARRO">Carro</option>
+                        <option value="MOTO">Moto</option>
+                        <option value="CAMIONETA">Camioneta</option>
+                        <option value="DISCAPACITADOS">Discapacitados</option>
+                        <option value="MIXTA">Mixta</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Estado Inicial</label>
+                    <select id="cEstado" class="form-control">
+                        <option value="LIBRE">Libre</option>
+                        <option value="OCUPADA">Ocupada</option>
+                    </select>
+                </div>
+                <div class="form-group" style="grid-column: 1/-1;">
+                    <label>Habilitada para operaciones</label>
+                    <select id="cActiva" class="form-control">
+                        <option value="true">Sí (Activa)</option>
+                        <option value="false">No (Inhabilitada / Mantenimiento)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-outline" onclick="cerrarModalCelda()">Cancelar</button>
+            <button class="btn btn-primary" onclick="guardarCelda()">Guardar Celda</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Detalle Celda Ocupada -->
+<div class="modal-overlay" id="modalDetalle" style="display:none" onclick="cerrarDetalleOverlay(event)">
+    <div class="modal">
+        <div class="modal-header">
+            <div class="modal-title" id="detalleTitulo">Detalle de Celda</div>
+            <button class="modal-close" onclick="cerrarDetalle()">✕</button>
+        </div>
+        <div class="modal-body" id="detalleContenido"></div>
+        <div class="modal-footer">
+            <button class="btn btn-outline" onclick="cerrarDetalle()">Cerrar</button>
+        </div>
+    </div>
+</div>
+
 <script src="js/db.js"></script>
 <script src="js/auth.js"></script>
 <script>
 Layout.init('celdas.html');
 
+let celdaEditId = null;
+
+function renderStats() {
+    const celdas = DB.Celdas.getAll();
+    const total = celdas.length;
+    const ocupadas = celdas.filter(c => c.estado === 'OCUPADA').length;
+    const libres = celdas.filter(c => c.estado === 'LIBRE' && c.activa).length;
+    const inactivas = celdas.filter(c => !c.activa).length;
+    const pct = total > 0 ? Math.round((ocupadas / total) * 100) : 0;
+
+    document.getElementById('statTotal').textContent = total;
+    document.getElementById('statLibres').textContent = libres;
+    document.getElementById('statOcupadas').textContent = ocupadas;
+    document.getElementById('statInactivas').textContent = inactivas;
+    document.getElementById('statOcupacion').textContent = `${pct}%`;
+}
+
 function renderMapa() {
     const celdas = DB.Celdas.getAll();
     const sectores = {};
-    celdas.forEach(c => { if (!sectores[c.sector]) sectores[c.sector] = []; sectores[c.sector].push(c); });
+    celdas.forEach(c => {
+        if (!sectores[c.sector]) sectores[c.sector] = [];
+        sectores[c.sector].push(c);
+    });
+
     let html = '';
-    Object.entries(sectores).forEach(([s, cells]) => {
-        html += `<div style="margin-bottom:1.25rem"><div style="font-size:0.75rem;font-weight:600;color:var(--text-muted);margin-bottom:0.5rem">Sector ${s}</div>`;
-        html += `<div class="parking-grid">`;
+    Object.keys(sectores).sort().forEach(s => {
+        const cells = sectores[s];
+        html += `<div style="margin-bottom:1.5rem">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.6rem;">
+                <span style="font-size:0.85rem; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.05em;">Sector ${s} (${cells.length} celdas)</span>
+            </div>
+            <div class="parking-grid">`;
         cells.forEach(c => {
-            const cls = c.activa ? c.estado.toLowerCase() : 'inactiva';
-            html += `<div class="parking-cell ${cls}" title="${c.numero} – ${c.estado}"><span class="cell-num">${c.numero}</span></div>`;
+            const cls = !c.activa ? 'inactiva' : (c.estado === 'OCUPADA' ? 'ocupada' : 'libre');
+            html += `<div class="parking-cell ${cls}" style="cursor:pointer;" onclick="verDetalleCelda(${c.id})" title="${c.numero} [${c.tipo}] - ${!c.activa ? 'Inactiva' : c.estado}">
+                <span class="cell-num">${c.numero}</span>
+                <span style="font-size:0.65rem; opacity:0.8;">${c.tipo.substring(0,4)}</span>
+            </div>`;
         });
         html += `</div></div>`;
     });
@@ -70,32 +253,177 @@ function renderMapa() {
 }
 
 function renderTabla() {
-    const celdas = DB.Celdas.getAll();
+    let celdas = DB.Celdas.getAll();
+    const fNum = document.getElementById('filtroNumero').value.trim().toUpperCase();
+    const fSec = document.getElementById('filtroSector').value;
+    const fTipo = document.getElementById('filtroTipo').value;
+    const fEst = document.getElementById('filtroEstado').value;
+
+    if (fNum) celdas = celdas.filter(c => c.numero.toUpperCase().includes(fNum));
+    if (fSec) celdas = celdas.filter(c => c.sector === fSec);
+    if (fTipo) celdas = celdas.filter(c => c.tipo === fTipo);
+    if (fEst) {
+        if (fEst === 'INACTIVA') celdas = celdas.filter(c => !c.activa);
+        else celdas = celdas.filter(c => c.activa && c.estado === fEst);
+    }
+
+    document.getElementById('tablaTotalCount').textContent = `${celdas.length} celda(s) encontrada(s)`;
     const tbody = document.getElementById('tablaCeldas');
+
+    if (!celdas.length) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:var(--text-muted);padding:2rem">No se encontraron celdas con los filtros especificados.</td></tr>`;
+        return;
+    }
+
     tbody.innerHTML = celdas.map(c => `<tr>
-        <td class="font-mono" style="color:var(--accent-cyan)">${c.numero}</td>
-        <td>${c.sector}</td>
-        <td>${c.tipo}</td>
-        <td><span class="badge ${c.estado==='LIBRE'?'badge-success':'badge-danger'}">${c.estado}</span></td>
-        <td><span class="badge ${c.activa?'badge-success':'badge-neutral'}">${c.activa?'Sí':'No'}</span></td>
-        <td>
-            <button class="btn btn-outline btn-sm" onclick="toggleActiva(${c.id},${c.activa})">${c.activa?'Inhabilitar':'Habilitar'}</button>
+        <td class="font-mono" style="font-weight:700; color:var(--accent-cyan)">${c.numero}</td>
+        <td>Sector ${c.sector}</td>
+        <td><span class="badge badge-neutral">${c.tipo}</span></td>
+        <td><span class="badge ${c.estado === 'LIBRE' ? 'badge-success' : 'badge-danger'}">${c.estado}</span></td>
+        <td><span class="badge ${c.activa ? 'badge-success' : 'badge-neutral'}">${c.activa ? 'Operativa' : 'Inhabilitada'}</span></td>
+        <td style="display:flex; gap:0.4rem;">
+            <button class="btn btn-outline btn-sm btn-icon" onclick="editarCelda(${c.id})" title="Editar celda">✏️</button>
+            <button class="btn btn-outline btn-sm" onclick="toggleActiva(${c.id}, ${c.activa})" title="Cambiar operatividad">
+                ${c.activa ? 'Inhabilitar' : 'Habilitar'}
+            </button>
+            <button class="btn btn-danger btn-sm btn-icon" onclick="eliminarCelda(${c.id})" title="Eliminar celda">🗑️</button>
         </td>
     </tr>`).join('');
 }
 
-function toggleActiva(id, activa) {
-    if (!activa) { DB.Celdas.update(id, { activa: true }); Toast.success('Celda habilitada.'); }
-    else {
-        const c = DB.Celdas.getById(id);
-        if (c.estado === 'OCUPADA') { Toast.error('No se puede inhabilitar una celda ocupada.'); return; }
-        DB.Celdas.update(id, { activa: false });
-        Toast.success('Celda inhabilitada.');
-    }
-    renderMapa(); renderTabla();
+function renderVista() {
+    renderStats();
+    renderMapa();
+    renderTabla();
 }
 
-renderMapa(); renderTabla();
+function verDetalleCelda(id) {
+    const data = DB.getCeldaDetalle(id);
+    if (!data) return;
+
+    document.getElementById('detalleTitulo').textContent = `Detalle de Celda ${data.celda.numero}`;
+    let html = `<div style="display:flex; flex-direction:column; gap:0.8rem;">
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:0.8rem; background:rgba(255,255,255,0.03); padding:1rem; border-radius:8px;">
+            <div><strong>Sector:</strong> Sector ${data.celda.sector}</div>
+            <div><strong>Tipo:</strong> ${data.celda.tipo}</div>
+            <div><strong>Estado:</strong> <span class="badge ${data.celda.estado === 'LIBRE' ? 'badge-success' : 'badge-danger'}">${data.celda.estado}</span></div>
+            <div><strong>Operatividad:</strong> ${data.celda.activa ? 'Operativa' : 'Inhabilitada'}</div>
+        </div>`;
+
+    if (data.celda.estado === 'OCUPADA' && data.vehiculo) {
+        html += `<div style="border-top:1px solid rgba(255,255,255,0.1); padding-top:1rem;">
+            <h4 style="margin-bottom:0.6rem; color:var(--accent-cyan);">🚗 Vehículo Estacionado</h4>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:0.6rem;">
+                <div><strong>Placa:</strong> <span class="font-mono" style="font-weight:700; color:#fbbf24;">${data.vehiculo.placa}</span></div>
+                <div><strong>Tipo / Marca:</strong> ${data.vehiculo.tipo} ${data.vehiculo.marca || ''}</div>
+                <div><strong>Propietario:</strong> ${data.persona ? data.persona.nombreCompleto : 'No asignado'}</div>
+                <div><strong>Cédula:</strong> ${data.persona ? data.persona.cedula : '—'}</div>
+                <div><strong>Teléfono:</strong> ${data.persona ? data.persona.telefono : '—'}</div>
+                <div><strong>Hora de Entrada:</strong> ${data.movimiento ? new Date(data.movimiento.fechaEntrada).toLocaleTimeString() : '—'}</div>
+            </div>
+        </div>`;
+    } else if (data.celda.estado === 'LIBRE') {
+        html += `<div style="padding:1rem; background:rgba(16,185,129,0.1); border-radius:8px; color:#10b981; text-align:center;">
+            ✅ La celda se encuentra disponible para asignación automática o manual.
+        </div>`;
+    } else {
+        html += `<div style="padding:1rem; background:rgba(239,68,68,0.1); border-radius:8px; color:#ef4444; text-align:center;">
+            ⚠️ Celda fuera de servicio o en mantenimiento.
+        </div>`;
+    }
+
+    html += `</div>`;
+    document.getElementById('detalleContenido').innerHTML = html;
+    document.getElementById('modalDetalle').style.display = 'flex';
+}
+
+function cerrarDetalle() { document.getElementById('modalDetalle').style.display = 'none'; }
+function cerrarDetalleOverlay(e) { if (e.target.id === 'modalDetalle') cerrarDetalle(); }
+
+function abrirModalCelda(id) {
+    celdaEditId = id || null;
+    document.getElementById('modalCeldaTitle').textContent = id ? 'Editar Celda' : 'Nueva Celda';
+    document.getElementById('modalCeldaAlert').innerHTML = '';
+
+    if (id) {
+        const c = DB.Celdas.getById(id);
+        document.getElementById('cNumero').value = c.numero;
+        document.getElementById('cSector').value = c.sector;
+        document.getElementById('cTipo').value = c.tipo;
+        document.getElementById('cEstado').value = c.estado;
+        document.getElementById('cActiva').value = c.activa ? 'true' : 'false';
+    } else {
+        document.getElementById('cNumero').value = '';
+        document.getElementById('cSector').value = 'A';
+        document.getElementById('cTipo').value = 'CARRO';
+        document.getElementById('cEstado').value = 'LIBRE';
+        document.getElementById('cActiva').value = 'true';
+    }
+    document.getElementById('modalCelda').style.display = 'flex';
+}
+
+function editarCelda(id) { abrirModalCelda(id); }
+function cerrarModalCelda() { document.getElementById('modalCelda').style.display = 'none'; celdaEditId = null; }
+function cerrarModalCeldaOverlay(e) { if (e.target.id === 'modalCelda') cerrarModalCelda(); }
+
+function guardarCelda() {
+    const numero = document.getElementById('cNumero').value.trim().toUpperCase();
+    const sector = document.getElementById('cSector').value;
+    const tipo = document.getElementById('cTipo').value;
+    const estado = document.getElementById('cEstado').value;
+    const activa = document.getElementById('cActiva').value === 'true';
+    const alert = document.getElementById('modalCeldaAlert');
+
+    if (!numero) {
+        alert.innerHTML = `<div class="alert alert-danger">❌ El número de celda es obligatorio.</div>`;
+        return;
+    }
+
+    const dup = DB.Celdas.findOne(c => c.numero === numero && c.id !== celdaEditId);
+    if (dup) {
+        alert.innerHTML = `<div class="alert alert-danger">❌ Ya existe una celda con el número "${numero}".</div>`;
+        return;
+    }
+
+    const data = { numero, sector, tipo, estado, activa };
+
+    if (celdaEditId) {
+        DB.Celdas.update(celdaEditId, data);
+        Toast.success(`Celda ${numero} actualizada con éxito.`);
+    } else {
+        DB.Celdas.add(data);
+        Toast.success(`Celda ${numero} agregada con éxito.`);
+    }
+
+    cerrarModalCelda();
+    renderVista();
+}
+
+function toggleActiva(id, activa) {
+    const c = DB.Celdas.getById(id);
+    if (activa && c.estado === 'OCUPADA') {
+        Toast.error('No se puede inhabilitar una celda que actualmente está OCUPADA.');
+        return;
+    }
+    DB.Celdas.update(id, { activa: !activa });
+    Toast.success(`Celda ${c.numero} ${!activa ? 'habilitada' : 'inhabilitada'}.`);
+    renderVista();
+}
+
+function eliminarCelda(id) {
+    const c = DB.Celdas.getById(id);
+    if (c.estado === 'OCUPADA') {
+        Toast.error(`No se puede eliminar la celda ${c.numero} porque está actualmente ocupada.`);
+        return;
+    }
+    if (confirm(`¿Confirma eliminar definitivamente la celda ${c.numero}?`)) {
+        DB.Celdas.delete(id);
+        Toast.success(`Celda ${c.numero} eliminada.`);
+        renderVista();
+    }
+}
+
+renderVista();
 </script>
 </body>
 </html>

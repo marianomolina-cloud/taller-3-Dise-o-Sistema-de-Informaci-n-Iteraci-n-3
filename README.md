@@ -1,135 +1,141 @@
 # Parqueadero Autos Colombia – Sistema de Información
-## Iteración 1: Gestión de Entrada y Salida de Vehículos
+## Iteración 2: Gestión de Usuarios y Gestión de Celdas (EA2)
+### Proyecto de Ingeniería de Software – IU Digital de Antioquia
 
-**Estudiante:** Mariano Molina  
-**Asignatura:** Electiva I – Diseño Sistema de Información  
-**Entrega:** EA1 – Iteración 1  
+**Estudiante:** Mariano Molina Monsalve  
+**Programa:** Tecnología en Desarrollo de Software  
+**Asignatura:** Ingeniería de Software (PREICA2602B020081)  
+**Docente / Asesor:** Esteban Montoya  
+**Entregas:** EA1 (Iteración 1) | EA2 (Iteración 2)  
 
 ---
 
 ## 🚀 Cómo ejecutar el sistema
 
-1. Abre la carpeta `src/` en el explorador de archivos
-2. Haz doble clic en `index.html` (o ábrelo con Chrome/Firefox/Edge)
-3. Ingresa con las credenciales de demo:
+1. Clona o descarga el repositorio:
+   ```bash
+   git clone https://github.com/marianomolina-cloud/Evidencia-de-Aprendizaje-1-ingenier-a-de-software.git
+   ```
+2. Abre la carpeta `src/` en el explorador de archivos.
+3. Haz doble clic en `index.html` (o abre con Google Chrome, Mozilla Firefox o Microsoft Edge).
+4. También puedes usar el servidor local Node.js incluido:
+   ```bash
+   node server.js
+   ```
+   E ingresar a: `http://localhost:3000`
+5. Credenciales de acceso predeterminadas:
    - **Administrador:** `admin` / `admin123`
    - **Operador:** `operador` / `oper123`
-4. ¡Listo! El sistema carga datos de demostración automáticamente.
-
-> ⚠️ **Nota:** La aplicación usa `localStorage` del navegador para simular la base de datos. No requiere servidor ni instalación. Para producción, conectar con el backend MySQL usando los scripts en `docs/modelo_fisico.sql`.
+6. El sistema inicializa automáticamente datos de prueba en `localStorage`.
 
 ---
 
-## 📁 Estructura del Proyecto
+## 📁 Estructura del Repositorio
 
 ```
 Parqueadero Diseño Sistema de Información/
-├── src/                          # Código fuente de la aplicación
-│   ├── index.html                # Login
-│   ├── dashboard.html            # Panel principal
-│   ├── entradas.html             # Registro de entradas
-│   ├── salidas.html              # Registro de salidas
-│   ├── usuarios.html             # Gestión de usuarios
-│   ├── vehiculos.html            # Gestión de vehículos
-│   ├── celdas.html               # Gestión de celdas
-│   ├── pagos.html                # Gestión de pagos
-│   ├── historial.html            # Historial de movimientos
-│   ├── novedades.html            # Novedades/incidentes
+├── Molina_Mariano_EA2.pdf         # 📄 Documento Oficial de Entrega EA2 (Formato PDF)
+├── Molina_Mariano_EA2.doc         # 📄 Documento de Entrega EA2 (Formato Word)
+├── MOLINA_MARIANO_EA2.md          # 📄 Documento Fuente en Markdown de EA2
+├── MOLINA_MARIANO_EA1.md          # 📄 Documento Histórico de EA1 (Iteración 1)
+├── server.js                      # ⚙️ Servidor HTTP local de desarrollo en Node.js
+├── src/                           # 💻 Código fuente de la aplicación web
+│   ├── index.html                 # Login y autenticación por roles
+│   ├── dashboard.html             # Panel de control y mapa en vivo
+│   ├── entradas.html              # Registro de entradas y asignación de celda
+│   ├── salidas.html               # Registro de salidas y liberación de celda
+│   ├── usuarios.html              # 👥 Gestión integral de usuarios y vehículos (Iteración 2)
+│   ├── celdas.html                # 🅿️ Gestión, mantenimiento y mapa de celdas (Iteración 2)
+│   ├── vehiculos.html             # Inventario vehicular
+│   ├── pagos.html                 # Control de mensualidades y vigencia
+│   ├── historial.html             # Registro histórico de movimientos
+│   ├── novedades.html             # Registro de incidentes sobre vehículos
 │   ├── css/
-│   │   └── main.css              # Estilos globales (Design System)
+│   │   └── main.css               # Sistema de diseño (Glassmorphism Dark Theme)
 │   └── js/
-│       ├── db.js                 # Módulo de datos (localStorage)
-│       └── auth.js               # Autenticación + utilidades + layout
-├── docs/                         # Documentación del proyecto
-│   ├── requisitos.md             # RF y RNF
-│   ├── historias_usuario.md      # 10 historias de usuario
-│   ├── diagramas_uml.md          # Todos los diagramas en Mermaid
-│   └── modelo_fisico.sql         # Script MySQL completo
-└── README.md                     # Este archivo
+│       ├── db.js                  # Motor de persistencia (localStorage) + consultas relacionales
+│       └── auth.js                # Control de sesión, layout dinámico y notificaciones toast
+├── docs/                          # 📚 Documentación técnica del proyecto
+│   ├── staruml/
+│   │   └── AutosColombia_Iteracion1y2.mdj # 📐 Archivo nativo StarUML (Casos de Uso, Secuencia, Componentes)
+│   ├── mockups/                   # 🖼️ Capturas de alta fidelidad de las interfaces
+│   │   ├── 1_login.png
+│   │   ├── 2_dashboard.png
+│   │   ├── 3_registro_entrada.png
+│   │   ├── 4_registro_salida.png
+│   │   ├── 5_gestion_usuarios.png # Mockup oficial Gestión de Usuarios (Iteración 2)
+│   │   ├── 6_historial_movimientos.png
+│   │   └── 7_gestion_celdas.png   # Mockup oficial Gestión de Celdas (Iteración 2)
+│   ├── requisitos.md              # Especificación de RF y RNF
+│   ├── historias_usuario.md       # Historias de usuario con criterios Gherkin
+│   ├── diagramas_uml.md           # Diagramas UML en sintaxis Mermaid
+│   └── modelo_fisico.sql          # Script DDL/DML MySQL para despliegue en producción
+└── scripts/                       # 🛠️ Scripts de soporte y generación automatizada
+    ├── capture_screenshots.js     # Captura automatizada de vistas con Chrome headless
+    ├── generate_staruml.js        # Generador de modelos .mdj para StarUML
+    └── build_html_and_pdf.js      # Compilador a reporte ejecutivo PDF
 ```
 
 ---
 
-## 📋 Entregables – Iteración 1
+## 📋 Entregables de la Iteración 2 (EA2)
 
-### ✅ 1. Requerimientos Funcionales y No Funcionales
-- **10 Requerimientos Funcionales** (RF-01 a RF-10)
-- **10 Requerimientos No Funcionales** (RNF-01 a RNF-10)
-- Ver: [`docs/requisitos.md`](docs/requisitos.md)
+### 1. Requerimientos Funcionales y No Funcionales (15 pts)
+- **Requerimientos Funcionales de Usuarios:** Registro con validación documental, consulta multicriterio, edición de datos, suspensión inmediata de acceso, gestión multi-vehículo por cliente y eliminación protegida (`RF-USR-01` a `RF-USR-08`).
+- **Requerimientos Funcionales de Celdas:** Alta de celdas, categorización por sector y tipo (`CARRO`, `MOTO`, `CAMIONETA`, `DISCAPACITADOS`), monitoreo gráfico reactivo, modal de inspección al clic, inhabilitación preventiva y liberación atómica (`RF-CEL-01` a `RF-CEL-08`).
+- **Requerimientos No Funcionales:** Rendimiento (< 250 ms), usabilidad (Nielsen), seguridad (RBAC), integridad referencial (UNIQUE keys), concurrencia sin carreras, disponibilidad (99.5%), mantenibilidad (3 capas) y portabilidad cross-browser (`RNF-01` a `RNF-08`).
 
-### ✅ 2. Historias de Usuario
-- **10 Historias de Usuario** con criterios de aceptación
-- Cubre: autenticación, entrada/salida, dashboard, CRUD usuarios/vehículos/celdas, pagos, novedades
-- Ver: [`docs/historias_usuario.md`](docs/historias_usuario.md)
+### 2. Historias de Usuario Asociadas (15 pts)
+- Redacción ágil en formato Scrum con estimación en Story Points y criterios de aceptación en formato BDD Gherkin (**Dado / Cuando / Entonces**).
+- Cobertura completa:
+  - `HU-USR-01`: Registro de nuevos clientes propietarios (5 SP)
+  - `HU-USR-02`: Búsqueda, filtrado y monitoreo de usuarios (3 SP)
+  - `HU-USR-03`: Actualización y suspensión de usuarios (5 SP)
+  - `HU-USR-04`: Asociación y gestión de vehículos por cliente (8 SP)
+  - `HU-CEL-01`: Registro y parametrización de celdas físicas (5 SP)
+  - `HU-CEL-02`: Monitoreo visual interactivo del mapa de celdas (5 SP)
+  - `HU-CEL-03`: Inhabilitación preventiva de celdas por mantenimiento (3 SP)
+  - `HU-CEL-04`: Asignación algorítmica inteligente de celdas (5 SP)
 
-### ✅ 3. Arquitectura del Sistema
-- Arquitectura de 3 capas: Presentación → Negocio → Datos
-- Tecnologías: HTML/CSS/JS + MySQL
-- Ver: [`docs/diagramas_uml.md`](docs/diagramas_uml.md) – Sección 1
+### 3. Mockups de Alta Fidelidad (10 pts)
+- Interfaz gráfica basada en **Glassmorphism Dark Mode** diseñada para trabajo continuo sin fatiga visual.
+- Mockups documentados con capturas en `docs/mockups/`:
+  - `5_gestion_usuarios.png`: Tablero de control de usuarios, filtros de mensualidad y badges de estado.
+  - `7_gestion_celdas.png`: Mapa interactivo del parqueadero por sectores (A, B, C, D, M), panel de indicadores y control de operatividad.
 
-### ✅ 4. Mockups
-- 6 mockups de alta fidelidad generados:
-  - Login, Dashboard, Registro Entrada, Registro Salida, Gestión Usuarios, Historial
+### 4. Diagramas de Casos de Uso en STARUML (10 pts)
+- Actores: Administrador, Operador y Motor del Sistema.
+- Casos de uso estructurados con relaciones `«include»` y `«extend»`.
+- Disponible en el archivo nativo `docs/staruml/AutosColombia_Iteracion1y2.mdj` y renderizado en Markdown/PDF.
 
-### ✅ 5. MER, MR y Modelo Físico
-- **MER**: Diagrama Entidad-Relación con 7 entidades
-- **MR (Modelo Relacional)**: Tablas con claves primarias y foráneas
-- **Modelo Físico**: Script SQL completo con tablas, triggers, vistas y stored procedures
-- Ver: [`docs/modelo_fisico.sql`](docs/modelo_fisico.sql)
+### 5. Diagramas de Secuencia (Iteraciones 1 y 2) en STARUML (10 pts)
+- Cuatro diagramas de interacción temporal entre capas:
+  1. **DS-01 (Iteración 1):** Registrar Entrada de Vehículo con Validación de Mensualidad y Asignación de Celda.
+  2. **DS-02 (Iteración 1):** Registrar Salida de Vehículo con Liberación Atómica de Celda.
+  3. **DS-03 (Iteración 2):** Registro y Vinculación de Clientes con Flota Vehicular.
+  4. **DS-04 (Iteración 2):** Administración, Monitoreo e Inhabilitación Preventiva de Celdas.
 
-### ✅ 6. Diagramas de Casos de Uso
-- Actores: Operador y Administrador
-- 14 casos de uso con relaciones include/extend
-- Ver: [`docs/diagramas_uml.md`](docs/diagramas_uml.md) – Sección 2
+### 6. Diagrama de Componentes (Iteraciones 1 y 2) en STARUML (10 pts)
+- Modelado de arquitectura de software en 3 capas:
+  - **Capa de Presentación:** Componentes UI (`UI_EntradasSalidas`, `UI_GestionUsuarios`, `UI_GestionCeldas`, `UI_Dashboard`).
+  - **Capa de Negocio:** Servicios y controladores (`Servicio_Movimientos`, `Servicio_Usuarios`, `Servicio_Celdas`, `Servicio_Autenticacion`, `Servicio_Pagos`).
+  - **Capa de Datos:** Repositorios tipados (`Repositorio_Usuarios`, `Repositorio_Celdas`, etc.) y motor de persistencia.
 
-### ✅ 7. Diagrama de Clases
-- 9 clases con atributos, métodos y relaciones
-- Ver: [`docs/diagramas_uml.md`](docs/diagramas_uml.md) – Sección 3
+### 7. Formato de Plan de Pruebas Resumido Diligenciado (15 pts)
+- Formato estructurado bajo estándares **IEEE 829** e **ISTQB**.
+- Matriz con **16 casos de prueba ejecutados** (8 para Gestión de Usuarios y 8 para Gestión de Celdas):
+  - Casos de prueba positivos, negativos, validaciones de formato, duplicidad y condiciones de borde.
+  - Resultado: **100% Casos Aprobados (PASÓ)** sin incidencias críticas.
 
-### ✅ 8. Diagrama de Paquetes
-- 5 paquetes: presentacion, estilos, logica, datos, utilidades
-- Ver: [`docs/diagramas_uml.md`](docs/diagramas_uml.md) – Sección 4
-
-### ✅ 9. Código Fuente
-- Aplicación web funcional (10 páginas HTML)
-- Sin dependencias externas – abre directo en el navegador
-- GitHub: [https://github.com/marianomolina-cloud/Evidencia-de-Aprendizaje-1-ingenier-a-de-software](https://github.com/marianomolina-cloud/Evidencia-de-Aprendizaje-1-ingenier-a-de-software)
-
----
-
-## 🏗️ Tecnologías Utilizadas
-
-| Capa | Tecnología |
-|------|-----------|
-| Frontend | HTML5, CSS3 (Vanilla), JavaScript ES6+ |
-| Estilos | Variables CSS, Glassmorphism, Grid, Flexbox |
-| Datos (demo) | localStorage del navegador |
-| Base de datos (producción) | MySQL 8.0+ |
-| Tipografía | Google Fonts – Inter |
-| Diagramas | Mermaid / StarUML |
+### 8. Repositorio en GitHub con Código Actualizado (15 pts)
+- URL del repositorio público:  
+  **https://github.com/marianomolina-cloud/Evidencia-de-Aprendizaje-1-ingenier-a-de-software**
+- Actualización verificable del código fuente con trazabilidad directa a los requerimientos de la Iteración 2.
 
 ---
 
-## 👥 Usuarios Demo del Sistema
-
-| Usuario | Contraseña | Rol |
-|---------|-----------|-----|
-| admin | admin123 | Administrador |
-| operador | oper123 | Operador |
-
----
-
-## 📊 Módulos del Sistema
-
-| Módulo | Descripción | Estado |
-|--------|-------------|--------|
-| Autenticación | Login con roles (Admin/Operador) | ✅ Funcional |
-| Dashboard | Mapa de celdas + estadísticas | ✅ Funcional |
-| Entradas | Registro de ingreso con validación | ✅ Funcional |
-| Salidas | Registro de egreso con liberación de celda | ✅ Funcional |
-| Usuarios | CRUD de propietarios | ✅ Funcional |
-| Vehículos | CRUD de vehículos | ✅ Funcional |
-| Celdas | Mapa visual + habilitación | ✅ Funcional |
-| Pagos | Registro de mensualidades | ✅ Funcional |
-| Historial | Registro completo con filtros | ✅ Funcional |
-| Novedades | Incidentes sobre vehículos | ✅ Funcional |
+## 🛠️ Tecnologías y Estándares Aplicados
+- **Lenguajes y Frontend:** HTML5 Semántico, CSS3 Vanilla con variables CSS y CSS Grid, JavaScript moderno (ES6+).
+- **Herramienta de Modelado UML:** **StarUML v6** (archivo nativo `.mdj` incluido) y sintaxis Mermaid.
+- **Estándares de Ingeniería de Software:** IEEE 829 (Test Plans), ISTQB, Scrum Ágil, Arquitectura Three-Tier (MVC).
+- **Control de Versiones:** Git & GitHub.
