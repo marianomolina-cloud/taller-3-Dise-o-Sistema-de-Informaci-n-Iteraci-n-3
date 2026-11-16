@@ -2,14 +2,13 @@ const fs = require('fs');
 const path = require('path');
 const { execFile } = require('child_process');
 
-const mdPath = path.join(__dirname, '..', 'MOLINA_MARIANO_EA2.md');
+const mdPath = path.join(__dirname, '..', 'MOLINA_MARIANO_EA3.md');
 const mdContent = fs.readFileSync(mdPath, 'utf-8');
 
 // Convertidor básico de Markdown a HTML optimizado para reporte ejecutivo PDF
 function markdownToHtml(md) {
     let html = md;
 
-    // Escapar etiquetas si es necesario, pero conservar estructura
     // Títulos
     html = html.replace(/^# (.*$)/gim, '<h1 class="doc-h1">$1</h1>');
     html = html.replace(/^## (.*$)/gim, '<h2 class="doc-h2">$1</h2>');
@@ -31,13 +30,19 @@ function markdownToHtml(md) {
         return `<div class="mermaid-container"><div class="mermaid">\n${p1.trim()}\n</div></div>`;
     });
 
-    // Bloques de código estándar
+    // Bloques de código estándar (gherkin, etc.)
     html = html.replace(/```([a-z]*)([\s\S]*?)```/gim, (match, lang, code) => {
         return `<pre class="code-block"><code class="lang-${lang}">${code.trim()}</code></pre>`;
     });
 
     // Código en línea
     html = html.replace(/`([^`]+)`/gim, '<code class="inline-code">$1</code>');
+
+    // Imágenes Markdown ![alt](src) (DEBE IR ANTES DE ENLACES)
+    html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/gim, '<div class="md-img-tag" data-src="$2" data-alt="$1"></div>');
+
+    // Enlaces Markdown [texto](url)
+    html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/gim, '<a href="$2" class="doc-link" target="_blank">$1</a>');
 
     // Tablas
     const lines = html.split('\n');
@@ -54,16 +59,20 @@ function markdownToHtml(md) {
                 // Header
                 const ths = line.split('|').filter(c => c.trim().length > 0);
                 tableHtml += '<thead><tr>' + ths.map(th => `<th>${th.trim()}</th>`).join('') + '</tr></thead><tbody>';
-                i++; // Skip delimiter line (|-...-|)
+                i++; // Salta delimitador (|---|)
             } else {
                 const tds = line.split('|').filter(c => c !== '');
                 tableHtml += '<tr>' + tds.map(td => {
                     let text = td.trim();
                     if (text === 'PASÓ') text = '<span class="badge badge-success">PASÓ</span>';
                     else if (text === 'FALLÓ') text = '<span class="badge badge-danger">FALLÓ</span>';
-                    else if (text === 'ACTIVO' || text === 'Al Día' || text === 'LIBRE') text = `<span class="badge badge-success">${text}</span>`;
-                    else if (text === 'SUSPENDIDO' || text === 'En Mora' || text === 'OCUPADA') text = `<span class="badge badge-danger">${text}</span>`;
-                    else if (text === 'Inhabilitada') text = `<span class="badge badge-neutral">${text}</span>`;
+                    else if (text === 'ACTIVO' || text === 'Al Día' || text === 'LIBRE' || text === 'VIGENTE') text = `<span class="badge badge-success">${text}</span>`;
+                    else if (text === 'SUSPENDIDO' || text === 'En Mora' || text === 'OCUPADA' || text === 'VENCIDO') text = `<span class="badge badge-danger">${text}</span>`;
+                    else if (text === 'ANULADO') text = `<span class="badge badge-neutral" style="text-decoration:line-through;">${text}</span>`;
+                    else if (text === 'Inhabilitada' || text === 'INHABILITADA') text = `<span class="badge badge-neutral">${text}</span>`;
+                    else if (text.startsWith('Alta') || text.startsWith('Crítica')) text = `<span class="badge badge-danger">${text}</span>`;
+                    else if (text.startsWith('Media')) text = `<span class="badge badge-warning">${text}</span>`;
+                    else if (text.startsWith('Baja')) text = `<span class="badge badge-neutral">${text}</span>`;
                     return `<td>${text}</td>`;
                 }).join('') + '</tr>';
             }
@@ -97,325 +106,368 @@ function markdownToHtml(md) {
     return html;
 }
 
-const bodyHtml = markdownToHtml(mdContent);
+let finalBody = markdownToHtml(mdContent);
 
-// Rutas de imágenes base64 para embeber en el documento
-const imgMockupUsersPath = path.join(__dirname, '..', 'docs', 'mockups', '5_gestion_usuarios.png');
-const imgMockupCeldasPath = path.join(__dirname, '..', 'docs', 'mockups', '7_gestion_celdas.png');
+// Cargar y embeber mockups en Base64
+const mockups = [
+    { key: 'docs/mockups/8_gestion_pagos.png', caption: 'Figura 1: Tablero Central de Gestión de Pagos, KPIs de Recaudación y Transacciones (Iteración 3)' },
+    { key: 'docs/mockups/9_registro_pago.png', caption: 'Figura 2: Formulario Modal de Registro de Pago de Mensualidad con Asistente de Caja y Tarifas (Iteración 3)' },
+    { key: 'docs/mockups/10_recibo_digital.png', caption: 'Figura 3: Comprobante y Recibo de Pago Digital Oficial con Consecutivo y Membrete Institucional (Iteración 3)' },
+    { key: 'docs/mockups/11_cartera_morosos.png', caption: 'Figura 4: Panel de Monitoreo de Cartera y Cobranza a Suscriptores Morosos (Iteración 3)' },
+    { key: 'docs/mockups/12_tarifas_mensualidad.png', caption: 'Figura 5: Matriz de Configuración de Tarifas Parametrizadas por Categoría Vehicular (Iteración 3)' }
+];
 
-let imgUsersBase64 = '';
-let imgCeldasBase64 = '';
+mockups.forEach(m => {
+    const fullPath = path.join(__dirname, '..', m.key.replace(/\//g, path.sep));
+    if (fs.existsSync(fullPath)) {
+        const b64 = 'data:image/png;base64,' + fs.readFileSync(fullPath).toString('base64');
+        const pattern = new RegExp(`<div class="md-img-tag" data-src="${m.key}"[^>]*><\\/div>`, 'g');
+        finalBody = finalBody.replace(pattern, `
+            <div class="mockup-img-wrap">
+                <img src="${b64}" alt="${m.caption}" class="mockup-img">
+                <div class="caption">${m.caption}</div>
+            </div>
+        `);
+    }
+});
 
-if (fs.existsSync(imgMockupUsersPath)) {
-    imgUsersBase64 = 'data:image/png;base64,' + fs.readFileSync(imgMockupUsersPath).toString('base64');
-}
-if (fs.existsSync(imgMockupCeldasPath)) {
-    imgCeldasBase64 = 'data:image/png;base64,' + fs.readFileSync(imgMockupCeldasPath).toString('base64');
-}
+// Cargar y embeber diagramas UML en Base64
+const diagramDefs = [
+    { file: 'diagrama_casos_de_uso_pagos.png', caption: 'Figura 6: Diagrama de Casos de Uso - Subsistema de Pagos (Modelado en StarUML)' },
+    { file: 'diagrama_casos_de_uso.png', caption: 'Figura 7: Diagrama de Casos de Uso Global Integrado - Iteraciones 1, 2 y 3 (Modelado en StarUML)' },
+    { file: 'secuencia_1_entrada_vehiculo.png', caption: 'Figura 8: Diagrama de Secuencia 1 - Registrar Entrada de Vehículo con Validación de Pago (Modelado en StarUML)' },
+    { file: 'secuencia_2_salida_vehiculo.png', caption: 'Figura 9: Diagrama de Secuencia 2 - Registrar Salida de Vehículo y Liberación de Celda (Modelado en StarUML)' },
+    { file: 'secuencia_3_gestion_usuarios.png', caption: 'Figura 10: Diagrama de Secuencia 3 - Gestión de Suscriptores y Vinculación Vehicular (Modelado en StarUML)' },
+    { file: 'secuencia_4_mantenimiento_celdas.png', caption: 'Figura 11: Diagrama de Secuencia 4 - Mantenimiento e Inhabilitación de Celdas (Modelado en StarUML)' },
+    { file: 'secuencia_5_registro_pago.png', caption: 'Figura 12: Diagrama de Secuencia 5 - Registro de Pago y Emisión de Recibo Digital (Modelado en StarUML)' },
+    { file: 'secuencia_6_validacion_acceso_pago.png', caption: 'Figura 13: Diagrama de Secuencia 6 - Validación Transaccional de Pago en Garita de Acceso (Modelado en StarUML)' },
+    { file: 'diagrama_componentes.png', caption: 'Figura 14: Diagrama de Componentes Integral - Arquitectura en 3 Capas (Modelado en StarUML)' }
+];
 
-// Inyectar imágenes reales en las secciones de mockups
-let finalBody = bodyHtml.replace(
-    /docs\/mockups\/5_gestion_usuarios\.png/g,
-    `<div class="mockup-img-wrap"><img src="${imgUsersBase64}" alt="Mockup Gestión de Usuarios" class="mockup-img"><div class="caption">Figura 1: Interfaz interactiva de Gestión de Usuarios y Clientes (Iteración 2)</div></div>`
-);
+// Reemplazar contenedores mermaid o imágenes por diagramas renderizados
+diagramDefs.forEach(d => {
+    const imgPath = path.join(__dirname, '..', 'docs', 'diagramas', d.file);
+    if (fs.existsSync(imgPath)) {
+        const b64 = 'data:image/png;base64,' + fs.readFileSync(imgPath).toString('base64');
+        const pattern = new RegExp(`<div class="md-img-tag" data-src="docs/diagramas/${d.file}"[^>]*><\\/div>`, 'g');
+        finalBody = finalBody.replace(pattern, `
+            <div class="mockup-img-wrap">
+                <img src="${b64}" alt="${d.caption}" class="mockup-img" style="max-height:550px;">
+                <div class="caption">${d.caption}</div>
+            </div>
+        `);
+    }
+});
 
-finalBody = finalBody.replace(
-    /docs\/mockups\/7_gestion_celdas\.png/g,
-    `<div class="mockup-img-wrap"><img src="${imgCeldasBase64}" alt="Mockup Gestión de Celdas" class="mockup-img"><div class="caption">Figura 2: Interfaz interactiva de Gestión de Celdas y Mapa del Parqueadero (Iteración 2)</div></div>`
-);
+// Reemplazar mermaid-container sobrantes si quedaron
+let dIdx = 0;
+finalBody = finalBody.replace(/<div class="mermaid-container">[\s\S]*?<\/div><\/div>/gim, () => {
+    if (dIdx < diagramDefs.length) {
+        const d = diagramDefs[dIdx++];
+        const imgPath = path.join(__dirname, '..', 'docs', 'diagramas', d.file);
+        if (fs.existsSync(imgPath)) {
+            const b64 = 'data:image/png;base64,' + fs.readFileSync(imgPath).toString('base64');
+            return `<div class="mockup-img-wrap"><img src="${b64}" alt="${d.caption}" class="mockup-img" style="max-height:550px;"><div class="caption">${d.caption}</div></div>`;
+        }
+    }
+    return '';
+});
 
 const fullHtml = `<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Molina_Mariano_EA2</title>
+    <title>Molina_Mariano_EA3</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
     <style>
         @page {
-            size: A4;
+            size: letter;
             margin: 20mm 15mm 20mm 15mm;
             @bottom-right {
-                content: counter(page);
+                content: "Página " counter(page);
                 font-family: 'Inter', sans-serif;
-                font-size: 9pt;
+                font-size: 8pt;
+                color: #64748b;
+            }
+            @bottom-left {
+                content: "Parqueadero Autos Colombia – EA3: Gestión de Pagos";
+                font-family: 'Inter', sans-serif;
+                font-size: 8pt;
                 color: #64748b;
             }
         }
 
-        *, *:before, *:after {
+        *, *::before, *::after {
             box-sizing: border-box;
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             color: #1e293b;
-            background: #ffffff;
-            line-height: 1.55;
+            background-color: #ffffff;
+            line-height: 1.6;
             font-size: 10pt;
             margin: 0;
             padding: 0;
         }
 
-        /* PORTADA */
+        /* PORTADA EDITORIAL */
         .cover-page {
-            height: 98vh;
+            height: 100vh;
+            min-height: 850px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            page-break-after: always;
-            padding: 2.5rem 2rem;
-            border: 2px solid #0f172a;
-            border-radius: 8px;
+            padding: 40px;
+            border: 2px solid #e2e8f0;
             background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+            page-break-after: always;
+            position: relative;
+        }
+
+        .cover-page::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 8px;
+            height: 100%;
+            background: linear-gradient(180deg, #1d4ed8 0%, #2563eb 50%, #38bdf8 100%);
         }
 
         .cover-header {
-            text-align: center;
-            border-bottom: 3px solid #0284c7;
-            padding-bottom: 1.5rem;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 20px;
         }
 
         .cover-header h1 {
-            font-size: 18pt;
+            font-size: 16pt;
             font-weight: 800;
-            color: #0f172a;
-            margin: 0 0 0.5rem 0;
+            color: #1e3a8a;
+            margin: 0 0 6px 0;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.5px;
         }
 
         .cover-header h2 {
-            font-size: 12pt;
-            font-weight: 600;
-            color: #0284c7;
+            font-size: 11pt;
+            font-weight: 500;
+            color: #475569;
             margin: 0;
         }
 
         .cover-body {
-            text-align: center;
             margin: auto 0;
         }
 
         .cover-badge {
             display: inline-block;
-            background: #e0f2fe;
-            color: #0369a1;
-            padding: 0.4rem 1.2rem;
-            border-radius: 9999px;
-            font-size: 10pt;
+            background-color: #dbeafe;
+            color: #1d4ed8;
+            font-size: 9pt;
             font-weight: 700;
-            margin-bottom: 1.5rem;
+            padding: 6px 14px;
+            border-radius: 9999px;
+            margin-bottom: 16px;
             text-transform: uppercase;
+            letter-spacing: 0.8px;
         }
 
         .cover-title {
-            font-size: 22pt;
+            font-size: 26pt;
             font-weight: 800;
             color: #0f172a;
-            line-height: 1.25;
-            margin-bottom: 1rem;
+            line-height: 1.2;
+            margin: 0 0 12px 0;
         }
 
         .cover-subtitle {
-            font-size: 13pt;
-            font-weight: 500;
-            color: #475569;
-            margin-bottom: 2rem;
+            font-size: 15pt;
+            font-weight: 600;
+            color: #2563eb;
+            margin: 0 0 24px 0;
         }
 
         .cover-footer {
             border-top: 1px solid #cbd5e1;
-            padding-top: 1.5rem;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
+            padding-top: 20px;
+            display: flex;
+            justify-content: space-between;
             font-size: 9.5pt;
+            color: #475569;
+            line-height: 1.5;
         }
 
-        .cover-footer-left { text-align: left; }
-        .cover-footer-right { text-align: right; }
+        .cover-footer strong {
+            color: #1e293b;
+        }
 
-        /* TITULOS */
+        /* CONTENIDO DEL DOCUMENTO */
+        .document-content {
+            padding: 10px 0;
+        }
+
         h1.doc-h1 {
             font-size: 18pt;
             font-weight: 800;
             color: #0f172a;
-            border-bottom: 2px solid #0284c7;
-            padding-bottom: 0.4rem;
-            margin-top: 2rem;
-            margin-bottom: 1rem;
-            page-break-before: always;
-        }
-
-        .cover-page + h1.doc-h1 {
-            page-break-before: avoid;
+            border-bottom: 2px solid #2563eb;
+            padding-bottom: 6px;
+            margin-top: 36px;
+            margin-bottom: 18px;
+            page-break-after: avoid;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         h2.doc-h2 {
-            font-size: 13pt;
+            font-size: 13.5pt;
             font-weight: 700;
-            color: #0369a1;
-            margin-top: 1.5rem;
-            margin-bottom: 0.6rem;
-            border-left: 4px solid #0284c7;
-            padding-left: 0.5rem;
+            color: #1e3a8a;
+            border-left: 4px solid #2563eb;
+            padding-left: 10px;
+            margin-top: 26px;
+            margin-bottom: 12px;
+            page-break-after: avoid;
         }
 
         h3.doc-h3 {
             font-size: 11pt;
-            font-weight: 600;
-            color: #0f172a;
-            margin-top: 1.2rem;
-            margin-bottom: 0.4rem;
-        }
-
-        h4.doc-h4 {
-            font-size: 10pt;
-            font-weight: 600;
+            font-weight: 700;
             color: #334155;
-            margin-top: 0.8rem;
-            margin-bottom: 0.3rem;
+            margin-top: 18px;
+            margin-bottom: 8px;
+            page-break-after: avoid;
         }
 
         p {
-            margin-bottom: 0.75rem;
+            margin: 0 0 10px 0;
             text-align: justify;
         }
 
         blockquote {
-            background: #f1f5f9;
-            border-left: 4px solid #0284c7;
-            margin: 0.8rem 0;
-            padding: 0.6rem 1rem;
+            margin: 12px 0;
+            padding: 10px 16px;
+            background-color: #f8fafc;
+            border-left: 4px solid #3b82f6;
             color: #334155;
             font-style: italic;
-            border-radius: 0 4px 4px 0;
+            border-radius: 0 6px 6px 0;
         }
 
         hr.section-divider {
-            border: none;
-            border-top: 1px solid #e2e8f0;
-            margin: 1.5rem 0;
+            border: 0;
+            height: 1px;
+            background: #e2e8f0;
+            margin: 24px 0;
         }
 
         /* TABLAS ESTILIZADAS */
         .table-responsive {
-            width: 100%;
-            margin: 1rem 0;
-            overflow-x: auto;
+            margin: 14px 0;
+            page-break-inside: avoid;
         }
 
         .styled-table {
             width: 100%;
             border-collapse: collapse;
             font-size: 8.5pt;
-            background: #ffffff;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-            page-break-inside: avoid;
+            background-color: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            overflow: hidden;
         }
 
         .styled-table th {
-            background: #0f172a;
-            color: #ffffff;
-            font-weight: 600;
+            background-color: #f1f5f9;
+            color: #0f172a;
+            font-weight: 700;
             text-align: left;
-            padding: 6px 8px;
-            border: 1px solid #1e293b;
+            padding: 7px 10px;
+            border-bottom: 2px solid #94a3b8;
+            font-size: 8.5pt;
         }
 
         .styled-table td {
-            padding: 6px 8px;
-            border: 1px solid #e2e8f0;
-            vertical-align: top;
+            padding: 6px 10px;
+            border-bottom: 1px solid #e2e8f0;
+            color: #334155;
+            vertical-align: middle;
         }
 
-        .styled-table tr:nth-child(even) td {
-            background: #f8fafc;
+        .styled-table tr:nth-child(even) {
+            background-color: #f8fafc;
         }
 
         /* BADGES */
         .badge {
             display: inline-block;
-            padding: 2px 6px;
+            padding: 2px 7px;
             border-radius: 4px;
             font-size: 7.5pt;
             font-weight: 700;
             text-transform: uppercase;
         }
 
-        .badge-success { background: #dcfce7; color: #15803d; border: 1px solid #86efac; }
-        .badge-danger { background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; }
-        .badge-warning { background: #fef3c7; color: #b45309; border: 1px solid #fcd34d; }
-        .badge-neutral { background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; }
+        .badge-success { background-color: #dcfce7; color: #15803d; }
+        .badge-danger { background-color: #fee2e2; color: #b91c1c; }
+        .badge-warning { background-color: #fef3c7; color: #b45309; }
+        .badge-neutral { background-color: #f1f5f9; color: #475569; }
 
-        /* CODIGO */
-        code.inline-code {
-            background: #f1f5f9;
+        /* CÓDIGO GHERKIN / BLOQUES */
+        .code-block {
+            background-color: #0f172a;
+            color: #f8fafc;
+            padding: 12px 16px;
+            border-radius: 6px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 8pt;
+            line-height: 1.4;
+            overflow-x: auto;
+            margin: 12px 0;
+            page-break-inside: avoid;
+            border-left: 4px solid #38bdf8;
+        }
+
+        .inline-code {
+            background-color: #f1f5f9;
             color: #0284c7;
             padding: 1px 4px;
             border-radius: 3px;
             font-family: 'JetBrains Mono', monospace;
             font-size: 8.5pt;
+            font-weight: 600;
         }
 
-        pre.code-block {
-            background: #0f172a;
-            color: #f8fafc;
-            padding: 0.8rem;
-            border-radius: 6px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 8pt;
-            overflow-x: auto;
-            page-break-inside: avoid;
-        }
-
-        /* MOCKUPS E IMAGENES */
+        /* IMÁGENES Y MOCKUPS */
         .mockup-img-wrap {
-            margin: 1.2rem 0;
+            margin: 16px 0;
             text-align: center;
             page-break-inside: avoid;
+            background: #ffffff;
+            padding: 8px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
 
         .mockup-img {
-            max-width: 95%;
+            max-width: 100%;
             height: auto;
-            border-radius: 6px;
+            border-radius: 4px;
             border: 1px solid #cbd5e1;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
         }
 
         .caption {
-            font-size: 8.5pt;
+            font-size: 8pt;
+            font-weight: 600;
             color: #64748b;
-            font-style: italic;
-            margin-top: 0.4rem;
+            margin-top: 6px;
         }
 
-        /* MERMAID */
-        .mermaid-container {
-            margin: 1rem 0;
-            text-align: center;
-            background: #f8fafc;
-            padding: 1rem;
-            border-radius: 6px;
-            border: 1px solid #e2e8f0;
-            page-break-inside: avoid;
-        }
-
-        .mermaid {
-            display: flex;
-            justify-content: center;
-        }
-
-        /* ALERTA / CALLOUT */
-        .callout {
-            background: #f0fdf4;
-            border: 1px solid #86efac;
-            padding: 0.8rem;
-            border-radius: 6px;
-            margin: 1rem 0;
-            font-size: 9pt;
+        .doc-link {
+            color: #2563eb;
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -424,26 +476,24 @@ const fullHtml = `<!DOCTYPE html>
 <div class="cover-page">
     <div class="cover-header">
         <h1>Institución Universitaria Digital de Antioquia</h1>
-        <h2>Facultad de Ingeniería – Tecnología en Desarrollo de Software</h2>
+        <h2>Programa Académico: Tecnología en Desarrollo de Software</h2>
     </div>
 
     <div class="cover-body">
-        <span class="cover-badge">Evidencia de Aprendizaje 2 (EA2)</span>
+        <span class="cover-badge">Evidencia de Aprendizaje 3 (EA3)</span>
         <div class="cover-title">DISEÑO DEL SISTEMA DE INFORMACIÓN<br>PARQUEADERO "AUTOS COLOMBIA"</div>
-        <div class="cover-subtitle">Iteración 2: Gestión de Usuarios y Gestión de Celdas</div>
-        <div style="font-size:11pt; color:#334155; font-weight:600;">Asignatura: Ingeniería de Software (PREICA2602B020081)</div>
+        <div class="cover-subtitle">Iteración 3: Gestión de Pagos</div>
+        <div style="font-size:11pt; color:#334155; font-weight:600;">Asignatura: Ingeniería de Software – PREICA2602B020081</div>
     </div>
 
     <div class="cover-footer">
         <div class="cover-footer-left">
             <strong>Estudiante:</strong> Mariano Molina Monsalve<br>
-            <strong>Programa:</strong> Tecnología en Desarrollo de Software<br>
-            <strong>Modalidad:</strong> Virtual – Campus IU Digital
+            <strong>Programa Académico:</strong> Tecnología en Desarrollo de Software
         </div>
         <div class="cover-footer-right">
             <strong>Docente / Asesor:</strong> Esteban Montoya<br>
-            <strong>Fecha de Entrega:</strong> Noviembre 2026<br>
-            <strong>Medellín, Antioquia, Colombia</strong>
+            <strong>Fecha de Presentación:</strong> Noviembre 2026
         </div>
     </div>
 </div>
@@ -452,32 +502,25 @@ const fullHtml = `<!DOCTYPE html>
     ${finalBody}
 </div>
 
-<script>
-    mermaid.initialize({
-        startOnLoad: true,
-        theme: 'default',
-        flowchart: { curve: 'basis', htmlLabels: true },
-        sequence: { showSequenceNumbers: true, actorMargin: 50 }
-    });
-</script>
 </body>
 </html>`;
 
-const outHtmlPath = path.join(__dirname, '..', 'Molina_Mariano_EA2.html');
+const outHtmlPath = path.join(__dirname, '..', 'Molina_Mariano_EA3.html');
 fs.writeFileSync(outHtmlPath, fullHtml, 'utf-8');
 console.log(`Documento HTML renderizado en: ${outHtmlPath}`);
 
 // Compilar a PDF usando Chrome Headless
 const chromePath = 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
-const outPdfPath = path.join(__dirname, '..', 'Molina_Mariano_EA2.pdf');
+const tempPdfPath = path.join(__dirname, '..', 'Molina_Mariano_EA3_temp.pdf');
+const outPdfPath = path.join(__dirname, '..', 'Molina_Mariano_EA3.pdf');
 
 const args = [
     '--headless=new',
     '--disable-gpu',
     '--no-sandbox',
     '--run-all-compositor-stages-before-draw',
-    '--virtual-time-budget=4000',
-    `--print-to-pdf=${outPdfPath}`,
+    '--virtual-time-budget=5000',
+    `--print-to-pdf=${tempPdfPath}`,
     `file:///${outHtmlPath.replace(/\\/g, '/')}`
 ];
 
@@ -487,5 +530,13 @@ execFile(chromePath, args, (err) => {
         console.error('Error generando PDF:', err.message);
         process.exit(1);
     }
-    console.log(`Archivo PDF generado exitosamente en: ${outPdfPath}`);
+    console.log(`Archivo PDF temporal generado exitosamente en: ${tempPdfPath}`);
+
+    try {
+        fs.copyFileSync(tempPdfPath, outPdfPath);
+        fs.unlinkSync(tempPdfPath);
+        console.log(`Archivo generado exitosamente:\n - ${outPdfPath}`);
+    } catch (copyErr) {
+        console.error('Error copiando PDF definitivo:', copyErr.message);
+    }
 });

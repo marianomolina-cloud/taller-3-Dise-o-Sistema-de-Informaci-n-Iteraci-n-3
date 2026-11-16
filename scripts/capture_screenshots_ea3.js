@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const { execFile } = require('child_process');
 
-const PORT = 3456;
+const PORT = 3457;
 const PUBLIC_DIR = path.join(__dirname, '..', 'src');
 
 const MIME_TYPES = {
@@ -33,8 +33,11 @@ const server = http.createServer((req, res) => {
 server.listen(PORT, async () => {
     console.log(`Server listening on ${PORT}`);
     const chromePath = 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
-    const outCeldas = path.join(__dirname, '..', 'docs', 'mockups', '7_gestion_celdas.png');
-    const outUsuarios = path.join(__dirname, '..', 'docs', 'mockups', '5_gestion_usuarios.png');
+
+    const mockupsDir = path.join(__dirname, '..', 'docs', 'mockups');
+    if (!fs.existsSync(mockupsDir)) {
+        fs.mkdirSync(mockupsDir, { recursive: true });
+    }
 
     const runChrome = (url, outFile) => new Promise((resolve, reject) => {
         const args = [
@@ -53,15 +56,24 @@ server.listen(PORT, async () => {
     });
 
     try {
-        console.log('Capturando celdas...');
-        await runChrome(`http://localhost:${PORT}/celdas.html`, outCeldas);
-        console.log('Celdas capturado exitosamente!');
+        console.log('Capturando 8_gestion_pagos.png...');
+        await runChrome(`http://localhost:${PORT}/pagos.html`, path.join(mockupsDir, '8_gestion_pagos.png'));
 
-        console.log('Capturando usuarios...');
-        await runChrome(`http://localhost:${PORT}/usuarios.html`, outUsuarios);
-        console.log('Usuarios capturado exitosamente!');
+        console.log('Capturando 9_registro_pago.png...');
+        await runChrome(`http://localhost:${PORT}/pagos.html?view=modal`, path.join(mockupsDir, '9_registro_pago.png'));
+
+        console.log('Capturando 10_recibo_digital.png...');
+        await runChrome(`http://localhost:${PORT}/pagos.html?view=recibo`, path.join(mockupsDir, '10_recibo_digital.png'));
+
+        console.log('Capturando 11_cartera_morosos.png...');
+        await runChrome(`http://localhost:${PORT}/pagos.html?view=morosos`, path.join(mockupsDir, '11_cartera_morosos.png'));
+
+        console.log('Capturando 12_tarifas_mensualidad.png...');
+        await runChrome(`http://localhost:${PORT}/pagos.html?view=tarifas`, path.join(mockupsDir, '12_tarifas_mensualidad.png'));
+
+        console.log('¡Todos los mockups de pagos capturados exitosamente!');
     } catch (e) {
-        console.error('Error al capturar:', e.message);
+        console.error('Error al capturar mockups:', e.message);
     } finally {
         server.close();
         process.exit(0);

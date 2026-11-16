@@ -1,136 +1,155 @@
 # Sistema de Información – Parqueadero "Autos Colombia"
-## Evidencia de Aprendizaje 2 (EA2): Iteración 2 – Gestión de Usuarios y Gestión de Celdas
+## Evidencia de Aprendizaje 3 (EA3): Iteración 3 – Gestión de Pagos y Consolidación Arquitectónica (3 Iteraciones)
 
 **Institución:** Institución Universitaria Digital de Antioquia (IU Digital de Antioquia)  
+**Facultad:** Facultad de Ingeniería  
 **Programa:** Tecnología en Desarrollo de Software  
 **Asignatura:** Ingeniería de Software (PREICA2602B020081)  
 **Docente / Asesor:** Esteban Montoya  
 **Estudiante:** Mariano Molina Monsalve  
-**Fecha:** Noviembre 2026  
+**Fecha de Presentación:** Noviembre 2026  
+**Medellín, Antioquia, Colombia**
 
 ---
 
-## 📌 Descripción del Proyecto – Iteración 2
+## 📌 Descripción del Proyecto – Iteración 3: Gestión de Pagos
 
-El sistema de información del parqueadero **"Autos Colombia"** está diseñado para gestionar las operaciones diarias de un parqueadero que presta servicios bajo la modalidad de **mensualidad**.
+El sistema de información del parqueadero **"Autos Colombia"** es una solución integral diseñada para la gestión operativa y financiera de un estacionamiento comercial que opera principalmente bajo la modalidad de **mensualidad fija**.
 
-Esta **Iteración 2 (EA2)** se enfoca específicamente en dos módulos estructurales indispensables del negocio:
-1. **Gestión de Usuarios y Clientes (Propietarios):** Registro con validación estricta de documentos de identidad y correos electrónicos, control de estados (Activo, Suspendido por mora, Inactivo), consulta y filtrado multicriterio, y vinculación de múltiples vehículos por cliente propietario.
-2. **Gestión y Control de Celdas de Parqueo:** Configuración y parametrización de celdas físicas (clasificadas por sectores A, B, C, D, M y tipologías Carro, Moto, Camioneta, Discapacitados), monitoreo en tiempo real mediante un mapa interactivo visual, inspección detallada de vehículos en celdas ocupadas, asignación inteligente e inhabilitación preventiva por mantenimiento técnico.
+Esta **Iteración 3 (EA3)** culmina el ciclo de desarrollo del sistema integrando el subsistema financiero y articulando las tres iteraciones construidas:
+1. **Iteración 1 (Entradas y Salidas de Vehículos):** Registro de ingreso y egreso por placa, cálculo automático de tiempos de estancia y asignación de celdas libres.
+2. **Iteración 2 (Gestión de Usuarios y Gestión de Celdas):** Registro y administración de clientes suscriptores, validación documental estricta, vinculación multi-vehículo y mapa interactivo de celdas en tiempo real con inhabilitación por mantenimiento.
+3. **Iteración 3 (Gestión de Pagos, Cartera y Consolidación):** Recaudación de mensualidades, liquidación sugerida según la categoría del vehículo (Carro $120.000, Moto $80.000, Camioneta $150.000), emisión instantánea de recibos y comprobantes digitales oficiales con consecutivo legal (`REC-YYYY-XXXX`), control proactivo de cartera con detección de morosidad, y validación síncrona en garita para autorizar o denegar el acceso según la vigencia del pago.
 
 ---
 
 ## 🚀 Cómo ejecutar la aplicación web
 
-1. Clona el repositorio oficial:
+1. **Clonar el repositorio oficial de GitHub:**
    ```bash
-   git clone https://github.com/marianomolina-cloud/IS-Evidencia-de-Aprendizaje-2.-Dise-o-Sistema-de-Informaci-n.git
+   git clone https://github.com/marianomolina-cloud/taller-3-Dise-o-Sistema-de-Informaci-n-Iteraci-n-3.git
    ```
-2. Abre la carpeta `src/` en el explorador de archivos.
-3. Haz doble clic en `index.html` (compatible con cualquier navegador: Chrome, Edge, Firefox, Safari) o ejecuta el servidor local:
-   ```bash
-   node server.js
-   ```
-   e ingresa a `http://localhost:3000`.
-4. Credenciales de acceso predeterminadas:
-   - **Administrador:** `admin` / `admin123`
-   - **Operador:** `operador` / `oper123`
-5. La aplicación utiliza `localStorage` para la persistencia de datos en modo cliente y simular la base de datos de forma inmediata y reactiva.
+2. **Ejecutar localmente:**
+   - Opción A: Abre la carpeta `src/` y haz doble clic en `index.html` (compatible con cualquier navegador moderno sin requerir dependencias adicionales).
+   - Opción B: Ejecuta el servidor Node.js incorporado:
+     ```bash
+     node server.js
+     ```
+     e ingresa en tu navegador a: `http://localhost:3000` o `http://localhost:3000/pagos.html`.
+3. **Credenciales de acceso preconfiguradas:**
+   - **Rol Administrador:** Usuario `admin` | Contraseña `admin123`
+   - **Rol Operador / Cajero:** Usuario `operador` | Contraseña `oper123`
+4. **Persistencia de datos:**
+   - Utiliza `localStorage` de alta reactividad en el navegador para simular una base de datos relacional y cuenta con el script DDL completo `docs/modelo_fisico.sql` para entornos MySQL 8.0+ / MariaDB.
 
 ---
 
-## 📁 Estructura del Repositorio (EA2)
+## 📁 Estructura del Repositorio (EA3)
 
-```
-Parqueadero Diseño Sistema de Información/
-├── Molina_Mariano_EA2.pdf         # 📄 Documento Oficial de Entrega EA2 (Formato PDF)
-├── Molina_Mariano_EA2.doc         # 📄 Documento de Entrega EA2 (Formato Word)
-├── MOLINA_MARIANO_EA2.md          # 📄 Documento Fuente Técnico en Markdown
-├── server.js                      # ⚙️ Servidor HTTP de desarrollo local (Node.js)
-├── README.md                      # 📖 Este archivo de presentación oficial EA2
-├── src/                           # 💻 Código fuente de la aplicación
-│   ├── index.html                 # Pantalla de Login y control de roles
-│   ├── dashboard.html             # Panel principal con mapa de celdas y métricas
-│   ├── celdas.html                # 🅿️ Gestión, mantenimiento y mapa interactivo de celdas (Iteración 2)
-│   ├── usuarios.html              # 👥 Gestión de clientes y vehículos asociados (Iteración 2)
-│   ├── entradas.html              # Registro de entradas con validación de mensualidad y asignación
-│   ├── salidas.html               # Registro de salidas y liberación automática de celda
-│   ├── vehiculos.html             # Inventario general de vehículos
-│   ├── pagos.html                 # Control de mensualidades y vigencia
-│   ├── historial.html             # Historial de movimientos filtrable
-│   ├── novedades.html             # Registro de novedades e incidentes sobre vehículos
+```text
+Parqueadero Diseño Sistema de Información - 3/
+├── Molina_Mariano_EA3.pdf         # 📄 Documento Oficial de Entrega EA3 (Formato PDF)
+├── Molina_Mariano_EA1.pdf         # 📄 Documento de Entrega con Nomenclatura solicitada
+├── Molina_Mariano_EA3.html        # 🌐 Versión Web del Documento Técnico
+├── MOLINA_MARIANO_EA3.md          # 📝 Memoria Técnica Completa en Formato Markdown
+├── server.js                      # ⚙️ Servidor HTTP local (Node.js)
+├── README.md                      # 📖 Ficha técnica de presentación del proyecto
+├── src/                           # 💻 Código fuente del sistema web funcional
+│   ├── index.html                 # Pantalla de Login y control de roles RBAC
+│   ├── dashboard.html             # Tablero central con KPIs de ocupación y recaudación
+│   ├── pagos.html                 # 💳 Módulo completo de Gestión de Pagos, Recibos y Cartera (Iteración 3)
+│   ├── entradas.html              # 🟢 Registro de entradas con validación de pagos en garita
+│   ├── salidas.html               # 🔴 Registro de salidas y liberación automática de celda
+│   ├── celdas.html                # 🅿️ Mapa interactivo y mantenimiento de celdas
+│   ├── usuarios.html              # 👥 Gestión de clientes y suscriptores
+│   ├── vehiculos.html             # 🚗 Parque vehicular registrado
+│   ├── historial.html             # 📋 Historial filtrable de movimientos vehiculares
+│   ├── novedades.html             # ⚠️ Bitácora de incidentes y observaciones
 │   ├── css/
-│   │   └── main.css               # Sistema de diseño (Glassmorphism Dark Theme)
+│   │   └── main.css               # Estilos de interfaz (Glassmorphism & Clean Design)
 │   └── js/
-│       ├── db.js                  # Capa de datos con consultas relacionales (localStorage)
-│       └── auth.js                # Autenticación, sesión y notificaciones Toast
-├── docs/                          # 📚 Documentación técnica de soporte
+│       ├── db.js                  # Motor transaccional de datos y reglas de pagos
+│       └── auth.js                # Control de sesión y componentes compartidos
+├── docs/                          # 📚 Documentación técnica y diagramas UML 2.5
 │   ├── staruml/
-│   │   └── AutosColombia_Iteracion1y2.mdj # 📐 Archivo nativo para StarUML (Casos de Uso, Secuencia, Componentes)
-│   ├── mockups/                   # 🖼️ Mockups de alta fidelidad
-│   │   ├── 5_gestion_usuarios.png # Mockup Gestión de Usuarios y Clientes
-│   │   └── 7_gestion_celdas.png   # Mockup Gestión de Celdas y Mapa del Parqueadero
-│   ├── requisitos.md              # Requisitos funcionales y no funcionales
-│   ├── historias_usuario.md       # Historias de usuario con criterios Gherkin
-│   └── modelo_fisico.sql          # Script SQL para base de datos MySQL 8.0+
-└── scripts/                       # 🛠️ Scripts utilitarios
-    ├── generate_staruml.js        # Generador del modelo StarUML .mdj
-    ├── capture_screenshots.js     # Captura de pantalla automatizada
-    └── build_html_and_pdf.js      # Compilador del informe ejecutivo PDF
+│   │   └── AutosColombia_Iteracion3.mdj # 📐 Modelo nativo completo para StarUML
+│   ├── diagramas/                 # 🖼️ Diagramas exportados en alta resolución (PNG)
+│   │   ├── diagrama_casos_de_uso_pagos.png
+│   │   ├── diagrama_casos_de_uso.png
+│   │   ├── secuencia_1_entrada_vehiculo.png
+│   │   ├── secuencia_2_salida_vehiculo.png
+│   │   ├── secuencia_3_gestion_usuarios.png
+│   │   ├── secuencia_4_mantenimiento_celdas.png
+│   │   ├── secuencia_5_registro_pago.png
+│   │   ├── secuencia_6_validacion_acceso_pago.png
+│   │   └── diagrama_componentes.png
+│   ├── mockups/                   # 📱 Capturas de interfaces de usuario (PNG)
+│   │   ├── 8_gestion_pagos.png
+│   │   ├── 9_registro_pago.png
+│   │   ├── 10_recibo_digital.png
+│   │   ├── 11_cartera_morosos.png
+│   │   └── 12_tarifas_mensualidad.png
+│   ├── requisitos.md              # Requisitos Funcionales y No Funcionales formales
+│   ├── historias_usuario.md       # Historias de Usuario con sintaxis Gherkin (BDD)
+│   └── modelo_fisico.sql          # Script DDL SQL normalizado en MySQL 8.0+
+└── scripts/                       # 🛠️ Scripts de automatización y renderizado
+    ├── generate_staruml.js        # Generador del archivo nativo .mdj para StarUML
+    ├── render_diagrams_to_png.js  # Renderizador de diagramas a imágenes PNG
+    ├── capture_screenshots_ea3.js # Capturador automatizado de mockups en Chrome
+    └── build_html_and_pdf.js      # Compilador editorial de Markdown a HTML y PDF
 ```
 
 ---
 
-## 📋 Entregables de la Actividad (EA2)
+## 📋 Entregables de la Actividad (EA3)
 
-Todos los entregables solicitados en la guía y rúbrica de evaluación se encuentran consolidados en el documento principal [**`Molina_Mariano_EA2.pdf`**](Molina_Mariano_EA2.pdf):
+Todos los entregables exigidos en la rúbrica de evaluación (100 puntos) se encuentran integrados y desarrollados a profundidad en el informe oficial [**`Molina_Mariano_EA3.pdf`**](Molina_Mariano_EA3.pdf):
 
-### 1. Requerimientos Funcionales y No Funcionales (15 pts)
-- **Requerimientos de Usuarios:** `RF-USR-01` a `RF-USR-08` (alta, validación documental, búsqueda multicriterio, edición, suspensión, asociación multi-vehículo, desvinculación y eliminación controlada).
-- **Requerimientos de Celdas:** `RF-CEL-01` a `RF-CEL-08` (creación de celdas, sectores A, B, C, D, M, tipos Carro/Moto/Camioneta/Discapacitados, mapa interactivo, inspección al clic, inhabilitación preventiva, asignación automática y métricas de capacidad).
-- **Requerimientos No Funcionales:** `RNF-01` a `RNF-08` (rendimiento < 250 ms, usabilidad, seguridad RBAC, integridad referencial con claves únicas, concurrencia, disponibilidad 99.5%, arquitectura en 3 capas y portabilidad).
+### 1. Requerimientos Funcionales y No Funcionales de Gestión de Pagos (15 pts)
+- **Requerimientos Funcionales:** `RF-PAG-01` a `RF-PAG-10` (Registro de pagos, liquidación según tipología vehicular, emisión de recibos oficiales con consecutivo, validación de vigencia en garita, control de cartera y morosos, reactivación automática de clientes suspendidos, prevención de pagos duplicados, búsqueda multicriterio, anulación con auditoría y cálculo de vueltos).
+- **Requerimientos No Funcionales:** `RNF-01` a `RNF-08` (Rendimiento < 150 ms, seguridad financiera con RBAC, integridad transaccional de consecutivos, usabilidad, disponibilidad 99.8%, arquitectura en 3 capas documentada en UML 2.5, portabilidad e inmutabilidad de bitácora contable).
 
-### 2. Historias de Usuario Asociadas (15 pts)
-- 8 Historias de Usuario completas estructuradas con rol, deseo y beneficio (*Como / Quiero / Para*), estimación en Story Points y criterios de aceptación en formato BDD Gherkin (*Dado / Cuando / Entonces*):
-  - `HU-USR-01`: Registro de nuevos clientes propietarios (5 SP)
-  - `HU-USR-02`: Búsqueda, filtrado y monitoreo reactivo de usuarios (3 SP)
-  - `HU-USR-03`: Actualización de datos y control de suspensión de usuarios (5 SP)
-  - `HU-USR-04`: Asociación y administración de vehículos por cliente (8 SP)
-  - `HU-CEL-01`: Configuración y creación de celdas físicas (5 SP)
-  - `HU-CEL-02`: Visualización y monitoreo interactivo del mapa de celdas (5 SP)
-  - `HU-CEL-03`: Inhabilitación preventiva de celdas por mantenimiento (3 SP)
-  - `HU-CEL-04`: Asignación algorítmica inteligente de celdas (5 SP)
+### 2. Historias de Usuario Asociadas (10 pts)
+- Especificadas bajo el marco **Scrum** con estimación en Story Points (Fibonacci) y criterios de aceptación redactados en formato **BDD / Gherkin (Dado, Cuando, Entonces)**:
+  - `HU-PAG-01`: Registro de pago de mensualidad y autocompletado de tarifa (5 SP)
+  - `HU-PAG-02`: Generación e impresión de recibo digital oficial (3 SP)
+  - `HU-PAG-03`: Validación automática de suscripción vigente en garita de acceso (5 SP)
+  - `HU-PAG-04`: Monitoreo de cartera y suscriptores morosos (3 SP)
+  - `HU-PAG-05`: Anulación de recibo con bitácora de auditoría (3 SP)
+  - `HU-PAG-06`: Consulta multicriterio y métricas de recaudación (2 SP)
 
-### 3. Mockups de Alta Fidelidad (10 pts)
-- Prototipos visuales con sistema de diseño **Glassmorphism Dark Theme** disponibles en `docs/mockups/`:
-  - `5_gestion_usuarios.png`: Tablero de control de usuarios, filtros de mensualidad y badges de estado.
-  - `7_gestion_celdas.png`: Mapa interactivo del parqueadero por sectores, indicadores y control de operatividad.
+### 3. Mockups de las Historias de Usuario (10 pts)
+- Prototipos de alta fidelidad capturados en PNG de alta resolución (1400x900 px):
+  - **Mockup 1:** Tablero central de pagos, KPIs de recaudación y tabla de transacciones.
+  - **Mockup 2:** Modal interactivo de registro de pago con asistente de caja y cambio de efectivo.
+  - **Mockup 3:** Comprobante y recibo oficial de pago digital con membrete corporativo y código de barras.
+  - **Mockup 4:** Panel de control de cartera y suscriptores morosos con cobro directo.
+  - **Mockup 5:** Matriz de tarifas parametrizadas por tipología de vehículo.
 
-### 4. Diagramas de Casos de Uso en STARUML (10 pts)
-- Actores: Administrador, Operador y Motor del Sistema.
-- Casos de uso con relaciones `«include»` y `«extend»`.
-- Disponible en el archivo nativo [`docs/staruml/AutosColombia_Iteracion1y2.mdj`](docs/staruml/AutosColombia_Iteracion1y2.mdj) y en el reporte PDF.
+### 4. Diagramas de Casos de Uso en StarUML (10 pts)
+- Modelado formal en StarUML (`docs/staruml/AutosColombia_Iteracion3.mdj`):
+  - Diagrama de Casos de Uso del Subsistema de Pagos con actores (`Administrador`, `Operador / Cajero`, `Motor del Sistema`, `Suscriptor`) y relaciones `«include»` y `«extend»`.
+  - Diagrama de Casos de Uso Global articulando las Iteraciones 1, 2 y 3.
 
-### 5. Diagramas de Secuencia (Iteraciones 1 y 2) en STARUML (10 pts)
-- 4 diagramas de secuencia modelados en StarUML:
-  1. `DS-01 (Iteración 1):` Registrar Entrada de Vehículo con Validación de Mensualidad y Asignación de Celda.
-  2. `DS-02 (Iteración 1):` Registrar Salida de Vehículo con Liberación Atómica de Celda.
-  3. `DS-03 (Iteración 2):` Registro y Vinculación de Clientes con Flota Vehicular.
-  4. `DS-04 (Iteración 2):` Administración y Mantenimiento Preventivo de Celdas.
+### 5. Diagramas de Secuencia en StarUML (Iteraciones 1, 2 y 3) (15 pts)
+- 6 Diagramas de Secuencia exhaustivos modelados bajo el estándar UML 2.5:
+  - `DS-01`: Registrar Entrada de Vehículo con validación de pago y celda (Iteración 1).
+  - `DS-02`: Registrar Salida de Vehículo y liberación atómica de celda (Iteración 1).
+  - `DS-03`: Gestión de Suscriptores y vinculación vehicular (Iteración 2).
+  - `DS-04`: Mantenimiento e inhabilitación preventiva de celdas (Iteración 2).
+  - `DS-05`: Registro de Pago de Mensualidad y emisión de recibo digital (Iteración 3).
+  - `DS-06`: Validación Transaccional de Pago al Ingreso en Garita (Iteraciones 1 y 3).
 
-### 6. Diagrama de Componentes (Iteraciones 1 y 2) en STARUML (10 pts)
-- Desacoplamiento de componentes en arquitectura de 3 capas:
-  - **Presentación:** `UI_EntradasSalidas`, `UI_GestionUsuarios`, `UI_GestionCeldas`, `UI_Dashboard`.
-  - **Negocio / Servicios:** `Servicio_Movimientos`, `Servicio_Usuarios`, `Servicio_Celdas`, `Servicio_Autenticacion`, `Servicio_Pagos`.
-  - **Datos / Repositorios:** `Repositorio_Usuarios`, `Repositorio_Celdas`, `Repositorio_Movimientos`, etc.
+### 6. Diagrama de Componentes en StarUML (Iteraciones 1, 2 y 3) (10 pts)
+- Diagrama arquitectónico integral que estructura el sistema en:
+  - **Capa de Presentación:** Shell/Layout, Módulo Entradas/Salidas, Módulo Usuarios/Celdas, Módulo Pagos y Dashboard.
+  - **Capa de Negocio:** Servicios de Acceso, Usuarios, Celdas, Pagos, Validador de Vigencia y Generador de Recibos.
+  - **Capa de Persistencia:** Repositorios de Movimientos, Usuarios, Celdas, Pagos/Tarifas y Motor de Almacenamiento.
+  - **Periféricos Externos:** Impresora térmica POS y Pasarela de pagos simulada.
 
 ### 7. Formato de Plan de Pruebas Resumido Diligenciado (15 pts)
-- Plan de pruebas estructurado bajo estándares **IEEE 829** e **ISTQB**.
-- Matriz con **16 casos de prueba ejecutados** (8 para Gestión de Usuarios y 8 para Gestión de Celdas).
-- Cobertura de casos positivos, negativos, validaciones de formato, unicidad y condiciones de borde.
-- **Resultado:** 100% Casos Aprobados (**PASÓ**).
+- Matriz completa de 10 casos de prueba rigurosos (`CP-PAG-01` a `CP-PAG-10`) bajo estándar **ISTQB / IEEE 829**, evaluando flujos exitosos, cálculos de tarifas, prevención de duplicados, reactivación de clientes, control de acceso en garita, gestión de morosos y anulación con auditoría contable. Todos los casos ejecutados con resultado **PASÓ**.
 
-### 8. Enlace al Repositorio de GitHub y Código Actualizado (15 pts)
-- **URL Oficial del Repositorio:**  
-  [https://github.com/marianomolina-cloud/IS-Evidencia-de-Aprendizaje-2.-Dise-o-Sistema-de-Informaci-n](https://github.com/marianomolina-cloud/IS-Evidencia-de-Aprendizaje-2.-Dise-o-Sistema-de-Informaci-n)
-- Código fuente funcional actualizado con trazabilidad directa a los requerimientos de la Iteración 2.
+### 8. URL del Repositorio en GitHub y Código Fuente Actualizado (15 pts)
+- Repositorio oficial público y accesible:  
+  [https://github.com/marianomolina-cloud/taller-3-Dise-o-Sistema-de-Informaci-n-Iteraci-n-3.git](https://github.com/marianomolina-cloud/taller-3-Dise-o-Sistema-de-Informaci-n-Iteraci-n-3.git)

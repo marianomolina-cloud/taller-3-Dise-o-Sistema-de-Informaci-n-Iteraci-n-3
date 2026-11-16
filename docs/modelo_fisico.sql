@@ -1,9 +1,9 @@
 -- ============================================================
 -- MODELO FÍSICO DE BASE DE DATOS
 -- Sistema de Información Parqueadero "Autos Colombia"
--- Iteración 1: Gestión de Entrada y Salida de Vehículos
--- Versión: 1.0 | Fecha: 2026-10-18
--- Motor: MySQL 8.0+
+-- Iteración 3: Módulo de Gestión de Pagos y Tarifas (Integral 1, 2 y 3)
+-- Versión: 3.0 | Fecha: 2026-11-16
+-- Motor: MySQL 8.0+ / MariaDB 10.5+
 -- ============================================================
 
 -- Crear y seleccionar la base de datos
@@ -168,30 +168,67 @@ END$$
 DELIMITER ;
 
 -- ============================================================
+-- TABLA: tarifa
+-- Parametrización de mensualidades por tipo de vehículo
+-- ============================================================
+CREATE TABLE tarifa (
+    id             INT AUTO_INCREMENT PRIMARY KEY,
+    tipo_vehiculo  ENUM('CARRO', 'MOTO', 'CAMIONETA') NOT NULL UNIQUE,
+    valor_mensual  DECIMAL(10,2) NOT NULL,
+    descripcion    VARCHAR(150),
+    activa         TINYINT(1) NOT NULL DEFAULT 1,
+    created_at     DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at     DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB COMMENT='Valores de mensualidad por tipología de vehículo';
+
+-- ============================================================
 -- TABLA: pago
--- Registro de pagos de mensualidad
+-- Registro de pagos de mensualidad y emisión de recibos
 -- ============================================================
 CREATE TABLE pago (
-    id                INT AUTO_INCREMENT PRIMARY KEY,
-    fecha_pago        DATE NOT NULL,
-    periodo_inicio    DATE NOT NULL COMMENT 'Inicio del mes cubierto',
-    periodo_fin       DATE NOT NULL COMMENT 'Fin del mes cubierto',
-    monto             DECIMAL(10,2) NOT NULL,
-    metodo_pago       ENUM('EFECTIVO', 'TRANSFERENCIA', 'TARJETA') NOT NULL DEFAULT 'EFECTIVO',
-    observaciones     VARCHAR(200),
-    persona_id        INT NOT NULL,
-    usuario_sistema_id INT NOT NULL COMMENT 'Admin que procesó el pago',
-    created_at        DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    id                   INT AUTO_INCREMENT PRIMARY KEY,
+    numero_recibo        VARCHAR(20) NOT NULL UNIQUE COMMENT 'Consecutivo legal REC-YYYY-XXXX',
+    fecha_pago           DATE NOT NULL,
+    periodo_inicio       DATE NOT NULL COMMENT 'Inicio del mes cubierto',
+    periodo_fin          DATE NOT NULL COMMENT 'Fin del mes cubierto',
+    monto                DECIMAL(10,2) NOT NULL,
+    metodo_pago          ENUM('EFECTIVO', 'TRANSFERENCIA', 'TARJETA') NOT NULL DEFAULT 'EFECTIVO',
+    estado               ENUM('VIGENTE', 'VENCIDO', 'ANULADO') NOT NULL DEFAULT 'VIGENTE',
+    observaciones        VARCHAR(250),
+    persona_id           INT NOT NULL,
+    vehiculo_id          INT NULL COMMENT 'Vehículo opcional asociado al recibo',
+    usuario_sistema_id   INT NOT NULL COMMENT 'Cajero que procesó el pago',
+    motivo_anulacion     VARCHAR(250) NULL,
+    fecha_anulacion      DATETIME NULL,
+    usuario_anulacion_id INT NULL,
+    created_at           DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     
     FOREIGN KEY fk_pago_persona (persona_id)
         REFERENCES persona(id)
         ON DELETE RESTRICT
+        ON UPDATE CASCADE,
+        
+    FOREIGN KEY fk_pago_vehiculo (vehiculo_id)
+        REFERENCES vehiculo(id)
+        ON DELETE SET NULL
         ON UPDATE CASCADE,
     
     FOREIGN KEY fk_pago_usuario (usuario_sistema_id)
         REFERENCES usuario_sistema(id)
         ON DELETE RESTRICT
         ON UPDATE CASCADE,
+
+    FOREIGN KEY fk_pago_usuario_anulacion (usuario_anulacion_id)
+        REFERENCES usuario_sistema(id)
+        ON DELETE RESTRICT
+        ON UPDATE CASCADE,
+        
+    INDEX idx_persona (persona_id),
+    INDEX idx_vehiculo (vehiculo_id),
+    INDEX idx_periodo (periodo_inicio, periodo_fin),
+    INDEX idx_estado_pago (estado),
+    INDEX idx_recibo (numero_recibo)
+) ENGINE=InnoDB COMMENT='Registro de transacciones de mensualidades y comprobantes';
     
     INDEX idx_persona (persona_id),
     INDEX idx_periodo (periodo_inicio, periodo_fin)

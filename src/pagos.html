@@ -3,45 +3,209 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pagos – Autos Colombia</title>
+    <title>Gestión de Pagos y Mensualidades – Autos Colombia</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/main.css">
+    <style>
+        .tabs-header {
+            display: flex;
+            gap: 0.5rem;
+            border-bottom: 2px solid var(--border-color, #e2e8f0);
+            margin-bottom: 1.5rem;
+        }
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 0.75rem 1.25rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #64748b;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s ease;
+        }
+        .tab-btn:hover {
+            color: #1e293b;
+        }
+        .tab-btn.active {
+            color: #2563eb;
+            border-bottom-color: #2563eb;
+        }
+        .badge-anulado {
+            background-color: #f1f5f9;
+            color: #64748b;
+            text-decoration: line-through;
+        }
+        /* Recibo Digital */
+        .receipt-container {
+            background: #ffffff;
+            border: 1px dashed #cbd5e1;
+            border-radius: 8px;
+            padding: 24px;
+            font-family: 'Courier New', Courier, monospace;
+            color: #1e293b;
+            max-width: 440px;
+            margin: 0 auto;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        .receipt-header {
+            text-align: center;
+            border-bottom: 1px dashed #94a3b8;
+            padding-bottom: 12px;
+            margin-bottom: 12px;
+        }
+        .receipt-header h3 {
+            margin: 0;
+            font-size: 1.2rem;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+        .receipt-header p {
+            margin: 2px 0;
+            font-size: 0.85rem;
+            color: #475569;
+        }
+        .receipt-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6px;
+            font-size: 0.88rem;
+        }
+        .receipt-divider {
+            border-top: 1px dashed #94a3b8;
+            margin: 10px 0;
+        }
+        .receipt-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.15rem;
+            font-weight: bold;
+            padding: 8px 0;
+        }
+        .receipt-barcode {
+            text-align: center;
+            letter-spacing: 4px;
+            font-size: 1.3rem;
+            margin-top: 12px;
+            padding-top: 8px;
+            border-top: 1px dashed #cbd5e1;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
 <div class="app-layout">
     <div class="main-content">
         <header class="topbar">
             <div class="topbar-title">
-                <h1>💰 Gestión de Pagos</h1>
-                <p>Mensualidades de los suscriptores</p>
+                <h1>💳 Gestión de Pagos de Mensualidad</h1>
+                <p>Control de cartera, emisión de recibos y tarifación de suscriptores</p>
             </div>
             <div class="topbar-actions">
                 <span class="topbar-time" id="topbarTime"></span>
-                <button class="btn btn-primary" onclick="abrirModal()">➕ Registrar Pago</button>
+                <button class="btn btn-primary" onclick="abrirModalPago()">➕ Registrar Pago</button>
             </div>
         </header>
+
         <main class="page-content">
-            <!-- Stats rápidos -->
+            <!-- Métricas Financieras Principales -->
             <div class="stats-grid mb-2" id="statsGrid"></div>
 
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title">Historial de Pagos</div>
-                    <div class="text-muted text-sm" id="totalPagos"></div>
+            <!-- Navegación por pestañas -->
+            <div class="tabs-header">
+                <button class="tab-btn active" id="tabHistorial" onclick="cambiarTab('historial')">📋 Historial de Pagos</button>
+                <button class="tab-btn" id="tabMorosos" onclick="cambiarTab('morosos')">⚠️ Cartera y Morosos (<span id="countMorosos">0</span>)</button>
+                <button class="tab-btn" id="tabTarifas" onclick="cambiarTab('tarifas')">⚙️ Tarifas Parametrizadas</button>
+            </div>
+
+            <!-- SECCIÓN 1: HISTORIAL DE PAGOS -->
+            <div id="secHistorial" class="card">
+                <div class="card-header" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                    <div>
+                        <div class="card-title">Transacciones y Mensualidades Registradas</div>
+                        <div class="text-muted text-sm" id="totalPagos">Cargando registros...</div>
+                    </div>
+                    <div style="display:flex; gap:8px; align-items:center;">
+                        <input type="text" id="filtroTexto" placeholder="🔍 Buscar por propietario o recibo..." class="form-control" style="width:260px;" oninput="renderTablaPagos()">
+                        <select id="filtroEstado" class="form-control" style="width:140px;" onchange="renderTablaPagos()">
+                            <option value="">Todos los Estados</option>
+                            <option value="VIGENTE">Vigentes</option>
+                            <option value="VENCIDO">Vencidos</option>
+                            <option value="ANULADO">Anulados</option>
+                        </select>
+                        <select id="filtroMetodo" class="form-control" style="width:140px;" onchange="renderTablaPagos()">
+                            <option value="">Todos los Medios</option>
+                            <option value="EFECTIVO">Efectivo</option>
+                            <option value="TRANSFERENCIA">Transferencia</option>
+                            <option value="TARJETA">Tarjeta</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="table-wrap">
                     <table>
                         <thead>
                             <tr>
-                                <th>Propietario</th>
-                                <th>Período</th>
+                                <th>N° Recibo</th>
+                                <th>Suscriptor</th>
+                                <th>Vehículo</th>
+                                <th>Período Cubierto</th>
                                 <th>Fecha Pago</th>
                                 <th>Monto</th>
                                 <th>Método</th>
                                 <th>Estado</th>
+                                <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody id="tablaPagos"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- SECCIÓN 2: CARTERA Y MOROSOS -->
+            <div id="secMorosos" class="card" style="display:none;">
+                <div class="card-header">
+                    <div>
+                        <div class="card-title">Suscriptores con Mensualidad Vencida o Pendiente</div>
+                        <div class="text-muted text-sm">Clientes que no cuentan con un pago vigente para el mes en curso. No podrán autorizarse en garita.</div>
+                    </div>
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Documento</th>
+                                <th>Suscriptor</th>
+                                <th>Contacto</th>
+                                <th>Vehículos Registrados</th>
+                                <th>Último Período Pagado</th>
+                                <th>Estado Actual</th>
+                                <th>Acción Inmediata</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablaMorosos"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- SECCIÓN 3: TARIFAS PARAMETRIZADAS -->
+            <div id="secTarifas" class="card" style="display:none;">
+                <div class="card-header" style="display:flex; justify-content:space-between; align-items:center;">
+                    <div>
+                        <div class="card-title">Matriz de Tarifas por Categoría de Vehículo</div>
+                        <div class="text-muted text-sm">Valores parametrizados para la liquidación mensual de celdas reservadas.</div>
+                    </div>
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Categoría de Vehículo</th>
+                                <th>Descripción de Cobertura</th>
+                                <th>Valor Mensualidad</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablaTarifas"></tbody>
                     </table>
                 </div>
             </div>
@@ -49,45 +213,115 @@
     </div>
 </div>
 
-<!-- Modal -->
-<div class="modal-overlay" id="modal" style="display:none" onclick="if(event.target.id==='modal')cerrarModal()">
-    <div class="modal">
+<!-- MODAL REGISTRO DE PAGO -->
+<div class="modal-overlay" id="modalPago" style="display:none" onclick="if(event.target.id==='modalPago')cerrarModalPago()">
+    <div class="modal" style="max-width:580px;">
         <div class="modal-header">
-            <div class="modal-title">Registrar Pago de Mensualidad</div>
-            <button class="modal-close" onclick="cerrarModal()">✕</button>
+            <div class="modal-title">💵 Registrar Nuevo Pago de Mensualidad</div>
+            <button class="modal-close" onclick="cerrarModalPago()">✕</button>
         </div>
         <div class="modal-body">
-            <div id="modalAlert"></div>
+            <div id="modalPagoAlert"></div>
             <div class="form-grid">
                 <div class="form-group" style="grid-column:1/-1">
-                    <label>Propietario *</label>
-                    <select id="fPersona" class="form-control"></select>
+                    <label>Propietario / Suscriptor *</label>
+                    <select id="fPersona" class="form-control" onchange="actualizarVehiculosYTarifa()"></select>
+                </div>
+                <div class="form-group" style="grid-column:1/-1">
+                    <label>Vehículo Asociado</label>
+                    <select id="fVehiculo" class="form-control" onchange="autoSeleccionarTarifaPorVehiculo()"></select>
                 </div>
                 <div class="form-group">
-                    <label>Mes de Pago *</label>
-                    <input type="month" id="fMes" class="form-control">
+                    <label>Mes de Cobertura *</label>
+                    <input type="month" id="fMes" class="form-control" onchange="calcularFechasPeriodo()">
                 </div>
                 <div class="form-group">
-                    <label>Monto *</label>
-                    <input type="number" id="fMonto" class="form-control" value="120000" min="0" step="1000">
+                    <label>Monto Liquidado ($ COP) *</label>
+                    <input type="number" id="fMonto" class="form-control" value="120000" min="0" step="5000">
                 </div>
                 <div class="form-group">
-                    <label>Método de Pago</label>
-                    <select id="fMetodo" class="form-control">
+                    <label>Medio de Pago *</label>
+                    <select id="fMetodo" class="form-control" onchange="toggleEfectivoCampos()">
                         <option value="EFECTIVO">Efectivo</option>
-                        <option value="TRANSFERENCIA">Transferencia</option>
-                        <option value="TARJETA">Tarjeta</option>
+                        <option value="TRANSFERENCIA">Transferencia Bancaria / PSE</option>
+                        <option value="TARJETA">Tarjeta Débito / Crédito</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>Fecha de Pago</label>
+                    <label>Fecha de Transacción</label>
                     <input type="date" id="fFecha" class="form-control">
+                </div>
+                <div class="form-group" id="grpEfectivo" style="display:grid; grid-template-columns:1fr 1fr; gap:10px; grid-column:1/-1;">
+                    <div>
+                        <label>Efectivo Recibido ($)</label>
+                        <input type="number" id="fEfectivoRecibido" class="form-control" placeholder="Ej: 150000" oninput="calcularCambio()">
+                    </div>
+                    <div>
+                        <label>Cambio a Entregar ($)</label>
+                        <input type="text" id="fCambio" class="form-control" readonly style="background:#f8fafc; font-weight:bold; color:#10b981;">
+                    </div>
+                </div>
+                <div class="form-group" style="grid-column:1/-1">
+                    <label>Observaciones / N° Comprobante</label>
+                    <input type="text" id="fObservaciones" class="form-control" placeholder="Ej: Pago mensualidad completa Noviembre - Sin novedades">
                 </div>
             </div>
         </div>
         <div class="modal-footer">
-            <button class="btn btn-outline" onclick="cerrarModal()">Cancelar</button>
-            <button class="btn btn-primary" onclick="guardarPago()">Registrar Pago</button>
+            <button class="btn btn-outline" onclick="cerrarModalPago()">Cancelar</button>
+            <button class="btn btn-primary" onclick="guardarPago()">Confirmar y Emitir Recibo</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL COMPROBANTE DE PAGO / RECIBO OFICIAL -->
+<div class="modal-overlay" id="modalRecibo" style="display:none" onclick="if(event.target.id==='modalRecibo')cerrarModalRecibo()">
+    <div class="modal" style="max-width:500px;">
+        <div class="modal-header">
+            <div class="modal-title">🧾 Recibo de Pago Digital</div>
+            <button class="modal-close" onclick="cerrarModalRecibo()">✕</button>
+        </div>
+        <div class="modal-body" style="background:#f1f5f9; padding:20px;">
+            <div class="receipt-container" id="printableReceipt">
+                <div class="receipt-header">
+                    <h3>AUTOS COLOMBIA S.A.S</h3>
+                    <p>NIT: 900.823.114-1 | Régimen Común</p>
+                    <p>Calle 45 # 12-34 – Medellín, Colombia</p>
+                    <p>Tel: (604) 444-2390 | contacto@autoscolombia.com</p>
+                    <div style="margin-top:8px; font-weight:bold; font-size:1rem; color:#1e293b;">
+                        COMPROBANTE DE PAGO MENSUALIDAD
+                    </div>
+                    <div style="font-size:0.9rem; color:#2563eb;" id="recNumero">REC-2026-0001</div>
+                </div>
+
+                <div class="receipt-row"><span>Fecha Emisión:</span><strong id="recFecha"></strong></div>
+                <div class="receipt-row"><span>Cajero / Operador:</span><span id="recCajero"></span></div>
+                <div class="receipt-divider"></div>
+
+                <div class="receipt-row"><span>Suscriptor:</span><strong id="recSuscriptor"></strong></div>
+                <div class="receipt-row"><span>Cédula / NIT:</span><span id="recCedula"></span></div>
+                <div class="receipt-row"><span>Vehículo:</span><span id="recVehiculo"></span></div>
+                <div class="receipt-row"><span>Período Cubierto:</span><strong id="recPeriodo"></strong></div>
+                <div class="receipt-divider"></div>
+
+                <div class="receipt-row"><span>Concepto:</span><span>Parqueadero Mensual</span></div>
+                <div class="receipt-row"><span>Forma de Pago:</span><strong id="recMetodo"></strong></div>
+                <div class="receipt-total">
+                    <span>TOTAL PAGADO:</span>
+                    <span id="recTotal" style="color:#2563eb;">$ 0</span>
+                </div>
+                <div class="receipt-divider"></div>
+
+                <div style="font-size:0.75rem; color:#64748b; text-align:center; line-height:1.3;">
+                    Este recibo certifica la vigencia del servicio de parqueadero mensual en nuestras instalaciones.
+                    Conserve este comprobante para cualquier reclamación.
+                </div>
+                <div class="receipt-barcode" id="recBarcode">||| |||| || |||||| | ||||</div>
+            </div>
+        </div>
+        <div class="modal-footer" style="display:flex; justify-content:space-between;">
+            <button class="btn btn-outline" onclick="cerrarModalRecibo()">Cerrar</button>
+            <button class="btn btn-primary" onclick="imprimirRecibo()">🖨️ Imprimir Recibo</button>
         </div>
     </div>
 </div>
@@ -97,70 +331,215 @@
 <script>
 Layout.init('pagos.html');
 
-function renderStats() {
-    const hoy = new Date().toISOString().split('T')[0];
-    const pagos = DB.Pagos.getAll();
-    const personas = DB.Personas.getAll().filter(p => p.estado === 'ACTIVO');
-    const vigentes = pagos.filter(p => p.periodoFin >= hoy);
-    const sinPago = personas.filter(p => !DB.tienePagoVigente(p.id));
-    const items = [
-        { label: 'Suscriptores Activos', value: vigentes.length, icon: '✅', color: '#10b981' },
-        { label: 'Sin Pago Vigente', value: sinPago.length, icon: '⚠️', color: '#f59e0b' },
-        { label: 'Total Pagos Registrados', value: pagos.length, icon: '📄', color: '#3b82f6' },
-        { label: 'Recaudado Este Mes', value: Utils.formatCurrency(pagos.filter(p => p.periodoInicio?.startsWith(hoy.slice(0,7))).reduce((a,b) => a + (b.monto||0), 0)), icon: '💵', color: '#8b5cf6', isText: true }
+let tabActual = 'historial';
+
+function cambiarTab(tab) {
+    tabActual = tab;
+    document.getElementById('tabHistorial').classList.toggle('active', tab === 'historial');
+    document.getElementById('tabMorosos').classList.toggle('active', tab === 'morosos');
+    document.getElementById('tabTarifas').classList.toggle('active', tab === 'tarifas');
+
+    document.getElementById('secHistorial').style.display = tab === 'historial' ? 'block' : 'none';
+    document.getElementById('secMorosos').style.display = tab === 'morosos' ? 'block' : 'none';
+    document.getElementById('secTarifas').style.display = tab === 'tarifas' ? 'block' : 'none';
+
+    if (tab === 'historial') renderTablaPagos();
+    else if (tab === 'morosos') renderTablaMorosos();
+    else if (tab === 'tarifas') renderTablaTarifas();
+}
+
+/* Renderizar Métricas de Pagos */
+function renderStatsPagos() {
+    const stats = DB.getStats();
+    const morosos = DB.getSuscriptoresMorosos();
+    document.getElementById('countMorosos').textContent = morosos.length;
+
+    const cards = [
+        { label: 'Recaudado Este Mes', value: Utils.formatCurrency(stats.recaudadoMes), icon: '💵', color: '#10b981', isText: true },
+        { label: 'Suscriptores Al Día', value: `${stats.suscriptoresActivos} / ${stats.totalSuscriptores}`, icon: '✅', color: '#3b82f6' },
+        { label: 'Suscriptores En Mora', value: stats.suscriptoresMora, icon: '⚠️', color: '#f59e0b' },
+        { label: 'Total Pagos Históricos', value: stats.totalPagosRegistrados, icon: '📑', color: '#8b5cf6' }
     ];
-    document.getElementById('statsGrid').innerHTML = items.map(s => `
+
+    document.getElementById('statsGrid').innerHTML = cards.map(s => `
         <div class="stat-card" style="--stat-color:${s.color}">
             <div class="stat-icon" style="background:${s.color}22;color:${s.color}">${s.icon}</div>
             <div class="stat-info">
-                <div class="stat-value" style="${s.isText?'font-size:1rem':''};">${s.value}</div>
+                <div class="stat-value" style="${s.isText ? 'font-size:1.15rem' : ''}">${s.value}</div>
                 <div class="stat-label">${s.label}</div>
             </div>
-        </div>`).join('');
+        </div>
+    `).join('');
 }
 
-function renderTabla() {
-    const pagos = DB.Pagos.getAll().reverse();
-    const hoy = new Date().toISOString().split('T')[0];
-    document.getElementById('totalPagos').textContent = `${pagos.length} pago(s)`;
+/* Renderizar Tabla Historial de Pagos */
+function renderTablaPagos() {
+    let pagos = DB.Pagos.getAll().slice().reverse();
+    const texto = (document.getElementById('filtroTexto').value || '').toLowerCase().trim();
+    const estado = document.getElementById('filtroEstado').value;
+    const metodo = document.getElementById('filtroMetodo').value;
+
+    if (texto) {
+        pagos = pagos.filter(p => {
+            const persona = DB.Personas.getById(p.personaId);
+            return (p.numeroRecibo && p.numeroRecibo.toLowerCase().includes(texto)) ||
+                   (persona && persona.nombreCompleto.toLowerCase().includes(texto)) ||
+                   (persona && persona.cedula.includes(texto));
+        });
+    }
+    if (estado) {
+        pagos = pagos.filter(p => p.estado === estado);
+    }
+    if (metodo) {
+        pagos = pagos.filter(p => p.metodoPago === metodo);
+    }
+
+    document.getElementById('totalPagos').textContent = `Mostrando ${pagos.length} recibo(s) registrado(s)`;
     const tbody = document.getElementById('tablaPagos');
-    if (!pagos.length) { tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:var(--text-muted);padding:2rem">Sin pagos registrados</td></tr>`; return; }
+
+    if (!pagos.length) {
+        tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;color:var(--text-muted);padding:2.5rem;">No se encontraron pagos con los filtros seleccionados.</td></tr>`;
+        return;
+    }
+
     tbody.innerHTML = pagos.map(p => {
         const persona = DB.Personas.getById(p.personaId);
-        const vigente = p.periodoFin >= hoy;
+        const vehiculo = p.vehiculoId ? DB.Vehiculos.getById(p.vehiculoId) : null;
+        let badgeClass = 'badge-neutral';
+        if (p.estado === 'VIGENTE') badgeClass = 'badge-success';
+        else if (p.estado === 'VENCIDO') badgeClass = 'badge-danger';
+        else if (p.estado === 'ANULADO') badgeClass = 'badge-anulado';
+
         return `<tr>
-            <td>${persona?.nombreCompleto || '—'}</td>
-            <td>${p.periodoInicio} al ${p.periodoFin}</td>
-            <td>${Utils.formatDate(p.fechaPago)}</td>
-            <td>${Utils.formatCurrency(p.monto)}</td>
-            <td>${p.metodoPago}</td>
-            <td><span class="badge ${vigente ? 'badge-success' : 'badge-neutral'}">${vigente ? 'Vigente' : 'Vencido'}</span></td>
+            <td><strong>${p.numeroRecibo || 'REC-LEGACY'}</strong></td>
+            <td>
+                <strong>${persona ? persona.nombreCompleto : 'Cliente no encontrado'}</strong><br>
+                <small class="text-muted">C.C. ${persona ? persona.cedula : '—'}</small>
+            </td>
+            <td>${vehiculo ? `<span class="badge badge-primary">${vehiculo.placa}</span> <small class="text-muted">(${vehiculo.tipo})</small>` : '<span class="text-muted">General</span>'}</td>
+            <td><small>${p.periodoInicio} al ${p.periodoFin}</small></td>
+            <td>${p.fechaPago}</td>
+            <td><strong>${Utils.formatCurrency(p.monto)}</strong></td>
+            <td><span class="badge badge-neutral">${p.metodoPago}</span></td>
+            <td><span class="badge ${badgeClass}">${p.estado}</span></td>
+            <td>
+                <div style="display:flex; gap:6px;">
+                    <button class="btn btn-sm btn-outline" onclick="verRecibo(${p.id})" title="Ver e Imprimir Recibo">🧾</button>
+                    ${p.estado !== 'ANULADO' ? `<button class="btn btn-sm btn-danger" onclick="confirmarAnulacion(${p.id})" title="Anular Pago">✕</button>` : ''}
+                </div>
+            </td>
         </tr>`;
     }).join('');
 }
 
-function abrirModal() {
-    document.getElementById('modalAlert').innerHTML = '';
-    const personas = DB.Personas.getAll().filter(p => p.estado === 'ACTIVO');
-    document.getElementById('fPersona').innerHTML = personas.map(p => `<option value="${p.id}">${p.nombreCompleto}</option>`).join('');
-    const now = new Date();
-    document.getElementById('fMes').value = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
-    document.getElementById('fFecha').value = now.toISOString().split('T')[0];
-    document.getElementById('modal').style.display = 'flex';
+/* Renderizar Tabla Morosos */
+function renderTablaMorosos() {
+    const morosos = DB.getSuscriptoresMorosos();
+    const tbody = document.getElementById('tablaMorosos');
+
+    if (!morosos.length) {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;color:#10b981;padding:2.5rem;font-weight:600;">🎉 ¡Excelente! No hay suscriptores con pagos pendientes. Todos se encuentran al día.</td></tr>`;
+        return;
+    }
+
+    tbody.innerHTML = morosos.map(m => {
+        const vehs = m.vehiculos.map(v => `<span class="badge badge-neutral">${v.placa} (${v.tipo})</span>`).join(' ') || '<span class="text-muted">Sin vehículos</span>';
+        const ultimoPeriodo = m.ultimoPago ? `${m.ultimoPago.periodoInicio} al ${m.ultimoPago.periodoFin}` : '<span style="color:#ef4444;">Sin pagos previos</span>';
+
+        return `<tr>
+            <td><strong>${m.cedula}</strong></td>
+            <td><strong>${m.nombreCompleto}</strong></td>
+            <td><small>📞 ${m.telefono}<br>✉️ ${m.email}</small></td>
+            <td>${vehs}</td>
+            <td><small>${ultimoPeriodo}</small></td>
+            <td><span class="badge badge-danger">EN MORA</span></td>
+            <td>
+                <button class="btn btn-sm btn-primary" onclick="cobrarMorosoDirecto(${m.id})">💵 Cobrar Mensualidad</button>
+            </td>
+        </tr>`;
+    }).join('');
 }
 
-function cerrarModal() { document.getElementById('modal').style.display = 'none'; }
+/* Renderizar Tarifas Parametrizadas */
+function renderTablaTarifas() {
+    const tarifas = DB.Tarifas.getAll();
+    const tbody = document.getElementById('tablaTarifas');
+    tbody.innerHTML = tarifas.map(t => `
+        <tr>
+            <td><strong style="color:#2563eb;">${t.tipoVehiculo}</strong></td>
+            <td>${t.descripcion}</td>
+            <td><strong style="font-size:1.1rem; color:#10b981;">${Utils.formatCurrency(t.valorMensual)}</strong></td>
+            <td><span class="badge badge-success">Tarifa Activa</span></td>
+        </tr>
+    `).join('');
+}
+
+/* Manejo Modal Pago */
+function abrirModalPago(personaIdDefault = null) {
+    document.getElementById('modalPagoAlert').innerHTML = '';
+    const personas = DB.Personas.getAll().filter(p => p.estado !== 'INACTIVO');
+    const selectPersona = document.getElementById('fPersona');
+    selectPersona.innerHTML = personas.map(p => `<option value="${p.id}" ${personaIdDefault === p.id ? 'selected' : ''}>${p.nombreCompleto} (C.C. ${p.cedula})</option>`).join('');
+
+    const ahora = new Date();
+    document.getElementById('fMes').value = `${ahora.getFullYear()}-${String(ahora.getMonth() + 1).padStart(2, '0')}`;
+    document.getElementById('fFecha').value = ahora.toISOString().split('T')[0];
+    document.getElementById('fEfectivoRecibido').value = '';
+    document.getElementById('fCambio').value = '';
+
+    actualizarVehiculosYTarifa();
+    document.getElementById('modalPago').style.display = 'flex';
+}
+
+function cerrarModalPago() {
+    document.getElementById('modalPago').style.display = 'none';
+}
+
+function actualizarVehiculosYTarifa() {
+    const personaId = parseInt(document.getElementById('fPersona').value);
+    const vehiculos = DB.getVehiculosPorPersona(personaId);
+    const selectVeh = document.getElementById('fVehiculo');
+
+    if (!vehiculos.length) {
+        selectVeh.innerHTML = `<option value="">(Sin vehículo asociado - Tarifa Estándar)</option>`;
+        document.getElementById('fMonto').value = DB.getTarifaPorTipo('CARRO');
+    } else {
+        selectVeh.innerHTML = vehiculos.map(v => `<option value="${v.id}" data-tipo="${v.tipo}">${v.placa} - ${v.marca} ${v.modelo} (${v.tipo})</option>`).join('');
+        autoSeleccionarTarifaPorVehiculo();
+    }
+}
+
+function autoSeleccionarTarifaPorVehiculo() {
+    const selectVeh = document.getElementById('fVehiculo');
+    const selectedOption = selectVeh.options[selectVeh.selectedIndex];
+    const tipo = selectedOption ? selectedOption.getAttribute('data-tipo') : 'CARRO';
+    document.getElementById('fMonto').value = DB.getTarifaPorTipo(tipo);
+    calcularCambio();
+}
+
+function toggleEfectivoCampos() {
+    const metodo = document.getElementById('fMetodo').value;
+    document.getElementById('grpEfectivo').style.display = (metodo === 'EFECTIVO') ? 'grid' : 'none';
+}
+
+function calcularCambio() {
+    const monto = parseFloat(document.getElementById('fMonto').value) || 0;
+    const recibido = parseFloat(document.getElementById('fEfectivoRecibido').value) || 0;
+    const cambio = recibido - monto;
+    document.getElementById('fCambio').value = cambio >= 0 ? Utils.formatCurrency(cambio) : 'Faltan ' + Utils.formatCurrency(Math.abs(cambio));
+}
 
 function guardarPago() {
-    const personaId = parseInt(document.getElementById('fPersona').value);
+    const personaId = document.getElementById('fPersona').value;
+    const vehiculoId = document.getElementById('fVehiculo').value;
     const mes = document.getElementById('fMes').value;
-    const monto = parseFloat(document.getElementById('fMonto').value);
+    const monto = document.getElementById('fMonto').value;
     const metodo = document.getElementById('fMetodo').value;
-    const fecha = document.getElementById('fFecha').value;
-    const alert = document.getElementById('modalAlert');
+    const observaciones = document.getElementById('fObservaciones').value;
+    const alertDiv = document.getElementById('modalPagoAlert');
 
     if (!personaId || !mes || !monto) {
-        alert.innerHTML = `<div class="alert alert-danger">❌ Propietario, mes y monto son obligatorios.</div>`;
+        alertDiv.innerHTML = `<div class="alert alert-danger">⚠️ Debe seleccionar un suscriptor, mes y monto válido.</div>`;
         return;
     }
 
@@ -168,16 +547,119 @@ function guardarPago() {
     const periodoInicio = `${y}-${m}-01`;
     const periodoFin = new Date(parseInt(y), parseInt(m), 0).toISOString().split('T')[0];
 
-    const user = Auth.getUser();
-    DB.Pagos.add({ personaId, periodoInicio, periodoFin, monto, metodoPago: metodo, fechaPago: fecha, usuarioSistemaId: user.userId });
-    Toast.success('Pago registrado correctamente.');
-    cerrarModal();
-    renderTabla();
-    renderStats();
+    try {
+        const user = Auth.getUser() || { userId: 1 };
+        const nuevoPago = DB.registrarPago({
+            personaId,
+            vehiculoId,
+            periodoInicio,
+            periodoFin,
+            monto,
+            metodoPago: metodo,
+            usuarioSistemaId: user.userId,
+            observaciones
+        });
+
+        Toast.success('Pago de mensualidad registrado exitosamente.');
+        cerrarModalPago();
+        renderStatsPagos();
+        renderTablaPagos();
+        renderTablaMorosos();
+        verRecibo(nuevoPago.id);
+    } catch (e) {
+        alertDiv.innerHTML = `<div class="alert alert-danger">❌ ${e.message}</div>`;
+    }
 }
 
-renderStats();
-renderTabla();
+function cobrarMorosoDirecto(personaId) {
+    abrirModalPago(personaId);
+}
+
+function confirmarAnulacion(pagoId) {
+    const motivo = prompt('Por favor ingrese el motivo de anulación del recibo de pago:');
+    if (!motivo) return;
+    try {
+        const user = Auth.getUser() || { userId: 1 };
+        DB.anularPago(pagoId, motivo, user.userId);
+        Toast.warning('Recibo anulado satisfactoriamente.');
+        renderStatsPagos();
+        renderTablaPagos();
+        renderTablaMorosos();
+    } catch (e) {
+        alert('Error: ' + e.message);
+    }
+}
+
+/* Ver Recibo Oficial */
+function verRecibo(pagoId) {
+    const pago = DB.Pagos.getById(pagoId);
+    if (!pago) return;
+
+    const persona = DB.Personas.getById(pago.personaId);
+    const vehiculo = pago.vehiculoId ? DB.Vehiculos.getById(pago.vehiculoId) : null;
+    const usuario = DB.Usuarios.getById(pago.usuarioSistemaId);
+
+    document.getElementById('recNumero').textContent = pago.numeroRecibo || 'REC-LEGACY';
+    document.getElementById('recFecha').textContent = `${pago.fechaPago || pago.createdAt.split('T')[0]}`;
+    document.getElementById('recCajero').textContent = usuario ? usuario.nombre : 'Cajero Garita';
+    document.getElementById('recSuscriptor').textContent = persona ? persona.nombreCompleto : '—';
+    document.getElementById('recCedula').textContent = persona ? persona.cedula : '—';
+    document.getElementById('recVehiculo').textContent = vehiculo ? `${vehiculo.placa} (${vehiculo.marca} ${vehiculo.modelo})` : 'Cobertura General';
+    document.getElementById('recPeriodo').textContent = `${pago.periodoInicio} al ${pago.periodoFin}`;
+    document.getElementById('recMetodo').textContent = pago.metodoPago;
+    document.getElementById('recTotal').textContent = Utils.formatCurrency(pago.monto);
+    document.getElementById('recBarcode').textContent = `*${pago.numeroRecibo || 'REC000'}*`;
+
+    document.getElementById('modalRecibo').style.display = 'flex';
+}
+
+function cerrarModalRecibo() {
+    document.getElementById('modalRecibo').style.display = 'none';
+}
+
+function imprimirRecibo() {
+    const contenido = document.getElementById('printableReceipt').innerHTML;
+    const ventana = window.open('', '_blank', 'width=500,height=600');
+    ventana.document.write(`
+        <html>
+        <head>
+            <title>Imprimir Recibo - Autos Colombia</title>
+            <style>
+                body { font-family: 'Courier New', Courier, monospace; padding: 20px; font-size: 12px; }
+                .receipt-container { max-width: 380px; margin: 0 auto; }
+                .receipt-header { text-align: center; border-bottom: 1px dashed #000; padding-bottom: 10px; margin-bottom: 10px; }
+                .receipt-row { display: flex; justify-content: space-between; margin-bottom: 4px; }
+                .receipt-divider { border-top: 1px dashed #000; margin: 8px 0; }
+                .receipt-total { display: flex; justify-content: space-between; font-size: 14px; font-weight: bold; }
+                .receipt-barcode { text-align: center; font-size: 18px; margin-top: 10px; }
+            </style>
+        </head>
+        <body onload="window.print(); window.close();">
+            <div class="receipt-container">${contenido}</div>
+        </body>
+        </html>
+    `);
+    ventana.document.close();
+}
+
+// Inicializar interfaz
+renderStatsPagos();
+renderTablaPagos();
+renderTablaMorosos();
+renderTablaTarifas();
+
+// Detección automática por URL para capturas de pantalla / mockups
+const urlParams = new URLSearchParams(window.location.search);
+const viewMode = urlParams.get('view');
+if (viewMode === 'modal') {
+    abrirModalPago();
+} else if (viewMode === 'recibo') {
+    verRecibo(1);
+} else if (viewMode === 'morosos') {
+    cambiarTab('morosos');
+} else if (viewMode === 'tarifas') {
+    cambiarTab('tarifas');
+}
 </script>
 </body>
 </html>

@@ -1,373 +1,345 @@
 # Diagramas UML – Parqueadero "Autos Colombia"
-## Iteración 1
+## Iteración 3: Gestión de Pagos y Consolidación de las 3 Iteraciones
+### Estándar UML 2.5 – Modelado en StarUML
 
 ---
 
-## 1. Arquitectura del Sistema (3 Capas)
+## 1. Diagrama de Casos de Uso – Subsistema de Gestión de Pagos
 
-```mermaid
-graph TB
-    subgraph "CAPA DE PRESENTACIÓN (Frontend)"
-        UI_Login["🖥️ Login"]
-        UI_Dashboard["🖥️ Dashboard"]
-        UI_Entradas["🖥️ Registro Entradas"]
-        UI_Salidas["🖥️ Registro Salidas"]
-        UI_Usuarios["🖥️ Gestión Usuarios"]
-        UI_Celdas["🖥️ Gestión Celdas"]
-        UI_Pagos["🖥️ Gestión Pagos"]
-        UI_Historial["🖥️ Historial"]
-        UI_Novedades["🖥️ Novedades"]
-    end
-
-    subgraph "CAPA DE NEGOCIO (Lógica de Aplicación)"
-        BL_Auth["🔐 Módulo Autenticación"]
-        BL_Vehiculos["🚗 Módulo Vehículos"]
-        BL_Movimientos["🔄 Módulo Movimientos"]
-        BL_Celdas["🅿️ Módulo Celdas"]
-        BL_Usuarios["👥 Módulo Usuarios"]
-        BL_Pagos["💰 Módulo Pagos"]
-        BL_Novedades["📋 Módulo Novedades"]
-    end
-
-    subgraph "CAPA DE DATOS (Base de Datos)"
-        DB_MySQL[("🗄️ MySQL\nBase de Datos")]
-        T_Usuarios[("tabla: usuarios")]
-        T_Vehiculos[("tabla: vehiculos")]
-        T_Celdas[("tabla: celdas")]
-        T_Movimientos[("tabla: movimientos")]
-        T_Pagos[("tabla: pagos")]
-        T_Novedades[("tabla: novedades")]
-    end
-
-    UI_Login --> BL_Auth
-    UI_Dashboard --> BL_Movimientos
-    UI_Dashboard --> BL_Celdas
-    UI_Entradas --> BL_Movimientos
-    UI_Salidas --> BL_Movimientos
-    UI_Usuarios --> BL_Usuarios
-    UI_Celdas --> BL_Celdas
-    UI_Pagos --> BL_Pagos
-    UI_Historial --> BL_Movimientos
-    UI_Novedades --> BL_Novedades
-
-    BL_Auth --> DB_MySQL
-    BL_Vehiculos --> DB_MySQL
-    BL_Movimientos --> DB_MySQL
-    BL_Celdas --> DB_MySQL
-    BL_Usuarios --> DB_MySQL
-    BL_Pagos --> DB_MySQL
-    BL_Novedades --> DB_MySQL
-
-    DB_MySQL --- T_Usuarios
-    DB_MySQL --- T_Vehiculos
-    DB_MySQL --- T_Celdas
-    DB_MySQL --- T_Movimientos
-    DB_MySQL --- T_Pagos
-    DB_MySQL --- T_Novedades
-```
-
----
-
-## 2. Diagrama de Casos de Uso
+El subsistema de pagos administra las transacciones de mensualidades, la emisión de recibos oficiales, la validación de derechos de acceso para los suscriptores y la parametrización de tarifas.
 
 ```mermaid
 graph LR
     subgraph Actores
-        OP(["👷 Operador"])
-        AD(["👑 Administrador"])
+        ADMIN(["👑 Administrador"])
+        OPER(["👷 Operador / Cajero"])
+        SYS(["⚙️ Motor del Sistema"])
+        CLI(["👤 Suscriptor / Cliente"])
     end
 
-    subgraph "Sistema de Parqueadero - Autos Colombia"
-        UC1("Iniciar Sesión")
-        UC2("Registrar Entrada de Vehículo")
-        UC3("Registrar Salida de Vehículo")
-        UC4("Ver Dashboard / Mapa de Celdas")
-        UC5("Consultar Historial")
-        UC6("Registrar Novedad")
-        UC7("Gestionar Usuarios")
-        UC8("Gestionar Vehículos")
-        UC9("Gestionar Celdas")
-        UC10("Gestionar Pagos")
-        UC11("Cerrar Sesión")
-
-        UC2 -.->|"include"| UC12("Validar Suscripción")
-        UC2 -.->|"include"| UC13("Asignar Celda")
-        UC3 -.->|"include"| UC14("Liberar Celda")
-        UC7 -.->|"extends"| UC15("Cambiar Estado Usuario")
+    subgraph "Parqueadero Autos Colombia - Módulo de Gestión de Pagos"
+        CU_PAG1("CU-PAG-01: Registrar Pago de Mensualidad")
+        CU_PAG2("CU-PAG-02: Consultar Historial y Transacciones")
+        CU_PAG3("CU-PAG-03: Generar e Imprimir Recibo Digital")
+        CU_PAG4("CU-PAG-04: Validar Vigencia de Suscripción")
+        CU_PAG5("CU-PAG-05: Configurar Tarifas por Tipo de Vehículo")
+        CU_PAG6("CU-PAG-06: Controlar Cartera y Detectar Morosidad")
+        CU_PAG7("CU-PAG-07: Anular Recibo de Pago por Inconsistencia")
+        CU_PAG8("CU-PAG-08: Liquidar Tarifa Automática por Vehículo")
     end
 
-    OP --> UC1
-    OP --> UC2
-    OP --> UC3
-    OP --> UC4
-    OP --> UC5
-    OP --> UC6
-    OP --> UC11
+    ADMIN --> CU_PAG1
+    ADMIN --> CU_PAG2
+    ADMIN --> CU_PAG3
+    ADMIN --> CU_PAG5
+    ADMIN --> CU_PAG6
+    ADMIN --> CU_PAG7
 
-    AD --> UC1
-    AD --> UC2
-    AD --> UC3
-    AD --> UC4
-    AD --> UC5
-    AD --> UC6
-    AD --> UC7
-    AD --> UC8
-    AD --> UC9
-    AD --> UC10
-    AD --> UC11
+    OPER --> CU_PAG1
+    OPER --> CU_PAG2
+    OPER --> CU_PAG3
+    OPER --> CU_PAG6
+
+    SYS --> CU_PAG4
+    SYS --> CU_PAG6
+
+    CLI -.->|"Recibe comprobante"| CU_PAG3
+
+    CU_PAG1 -.->|"«include»"| CU_PAG3
+    CU_PAG1 -.->|"«include»"| CU_PAG8
+    CU_PAG7 -.->|"«extend»"| CU_PAG2
+    CU_PAG4 -.->|"«include»"| CU_PAG6
 ```
 
 ---
 
-## 3. Diagrama de Clases
+## 2. Diagrama de Casos de Uso Global (Iteraciones 1, 2 y 3)
+
+Muestra la articulación completa entre la operación en garita (entradas/salidas), la gestión administrativa de personas y celdas, y la gestión financiera de mensualidades.
 
 ```mermaid
-classDiagram
-    class UsuarioSistema {
-        +int id
-        +String username
-        +String passwordHash
-        +String rol
-        +boolean activo
-        +login(username, password) boolean
-        +logout() void
-    }
+graph LR
+    subgraph Actores
+        ADMIN(["👑 Administrador"])
+        OPER(["👷 Operador Garita"])
+        SYS(["⚙️ Sistema Central"])
+    end
 
-    class Persona {
-        +int id
-        +String cedula
-        +String nombreCompleto
-        +String telefono
-        +String email
-        +String direccion
-        +EstadoPersona estado
-        +registrar() void
-        +actualizar() void
-        +eliminar() void
-    }
+    subgraph "Iteración 1: Entradas y Salidas"
+        CU_E1("CU-01: Registrar Ingreso Vehículo")
+        CU_E2("CU-02: Registrar Salida y Despacho")
+        CU_E3("CU-03: Asignar Celda Libre Automática")
+    end
 
-    class Vehiculo {
-        +int id
-        +String placa
-        +TipoVehiculo tipo
-        +String marca
-        +String color
-        +boolean activo
-        +registrar() void
-        +actualizar() void
-        +obtenerPropietario() Persona
-    }
+    subgraph "Iteración 2: Usuarios y Celdas"
+        CU_U1("CU-04: Registrar Propietario / Cliente")
+        CU_U2("CU-05: Vincular Vehículos a Propietario")
+        CU_U3("CU-06: Mapeo y Monitoreo de Celdas")
+        CU_U4("CU-07: Inhabilitar Celda por Mantenimiento")
+    end
 
-    class Celda {
-        +int id
-        +String numero
-        +String sector
-        +TipoCelda tipo
-        +EstadoCelda estado
-        +boolean activa
-        +asignar(vehiculo) void
-        +liberar() void
-        +obtenerEstado() EstadoCelda
-    }
+    subgraph "Iteración 3: Gestión de Pagos"
+        CU_P1("CU-08: Registrar Pago Mensualidad")
+        CU_P2("CU-09: Emitir Recibo de Pago Digital")
+        CU_P3("CU-10: Validar Vigencia de Suscripción")
+        CU_P4("CU-11: Control de Morosos y Cartera")
+        CU_P5("CU-12: Parametrizar Tarifas por Categoría")
+    end
 
-    class Movimiento {
-        +int id
-        +DateTime fechaEntrada
-        +DateTime fechaSalida
-        +String observaciones
-        +TipoEstado estado
-        +registrarEntrada(vehiculo, celda) void
-        +registrarSalida() void
-        +calcularDuracion() Duration
-    }
+    ADMIN --> CU_U1
+    ADMIN --> CU_U2
+    ADMIN --> CU_U3
+    ADMIN --> CU_U4
+    ADMIN --> CU_P1
+    ADMIN --> CU_P4
+    ADMIN --> CU_P5
 
-    class Pago {
-        +int id
-        +Date fechaPago
-        +Date periodoInicio
-        +Date periodoFin
-        +double monto
-        +String metodoPago
-        +verificarVigencia() boolean
-        +registrar() void
-    }
+    OPER --> CU_E1
+    OPER --> CU_E2
+    OPER --> CU_U3
+    OPER --> CU_P1
+    OPER --> CU_P2
 
-    class Novedad {
-        +int id
-        +String tipo
-        +String descripcion
-        +DateTime fechaRegistro
-        +boolean archivada
-        +registrar() void
-        +archivar() void
-    }
-
-    class GestorEntradas {
-        +validarSuscripcion(persona) boolean
-        +asignarCelda(tipoVehiculo) Celda
-        +registrarEntrada(placa) Movimiento
-    }
-
-    class GestorSalidas {
-        +buscarVehiculo(placa) Vehiculo
-        +registrarSalida(movimientoId) void
-    }
-
-    Persona "1" --> "1" UsuarioSistema : tiene cuenta
-    Persona "1" --> "*" Vehiculo : posee
-    Vehiculo "1" --> "*" Movimiento : genera
-    Celda "1" --> "*" Movimiento : asignada en
-    Persona "1" --> "*" Pago : realiza
-    Vehiculo "1" --> "*" Novedad : tiene
-    Movimiento "*" --> "1" UsuarioSistema : registrado por
-    GestorEntradas --> Vehiculo : busca
-    GestorEntradas --> Celda : asigna
-    GestorEntradas --> Movimiento : crea
-    GestorEntradas --> Pago : valida
-    GestorSalidas --> Movimiento : actualiza
-    GestorSalidas --> Celda : libera
+    CU_E1 -.->|"«include»"| CU_P3
+    CU_E1 -.->|"«include»"| CU_E3
+    CU_P1 -.->|"«include»"| CU_P2
+    SYS --> CU_P3
+    SYS --> CU_P4
 ```
 
 ---
 
-## 4. Diagrama de Paquetes
+## 3. Diagramas de Secuencia (Iteraciones 1, 2 y 3)
+
+### Secuencia 1: Registrar Entrada de Vehículo (Iteración 1)
+Describe la interacción cuando un vehículo ingresa al parqueadero, verificando pago y asignando celda.
 
 ```mermaid
-graph TB
-    subgraph "📦 Paquete: presentacion"
-        P1["login.html"]
-        P2["dashboard.html"]
-        P3["entradas.html"]
-        P4["salidas.html"]
-        P5["usuarios.html"]
-        P6["vehiculos.html"]
-        P7["celdas.html"]
-        P8["pagos.html"]
-        P9["historial.html"]
-        P10["novedades.html"]
-    end
+sequenceDiagram
+    autonumber
+    actor Operador as 👷 Operador Garita
+    participant UI as VistaEntradas (UI)
+    participant Ctrl as ControladorAcceso (BL)
+    participant ValPagos as ServicioValidacionPagos (BL)
+    participant RepoCel as CeldaRepository (DA)
+    participant RepoMov as MovimientoRepository (DA)
 
-    subgraph "📦 Paquete: estilos"
-        E1["main.css"]
-        E2["components.css"]
-        E3["layout.css"]
-    end
+    Operador ->> UI: digitarPlaca("ABC123")
+    UI ->> Ctrl: consultarEstadoVehiculo("ABC123")
+    Ctrl ->> ValPagos: verificarSuscripcionVigente(personaId)
+    ValPagos -->> Ctrl: estadoVigente = true (Pago al Día)
+    Ctrl ->> RepoCel: buscarCeldaDisponible(tipoVehiculo)
+    RepoCel -->> Ctrl: celdaAsignada = "A02"
+    Ctrl ->> RepoCel: actualizarEstado("A02", "OCUPADA")
+    Ctrl ->> RepoMov: crearMovimiento("ABC123", "A02", timestampEntrada)
+    RepoMov -->> Ctrl: movimientoId = 104
+    Ctrl -->> UI: autorizarIngreso(celda: "A02", tiquete: 104)
+    UI -->> Operador: mostrarAccesoPermitido("Celda A02 asignada")
+```
 
-    subgraph "📦 Paquete: logica"
-        L1["auth.js"]
-        L2["vehiculos.js"]
-        L3["movimientos.js"]
-        L4["celdas.js"]
-        L5["usuarios.js"]
-        L6["pagos.js"]
-        L7["novedades.js"]
-        L8["dashboard.js"]
-    end
+### Secuencia 2: Registrar Salida de Vehículo (Iteración 1)
+Describe el egreso del vehículo, cálculo de tiempo de estancia y liberación atómica del espacio.
 
-    subgraph "📦 Paquete: datos"
-        D1["db.js (localStorage)"]
-        D2["models.js"]
-        D3["seed.js"]
-    end
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Operador as 👷 Operador Garita
+    participant UI as VistaSalidas (UI)
+    participant Ctrl as ControladorSalidas (BL)
+    participant RepoMov as MovimientoRepository (DA)
+    participant RepoCel as CeldaRepository (DA)
 
-    subgraph "📦 Paquete: utilidades"
-        U1["validators.js"]
-        U2["formatters.js"]
-        U3["notifications.js"]
-    end
+    Operador ->> UI: buscarPlacaSalida("ABC123")
+    UI ->> Ctrl: obtenerEstanciaActiva("ABC123")
+    Ctrl ->> RepoMov: findByPlacaAndEstado("ABC123", "DENTRO")
+    RepoMov -->> Ctrl: registroMovimiento (celdaId: "A02", fechaEntrada)
+    Ctrl -->> UI: renderizarResumenSalida(tiempoTotal, celda: "A02")
+    UI -->> Operador: mostrarDetallesEstancia()
 
-    presentacion --> estilos
-    presentacion --> logica
-    logica --> datos
-    logica --> utilidades
-    datos --> utilidades
+    Operador ->> UI: confirmarSalidaVehiculo()
+    UI ->> Ctrl: ejecutarSalida(movimientoId, "A02")
+    Ctrl ->> RepoMov: marcarSalida(movimientoId, timestampSalida)
+    Ctrl ->> RepoCel: actualizarEstado("A02", "LIBRE")
+    RepoCel -->> Ctrl: confirmacionLibre(OK)
+    Ctrl -->> UI: despachoCompletado()
+    UI -->> Operador: notificar("Vehículo despachado. Celda A02 liberada")
+```
+
+### Secuencia 3: Gestión de Usuarios y Vehículos (Iteración 2)
+Describe el alta de un nuevo cliente, validación estricta de documentos y vinculación de vehículo.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Admin as 👑 Administrador
+    participant UI as VistaUsuarios (UI)
+    participant Ctrl as ControladorUsuarios (BL)
+    participant Val as ValidadorIdentidad (BL)
+    participant RepoUsr as PersonaRepository (DA)
+    participant RepoVeh as VehiculoRepository (DA)
+
+    Admin ->> UI: ingresarDatosCliente(cedula, nombre, tel, email)
+    UI ->> Ctrl: crearSuscriptor(datosPersona)
+    Ctrl ->> Val: validarUnicidadCedula(cedula)
+    Val -->> Ctrl: cedulaDisponible = true
+    Ctrl ->> RepoUsr: insertPersona(datosPersona)
+    RepoUsr -->> Ctrl: personaCreada (id: 45)
+
+    Admin ->> UI: vincularVehiculo(personaId: 45, placa, tipo, modelo)
+    UI ->> Ctrl: asociarVehiculo(45, datosVehiculo)
+    Ctrl ->> Val: validarUnicidadPlaca(placa)
+    Val -->> Ctrl: placaDisponible = true
+    Ctrl ->> RepoVeh: insertVehiculo(datosVehiculo)
+    RepoVeh -->> Ctrl: vehiculoAsociado(OK)
+    Ctrl -->> UI: notificarExito("Suscriptor y vehículo registrados")
+    UI -->> Admin: actualizarTablaSuscriptores()
+```
+
+### Secuencia 4: Mantenimiento y Mapa de Celdas (Iteración 2)
+Describe la inhabilitación preventiva de un espacio de parqueo para reparaciones.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Admin as 👑 Administrador
+    participant UI as VistaCeldas (UI)
+    participant Ctrl as ControladorCeldas (BL)
+    participant RepoCel as CeldaRepository (DA)
+
+    Admin ->> UI: seleccionarCeldaParaMantenimiento("B04")
+    UI ->> Ctrl: verificarEstadoCelda("B04")
+    Ctrl ->> RepoCel: findByCodigo("B04")
+    RepoCel -->> Ctrl: celda (estado: "LIBRE")
+    Ctrl ->> RepoCel: actualizarEstado("B04", "INHABILITADA")
+    RepoCel -->> Ctrl: celdaActualizada(OK)
+    Ctrl -->> UI: celdaBloqueadaExitosamente()
+    UI -->> Admin: refrescarMapaVisual("Celda B04 marcada en GRIS")
+```
+
+### Secuencia 5: Registro de Pago y Emisión de Recibo (Iteración 3)
+Describe el cobro de la mensualidad, asignación de tarifa según el vehículo y expedición del comprobante oficial.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Cajero as 💵 Operador / Cajero
+    participant UI as VistaPagos (UI)
+    participant Ctrl as ControladorPagos (BL)
+    participant Tarifas as ServicioTarifario (BL)
+    participant RepoPago as PagoRepository (DA)
+    participant RepoUsr as PersonaRepository (DA)
+    participant Recibo as GeneradorReciboDigital (Service)
+
+    Cajero ->> UI: seleccionarSuscriptor(personaId: 1)
+    UI ->> Ctrl: cargarVehiculosYTarifa(personaId: 1)
+    Ctrl ->> Tarifas: getTarifaPorTipoVehiculo("CARRO")
+    Tarifas -->> Ctrl: montoLiquidado = $120.000 COP
+    Ctrl -->> UI: prellenarFormulario(monto: 120000, periodo: "Noviembre 2026")
+    UI -->> Cajero: mostrarResumenLiquidacion()
+
+    Cajero ->> UI: confirmarRegistroPago(metodo: "EFECTIVO", efectivoRecibido: 150000)
+    UI ->> Ctrl: procesarPago(personaId, monto: 120000, periodo)
+    Ctrl ->> RepoPago: verificarPagoDuplicado(personaId, periodo)
+    RepoPago -->> Ctrl: noExisteDuplicado = true
+    Ctrl ->> RepoPago: insertPago(reciboNum: "REC-2026-0006", monto, fecha, metodo)
+    RepoPago -->> Ctrl: pagoGuardado (id: 6)
+    Ctrl ->> RepoUsr: actualizarEstadoSuscriptor(personaId, "ACTIVO")
+    Ctrl ->> Recibo: construirComprobanteDigital(pagoId: 6)
+    Recibo -->> Ctrl: reciboDigitalGenerado
+    Ctrl -->> UI: pagoExitoso(reciboDigital)
+    UI -->> Cajero: desplegarModalRecibo("REC-2026-0006 con opción Imprimir")
+```
+
+### Secuencia 6: Validación de Pago al Ingreso (Iteración 3 y 1)
+Describe la bifurcación lógica según el estado de la mensualidad al arribar al parqueadero.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Operador as 👷 Operador Garita
+    participant UI as VistaEntradas (UI)
+    participant CtrlAcceso as GestorControlAcceso (BL)
+    participant ServPagos as ServicioVerificacionPagos (BL)
+    participant RepoPagos as PagoRepository (DA)
+
+    Operador ->> UI: registrarLlegadaPlaca("DEF456")
+    UI ->> CtrlAcceso: validarCondicionesIngreso("DEF456")
+    CtrlAcceso ->> ServPagos: tienePagoVigente(vehiculoPlaca: "DEF456")
+    ServPagos ->> RepoPagos: findUltimoPagoVigente(personaId)
+    
+    alt Pago Vigente a la Fecha
+        RepoPagos -->> ServPagos: pagoVigente (Fin: 30/11/2026)
+        ServPagos -->> CtrlAcceso: Estado: AL_DIA (Acceso Autorizado)
+        CtrlAcceso -->> UI: permitirIngresoYAsignarCelda()
+        UI -->> Operador: mostrarBannerVerde("Suscriptor al Día. Celda asignada")
+    else Mensualidad Vencida / En Mora
+        RepoPagos -->> ServPagos: pagoVencido (Fin: 31/10/2026)
+        ServPagos -->> CtrlAcceso: Estado: EN_MORA (Acceso Bloqueado)
+        CtrlAcceso -->> UI: denegarIngreso("Mensualidad vencida. Requiere pago.")
+        UI -->> Operador: mostrarAlertaRoja("ACCESO DENEGADO - Remitir a Caja")
+    end
 ```
 
 ---
 
-## 5. MER – Modelo Entidad-Relación
+## 4. Diagrama de Componentes Integral (Iteraciones 1, 2 y 3)
+
+Ilustra la estructura modular desacoplada del sistema agrupada en Capa de Presentación, Capa de Negocio, Capa de Persistencia e Integraciones con periféricos.
 
 ```mermaid
-erDiagram
-    PERSONA {
-        int id PK
-        varchar cedula UK
-        varchar nombre_completo
-        varchar telefono
-        varchar email UK
-        varchar direccion
-        enum estado
-        datetime created_at
-    }
+graph TD
+    subgraph "Capa de Presentación (UI Modules)"
+        CMP_UI_SHELL["🖥️ Shell / Layout & Auth<br>(index.html / auth.js)"]
+        CMP_UI_ACCESO["🚗 Módulo Entradas / Salidas<br>(entradas.html / salidas.html)"]
+        CMP_UI_USUARIOS["👥 Módulo Usuarios & Celdas<br>(usuarios.html / celdas.html)"]
+        CMP_UI_PAGOS["💳 Módulo Gestión Pagos & Cartera<br>(pagos.html)"]
+        CMP_UI_DASH["📊 Dashboard Centralizado<br>(dashboard.html)"]
+    end
 
-    VEHICULO {
-        int id PK
-        varchar placa UK
-        enum tipo
-        varchar marca
-        varchar color
-        boolean activo
-        int persona_id FK
-        datetime created_at
-    }
+    subgraph "Capa de Lógica de Negocio (Business Services)"
+        SRV_ACCESO["⚙️ ServicioControlAcceso"]
+        SRV_USUARIOS["⚙️ ServicioGestionUsuarios"]
+        SRV_CELDAS["⚙️ ServicioGestionCeldas"]
+        SRV_PAGOS["⚙️ ServicioLiquidacionPagos"]
+        SRV_VAL_PAGOS["🔒 ValidadorVigenciaSuscripcion"]
+        SRV_RECIBOS["🧾 GeneradorRecibosDigitales"]
+    end
 
-    CELDA {
-        int id PK
-        varchar numero UK
-        varchar sector
-        enum tipo
-        enum estado
-        boolean activa
-    }
+    subgraph "Capa de Acceso a Datos (Persistence Repositories)"
+        REP_MOV["📁 MovimientosRepository"]
+        REP_USR["📁 PersonasVehiculosRepository"]
+        REP_CEL["📁 CeldasRepository"]
+        REP_PAG["📁 PagosTarifasRepository"]
+        STORE_ENGINE[("💾 Motor Almacenamiento<br>LocalStorage / DB SQL")]
+    end
 
-    MOVIMIENTO {
-        int id PK
-        datetime fecha_entrada
-        datetime fecha_salida
-        varchar observaciones
-        enum estado
-        int vehiculo_id FK
-        int celda_id FK
-        int usuario_sistema_id FK
-    }
+    subgraph "Integraciones & Periféricos Externos"
+        EXT_PRINT["🖨️ Impresora Térmica POS"]
+        EXT_PASARELA["🏦 Pasarela Pagos / PSE Simulada"]
+    end
 
-    PAGO {
-        int id PK
-        date fecha_pago
-        date periodo_inicio
-        date periodo_fin
-        decimal monto
-        varchar metodo_pago
-        int persona_id FK
-        int usuario_sistema_id FK
-    }
+    CMP_UI_ACCESO --> SRV_ACCESO
+    CMP_UI_USUARIOS --> SRV_USUARIOS
+    CMP_UI_USUARIOS --> SRV_CELDAS
+    CMP_UI_PAGOS --> SRV_PAGOS
+    CMP_UI_PAGOS --> SRV_RECIBOS
+    CMP_UI_DASH --> SRV_ACCESO
+    CMP_UI_DASH --> SRV_CELDAS
+    CMP_UI_DASH --> SRV_PAGOS
 
-    NOVEDAD {
-        int id PK
-        varchar tipo
-        text descripcion
-        datetime fecha_registro
-        boolean archivada
-        int vehiculo_id FK
-        int usuario_sistema_id FK
-    }
+    SRV_ACCESO --> SRV_VAL_PAGOS
+    SRV_ACCESO --> SRV_CELDAS
+    SRV_ACCESO --> REP_MOV
+    SRV_USUARIOS --> REP_USR
+    SRV_CELDAS --> REP_CEL
+    SRV_PAGOS --> REP_PAG
+    SRV_PAGOS --> REP_USR
+    SRV_VAL_PAGOS --> REP_PAG
+    SRV_RECIBOS --> EXT_PRINT
+    SRV_PAGOS -.-> EXT_PASARELA
 
-    USUARIO_SISTEMA {
-        int id PK
-        varchar username UK
-        varchar password_hash
-        enum rol
-        boolean activo
-        int persona_id FK
-    }
-
-    PERSONA ||--o{ VEHICULO : "posee"
-    PERSONA ||--o{ PAGO : "realiza"
-    PERSONA ||--|| USUARIO_SISTEMA : "tiene cuenta"
-    VEHICULO ||--o{ MOVIMIENTO : "genera"
-    VEHICULO ||--o{ NOVEDAD : "tiene"
-    CELDA ||--o{ MOVIMIENTO : "asignada en"
-    USUARIO_SISTEMA ||--o{ MOVIMIENTO : "registra"
-    USUARIO_SISTEMA ||--o{ PAGO : "procesa"
-    USUARIO_SISTEMA ||--o{ NOVEDAD : "registra"
+    REP_MOV --> STORE_ENGINE
+    REP_USR --> STORE_ENGINE
+    REP_CEL --> STORE_ENGINE
+    REP_PAG --> STORE_ENGINE
 ```

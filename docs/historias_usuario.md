@@ -1,236 +1,220 @@
 # Historias de Usuario – Parqueadero "Autos Colombia"
-## Iteración 1: Gestión de Entrada y Salida de Vehículos
+## Iteración 3: Módulo de Gestión de Pagos
 
 ---
 
-## HU-01: Iniciar sesión en el sistema
+### Resumen del Sprint Backlog (Iteración 3)
 
-| Campo | Detalle |
-|-------|---------|
-| **ID** | HU-01 |
-| **Nombre** | Autenticación de usuario |
-| **Actor** | Operador / Administrador |
-| **Prioridad** | Alta |
-| **Estimación** | 3 puntos de historia |
-
-**Historia:**
-> *Como* operador del parqueadero,
-> *quiero* iniciar sesión con mi usuario y contraseña,
-> *para* acceder de forma segura al sistema de gestión.
-
-**Criterios de Aceptación:**
-- El sistema muestra un formulario con campos "Usuario" y "Contraseña".
-- Si las credenciales son correctas, el sistema redirige al dashboard.
-- Si las credenciales son incorrectas, muestra mensaje de error sin revelar cuál campo falló.
-- Después de 3 intentos fallidos, el sistema bloquea el acceso por 5 minutos.
-- Existe una opción "Cerrar sesión" disponible en todo momento.
+| ID | Título de la Historia de Usuario | Rol / Actor | Story Points (Fibonacci) | Prioridad (MoSCoW) |
+| :--- | :--- | :--- | :--- | :--- |
+| **HU-PAG-01** | Registro de Pago de Mensualidad y Autocompletado de Tarifa | Operador / Cajero | 5 | Must Have |
+| **HU-PAG-02** | Generación e Impresión de Recibo Digital Oficial | Operador / Cajero | 3 | Must Have |
+| **HU-PAG-03** | Validación de Suscripción Vigente en Garita de Acceso | Operador Garita / Sistema | 5 | Must Have |
+| **HU-PAG-04** | Monitoreo de Cartera y Suscriptores Morosos | Administrador / Cajero | 3 | Must Have |
+| **HU-PAG-05** | Anulación de Recibo con Bitácora de Auditoría | Administrador | 3 | Should Have |
+| **HU-PAG-06** | Consulta Multicriterio y Métricas de Recaudación | Administrador / Operador | 2 | Should Have |
 
 ---
 
-## HU-02: Registrar entrada de vehículo
+### HU-PAG-01: Registro de Pago de Mensualidad y Autocompletado de Tarifa
 
-| Campo | Detalle |
-|-------|---------|
-| **ID** | HU-02 |
-| **Nombre** | Registro de entrada |
-| **Actor** | Operador |
-| **Prioridad** | Alta |
-| **Estimación** | 5 puntos de historia |
+| Metadato | Detalle |
+| :--- | :--- |
+| **ID Historia:** | `HU-PAG-01` |
+| **Épica:** | Gestión Financiera y Facturación de Suscriptores |
+| **Título:** | Registrar pago de mensualidad con tarifa predeterminada por tipo de vehículo |
+| **Actor:** | Operador / Cajero de Parqueadero |
+| **Story Points:** | 5 |
+| **Prioridad:** | Alta (Must Have) |
 
-**Historia:**
-> *Como* operador del parqueadero,
-> *quiero* registrar la entrada de un vehículo ingresando su placa,
-> *para* llevar el control de qué vehículos están dentro del parqueadero y en qué celda.
+#### Enunciado de Usuario
+> **Como** cajero del parqueadero "Autos Colombia",  
+> **Quiero** registrar el cobro de la mensualidad de un cliente suscriptor seleccionando su nombre y vehículo,  
+> **Para** certificar el recaudo oportuno, renovar su vigencia de acceso y mantener al día las cuentas del parqueadero.
 
-**Criterios de Aceptación:**
-- El operador ingresa la placa del vehículo (formato colombiano: ABC123 o AB123C).
-- El sistema valida que el vehículo esté registrado y tenga mensualidad vigente.
-- El sistema asigna automáticamente la celda disponible más cercana a la entrada.
-- Se registra la fecha y hora de entrada automáticamente.
-- El sistema impide registrar entrada si el vehículo ya está marcado como "dentro".
-- Se genera un comprobante de entrada con placa, celda y hora.
+#### Criterios de Aceptación (Gherkin / BDD)
 
----
+```gherkin
+Escenario: Registro exitoso de pago de mensualidad en efectivo
+  Dado que el operador se encuentra en el módulo de pagos y abre el modal "Registrar Pago"
+  Cuando selecciona al cliente "Carlos Martínez López"
+  Y el sistema detecta su vehículo asociado con tipología "CARRO"
+  Entonces el sistema preselecciona automáticamente el monto de "$120.000 COP"
+  Y al indicar el mes de cobertura "Noviembre 2026", método "EFECTIVO" e ingresar "$150.000 COP" recibidos
+  Entonces el sistema calcula reactivamente el cambio en "$30.000 COP"
+  Y al presionar "Confirmar y Emitir Recibo", el pago queda guardado con número consecutivo único
+  Y el estado del pago queda registrado como "VIGENTE".
 
-## HU-03: Registrar salida de vehículo
+Escenario: Prevención de pago duplicado en el mismo período
+  Dado que el suscriptor "Carlos Martínez López" ya cuenta con un pago vigente para "Noviembre 2026"
+  Cuando el cajero intenta ingresar un segundo pago para el mismo cliente en idéntico mes
+  Entonces el sistema bloquea la transacción
+  Y muestra un mensaje de alerta: "Ya existe un pago registrado para este propietario en el mismo período".
 
-| Campo | Detalle |
-|-------|---------|
-| **ID** | HU-03 |
-| **Nombre** | Registro de salida |
-| **Actor** | Operador |
-| **Prioridad** | Alta |
-| **Estimación** | 5 puntos de historia |
-
-**Historia:**
-> *Como* operador del parqueadero,
-> *quiero* buscar un vehículo por su placa y registrar su salida,
-> *para* liberar la celda ocupada y actualizar el historial de movimientos.
-
-**Criterios de Aceptación:**
-- El operador busca el vehículo por placa.
-- El sistema muestra la información: propietario, celda, hora de entrada, tiempo dentro.
-- Al confirmar la salida, la celda queda libre.
-- Se registra la fecha y hora de salida automáticamente.
-- El sistema impide registrar salida si el vehículo no está marcado como "dentro".
+Escenario: Reactivación automática de suscriptor suspendido tras el pago
+  Dado que el suscriptor "María Sánchez Ruiz" se encontraba en estado "SUSPENDIDO" por mora
+  Cuando el cajero registra exitosamente el pago de su mensualidad pendiente
+  Entonces el sistema actualiza automáticamente el estado del cliente a "ACTIVO" en la base de datos.
+```
 
 ---
 
-## HU-04: Visualizar estado del parqueadero
+### HU-PAG-02: Generación e Impresión de Recibo Digital Oficial
 
-| Campo | Detalle |
-|-------|---------|
-| **ID** | HU-04 |
-| **Nombre** | Dashboard de estado |
-| **Actor** | Operador / Administrador |
-| **Prioridad** | Alta |
-| **Estimación** | 4 puntos de historia |
+| Metadato | Detalle |
+| :--- | :--- |
+| **ID Historia:** | `HU-PAG-02` |
+| **Épica:** | Facturación y Soporte al Cliente |
+| **Título:** | Generar e imprimir comprobante digital de pago con consecutivo legal |
+| **Actor:** | Operador / Cajero, Suscriptor |
+| **Story Points:** | 3 |
+| **Prioridad:** | Alta (Must Have) |
 
-**Historia:**
-> *Como* operador del parqueadero,
-> *quiero* ver en tiempo real cuáles celdas están ocupadas y cuáles están libres,
-> *para* conocer la disponibilidad del parqueadero de un vistazo.
+#### Enunciado de Usuario
+> **Como** cliente suscriptor y cajero del parqueadero,  
+> **Quiero** obtener un recibo digital oficial con membrete y consecutivo tras registrar un pago,  
+> **Para** contar con un comprobante formal del servicio cancelado ante cualquier reclamación o control de garita.
 
-**Criterios de Aceptación:**
-- El dashboard muestra un mapa visual de las celdas con colores: verde (libre) y rojo (ocupado).
-- Se muestran indicadores: total celdas, ocupadas, libres, entradas del día, salidas del día.
-- Al hacer clic en una celda ocupada, se muestran los datos del vehículo y propietario.
-- El estado se actualiza automáticamente al registrar entradas/salidas.
+#### Criterios de Aceptación (Gherkin / BDD)
 
----
+```gherkin
+Escenario: Despliegue automático del recibo tras guardar la transacción
+  Dado que se ha completado el registro de un pago con identificador 1
+  Cuando el sistema confirma la persistencia de datos
+  Entonces se abre automáticamente el modal con el recibo digital con membrete "AUTOS COLOMBIA S.A.S"
+  Y el recibo muestra el consecutivo "REC-2026-0001", NIT, fecha de expedición, nombre y cédula del cliente
+  Y el rango de fechas de cobertura (ej: "2026-11-01 al 2026-11-30"), monto cancelado y método de pago.
 
-## HU-05: Gestionar usuarios del parqueadero
-
-| Campo | Detalle |
-|-------|---------|
-| **ID** | HU-05 |
-| **Nombre** | CRUD de usuarios |
-| **Actor** | Administrador |
-| **Prioridad** | Alta |
-| **Estimación** | 6 puntos de historia |
-
-**Historia:**
-> *Como* administrador del parqueadero,
-> *quiero* registrar, consultar, editar y eliminar usuarios,
-> *para* mantener actualizada la base de datos de propietarios de vehículos.
-
-**Criterios de Aceptación:**
-- El formulario de registro incluye: nombre completo, cédula, teléfono, email, dirección.
-- La cédula y el email deben ser únicos en el sistema.
-- El administrador puede cambiar el estado del usuario (Activo / Suspendido).
-- Un usuario suspendido no puede registrar entrada de vehículos.
-- Al eliminar un usuario, el sistema alerta si tiene registros activos.
+Escenario: Impresión térmica del recibo
+  Dado que el recibo digital se encuentra en pantalla
+  Cuando el usuario hace clic en el botón "🖨️ Imprimir Recibo"
+  Entonces el sistema abre la ventana de impresión nativa del sistema operativo con formato estilizado para impresora térmica de 80 mm.
+```
 
 ---
 
-## HU-06: Gestionar vehículos
+### HU-PAG-03: Validación Automática de Suscripción Vigente en Garita de Acceso
 
-| Campo | Detalle |
-|-------|---------|
-| **ID** | HU-06 |
-| **Nombre** | CRUD de vehículos |
-| **Actor** | Administrador |
-| **Prioridad** | Alta |
-| **Estimación** | 4 puntos de historia |
+| Metadato | Detalle |
+| :--- | :--- |
+| **ID Historia:** | `HU-PAG-03` |
+| **Épica:** | Control de Acceso Integrado |
+| **Título:** | Validar vigencia de pago al ingresar placa vehicular |
+| **Actor:** | Operador de Garita / Motor del Sistema |
+| **Story Points:** | 5 |
+| **Prioridad:** | Alta (Must Have) |
 
-**Historia:**
-> *Como* administrador del parqueadero,
-> *quiero* registrar y gestionar los vehículos asociados a cada usuario,
-> *para* controlar qué vehículos tienen autorización de ingreso.
+#### Enunciado de Usuario
+> **Como** operador de garita de acceso,  
+> **Quiero** que al digitar la placa de un vehículo el sistema verifique de forma automática si tiene su mensualidad al día,  
+> **Para** autorizar el ingreso solo a vehículos debidamente cubiertos y evitar accesos no remunerados.
 
-**Criterios de Aceptación:**
-- El formulario incluye: placa, tipo (Carro/Moto/Camioneta), marca, color, propietario.
-- La placa debe ser única en el sistema.
-- Un usuario puede tener múltiples vehículos registrados.
-- Al consultar un usuario, se listan sus vehículos asociados.
+#### Criterios de Aceptación (Gherkin / BDD)
 
----
+```gherkin
+Escenario: Ingreso autorizado para vehículo con mensualidad vigente
+  Dado que el vehículo con placa "ABC123" pertenece a un cliente con mensualidad vigente para el mes actual
+  Cuando el operador ingresa la placa "ABC123" en la pantalla de Registro de Entrada
+  Entonces el sistema muestra el estado de mensualidad en color verde: "Al Día"
+  Y habilita el botón "Confirmar Entrada" asignando automáticamente la primera celda libre del tipo "CARRO".
 
-## HU-07: Consultar historial de movimientos
-
-| Campo | Detalle |
-|-------|---------|
-| **ID** | HU-07 |
-| **Nombre** | Historial de entradas y salidas |
-| **Actor** | Administrador / Operador |
-| **Prioridad** | Media |
-| **Estimación** | 4 puntos de historia |
-
-**Historia:**
-> *Como* administrador,
-> *quiero* consultar el historial completo de entradas y salidas,
-> *para* hacer seguimiento de los movimientos del parqueadero y generar reportes.
-
-**Criterios de Aceptación:**
-- Se puede filtrar por: rango de fechas, placa, usuario, tipo de vehículo.
-- La tabla muestra: placa, propietario, celda, hora entrada, hora salida, duración.
-- Registros con salida pendiente se muestran con estado "Dentro".
-- El historial se puede exportar (en futuras iteraciones).
+Escenario: Ingreso bloqueado por mensualidad vencida o en mora
+  Dado que el vehículo con placa "JKL789" pertenece a un cliente cuya última mensualidad venció el mes anterior
+  Cuando el operador consulta la placa "JKL789"
+  Entonces el sistema muestra el estado de mensualidad en color rojo: "En Mora / Vencido"
+  Y bloquea la confirmación de ingreso mostrando la alerta: "ACCESO DENEGADO - El suscriptor presenta mensualidad vencida. Remitir a caja para pago".
+```
 
 ---
 
-## HU-08: Gestionar celdas del parqueadero
+### HU-PAG-04: Monitoreo de Cartera y Suscriptores Morosos
 
-| Campo | Detalle |
-|-------|---------|
-| **ID** | HU-08 |
-| **Nombre** | Administración de celdas |
-| **Actor** | Administrador |
-| **Prioridad** | Media |
-| **Estimación** | 3 puntos de historia |
+| Metadato | Detalle |
+| :--- | :--- |
+| **ID Historia:** | `HU-PAG-04` |
+| **Épica:** | Cartera y Cobranza |
+| **Título:** | Visualizar suscriptores morosos y gestionar cobro directo |
+| **Actor:** | Administrador, Operador / Cajero |
+| **Story Points:** | 3 |
+| **Prioridad:** | Alta (Must Have) |
 
-**Historia:**
-> *Como* administrador,
-> *quiero* configurar las celdas del parqueadero indicando su número y tipo,
-> *para* definir la distribución física del parqueadero en el sistema.
+#### Enunciado de Usuario
+> **Como** administrador del parqueadero,  
+> **Quiero** disponer de un panel con el listado actualizado de clientes sin pago vigente,  
+> **Para** gestionar oportunamente los cobros de cartera y mantener el control financiero del negocio.
 
-**Criterios de Aceptación:**
-- El administrador puede agregar, editar o inhabilitar celdas.
-- Cada celda tiene: número, sector, tipo (carro, moto), estado (activa/inactiva).
-- Las celdas inactivas no se asignan a vehículos.
+#### Criterios de Aceptación (Gherkin / BDD)
 
----
+```gherkin
+Escenario: Consulta del listado de morosos
+  Dado que existen clientes suscritos que no han pagado la mensualidad del mes actual
+  Cuando el usuario hace clic en la pestaña "⚠️ Cartera y Morosos"
+  Entonces el sistema lista todos los clientes en mora con su cédula, nombre, teléfono, email, vehículos registrados y último período pagado
+  Y muestra un contador en la pestaña con la cantidad exacta de clientes en mora.
 
-## HU-09: Registrar pago de mensualidad
-
-| Campo | Detalle |
-|-------|---------|
-| **ID** | HU-09 |
-| **Nombre** | Registro de pago mensual |
-| **Actor** | Administrador |
-| **Prioridad** | Alta |
-| **Estimación** | 5 puntos de historia |
-
-**Historia:**
-> *Como* administrador,
-> *quiero* registrar el pago mensual de cada usuario,
-> *para* controlar quién tiene su mensualidad al día y quién está en mora.
-
-**Criterios de Aceptación:**
-- El formulario registra: usuario, período cubierto (mes/año), monto, fecha de pago, método de pago.
-- El sistema calcula automáticamente si la suscripción está vigente o vencida.
-- Se puede consultar el historial de pagos por usuario.
-- El sistema alerta al operador cuando intenta registrar entrada de un usuario con pago vencido.
+Escenario: Registro de cobro directo desde la tabla de morosos
+  Dado que el administrador visualiza al cliente moroso "María Sánchez Ruiz"
+  Cuando hace clic en el botón "💵 Cobrar Mensualidad" de su fila
+  Entonces el sistema abre el modal de registro de pago con el cliente preseleccionado y sus datos listos para liquidación.
+```
 
 ---
 
-## HU-10: Registrar novedad sobre un vehículo
+### HU-PAG-05: Anulación de Recibo con Bitácora de Auditoría
 
-| Campo | Detalle |
-|-------|---------|
-| **ID** | HU-10 |
-| **Nombre** | Registro de novedades |
-| **Actor** | Operador / Administrador |
-| **Prioridad** | Media |
-| **Estimación** | 3 puntos de historia |
+| Metadato | Detalle |
+| :--- | :--- |
+| **ID Historia:** | `HU-PAG-05` |
+| **Épica:** | Auditoría y Seguridad Transaccional |
+| **Título:** | Anular un recibo de pago erróneo justificando el motivo |
+| **Actor:** | Administrador |
+| **Story Points:** | 3 |
+| **Prioridad:** | Media (Should Have) |
 
-**Historia:**
-> *Como* operador,
-> *quiero* registrar una novedad sobre un vehículo (daño, reporte, observación),
-> *para* dejar constancia de situaciones especiales ocurridas en el parqueadero.
+#### Enunciado de Usuario
+> **Como** administrador del parqueadero,  
+> **Quiero** anular un recibo de pago expedido por error ingresando el motivo de la anulación,  
+> **Para** corregir inconsistencias contables sin eliminar físicamente el registro de la auditoría.
 
-**Criterios de Aceptación:**
-- La novedad se asocia a un vehículo por placa.
-- Incluye: tipo de novedad, descripción, fecha/hora, operador que la registra.
-- Las novedades se pueden consultar por vehículo.
-- Las novedades no pueden ser eliminadas (solo el administrador puede archivarlas).
+#### Criterios de Aceptación (Gherkin / BDD)
+
+```gherkin
+Escenario: Anulación justificada de un recibo
+  Dado que existe un pago registrado con ID 2
+  Cuando el administrador hace clic en el botón de anular (✕)
+  Y confirma la acción ingresando el motivo "Error en medio de pago seleccionado por el cajero"
+  Entonces el sistema cambia el estado del pago a "ANULADO"
+  Y registra la fecha, hora y usuario que autorizó la anulación
+  Y el pago anulado no se suma en las estadísticas de recaudación mensual.
+```
+
+---
+
+### HU-PAG-06: Consulta Multicriterio y Métricas de Recaudación
+
+| Metadato | Detalle |
+| :--- | :--- |
+| **ID Historia:** | `HU-PAG-06` |
+| **Épica:** | Reportes y Analítica Financiera |
+| **Título:** | Filtrar historial de pagos y consultar métricas financieras consolidadas |
+| **Actor:** | Administrador, Operador |
+| **Story Points:** | 2 |
+| **Prioridad:** | Media (Should Have) |
+
+#### Enunciado de Usuario
+> **Como** usuario administrativo del sistema,  
+> **Quiero** filtrar los pagos por texto, estado o método y ver las tarjetas de resumen financiero,  
+> **Para** conocer la salud económica del parqueadero y realizar cierres de caja confiables.
+
+#### Criterios de Aceptación (Gherkin / BDD)
+
+```gherkin
+Escenario: Filtrado dinámico de transacciones
+  Dado que existen múltiples pagos en el historial
+  Cuando el usuario escribe "REC-2026-0001" en la barra de búsqueda
+  Entonces la tabla filtra inmediatamente mostrando únicamente la fila del recibo correspondiente.
+
+Escenario: Visualización de métricas en tarjetas superiores
+  Dado que el usuario ingresa a la vista de pagos
+  Entonces el sistema despliega las tarjetas con "Recaudado Este Mes", "Suscriptores Al Día", "Suscriptores En Mora" y "Total Pagos Registrados" con valores calculados en tiempo real.
+```
