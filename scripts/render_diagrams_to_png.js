@@ -414,7 +414,9 @@ ${d.code}
         ];
 
         execFile(chromePath, args, (err) => {
-            if (fs.existsSync(tempHtml)) fs.unlinkSync(tempHtml);
+            try {
+                if (fs.existsSync(tempHtml)) fs.unlinkSync(tempHtml);
+            } catch (ignoreErr) {}
             if (err) return reject(err);
             console.log(`Renderizado exitoso: ${d.name}`);
             resolve();

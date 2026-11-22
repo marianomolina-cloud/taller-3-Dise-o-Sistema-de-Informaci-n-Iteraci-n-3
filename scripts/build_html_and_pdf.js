@@ -106,7 +106,13 @@ function markdownToHtml(md) {
     return html;
 }
 
-let finalBody = markdownToHtml(mdContent);
+let cleanedMd = mdContent;
+const introIndex = cleanedMd.indexOf('# INTRODUCCIÓN');
+if (introIndex !== -1) {
+    cleanedMd = cleanedMd.substring(introIndex);
+}
+
+let finalBody = markdownToHtml(cleanedMd);
 
 // Cargar y embeber mockups en Base64
 const mockups = [
@@ -422,8 +428,10 @@ const fullHtml = `<!DOCTYPE html>
             border-radius: 6px;
             font-family: 'JetBrains Mono', monospace;
             font-size: 8pt;
-            line-height: 1.4;
-            overflow-x: auto;
+            line-height: 1.45;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            overflow-x: hidden;
             margin: 12px 0;
             page-break-inside: avoid;
             border-left: 4px solid #38bdf8;
